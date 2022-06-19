@@ -27,6 +27,16 @@ public class User implements Serializable {
         this.role=role;
     }
 
+    public User(String username, String password, String name, String lastName, Gender gender,String dateOfBirth){
+        super();
+        this.username=username;
+        this.password=password;
+        this.name= name;
+        this.lastName= lastName;
+        this.gender=gender;
+        this.dateOfBirth= dateOfBirth;
+    }
+
     public String getUsername(){
         return username;
     }
@@ -81,5 +91,11 @@ public class User implements Serializable {
 
     public void setRole(Role role){
         this.role=role;
+    }
+
+    public String ToString(){
+        return new StringBuffer(this.username).append(";").append(this.password).append(";")
+                .append(this.name).append(";").append(this.lastName).append(";").append(this.gender.toString()).append(";")
+                .append(this.dateOfBirth).append(";").append(this.role.toString()).toString();
     }
 }
