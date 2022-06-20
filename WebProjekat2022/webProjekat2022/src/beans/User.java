@@ -82,4 +82,10 @@ public class User implements Serializable {
     public void setRole(Role role){
         this.role=role;
     }
+
+    public String ToString(){
+        return new StringBuffer(this.username).append(";").append(this.password).append(";")
+                .append(this.name).append(";").append(this.lastName).append(";").append(this.gender.toString()).append(";")
+                .append(this.dateOfBirth).append(";").append(this.role.toString()).toString();
+    }
 }

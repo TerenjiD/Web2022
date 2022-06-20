@@ -13,7 +13,10 @@ public class SparkMain {
 
         staticFiles.externalLocation(new File("./static").getCanonicalPath());
 
-        TestController.test();
+
+        TestController.addUser();
+        TestController.loginUser();
+
         FacilityController.getFacilities();
         FacilityController.searchFacilities();
     }
