@@ -1,5 +1,6 @@
 package rest;
 
+import controller.FacilityController;
 import controller.TestController;
 
 import static spark.Spark.port;
@@ -13,5 +14,7 @@ public class SparkMain {
         staticFiles.externalLocation(new File("./static").getCanonicalPath());
 
         TestController.test();
+        FacilityController.getFacilities();
+        FacilityController.searchFacilities();
     }
 }
