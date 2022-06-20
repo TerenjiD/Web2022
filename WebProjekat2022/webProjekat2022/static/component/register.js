@@ -17,7 +17,10 @@ Vue.component("register",{
                             <option>Terenji</option>
                         </select></td></tr>
                         <tr><td>Date of birth</td><td><input type="text" id="dateOfBirth" v-model="userDTO.dateOfBirth"/></td></tr>
-                        <tr><td><button  v-on:click = "addUser" /></td></tr>
+                        <tr><td><button  v-on:click = "addUser" style="padding: 7px 20px;
+                                                                        background-color: aqua;" >Napravi</button></td>
+                        <td><button v-on:click= "returnToHome" style="padding: 7px 20px;
+                                                                        background-color: aqua;">Vrati se</button></td></tr>
                 </table>
         </form>
     </div>
@@ -27,6 +30,9 @@ Vue.component("register",{
         addUser : function(){
             alert("User added");
             axios.post('rest/',this.userDTO).then(response => (alert(response.data)));
+        },
+        returnToHome : function(){
+            router.push('/');
         }
     }
 })

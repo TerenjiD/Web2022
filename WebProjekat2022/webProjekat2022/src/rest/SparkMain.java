@@ -16,5 +16,6 @@ public class SparkMain {
             return "Works";
         });
         TestController.addUser();
+        TestController.loginUser();
     }
 }

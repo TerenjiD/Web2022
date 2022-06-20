@@ -1,2 +1,4 @@
-m;m;m;m;MALE;m;CUSTOMER
-Teki;teki;teki;teki;FEMALE;teki;CUSTOMER
+slavko;slavko;Slavko;Jevtic;MALE;14-12-2000;CUSTOMER
+proba;proba;Proba;Probic;MALE;12.12.1996.;CUSTOMER
+o;o;o;o;MALE;o;CUSTOMER
+prika;prika;Prika;Prikic;MALE;12.12.1976.;CUSTOMER

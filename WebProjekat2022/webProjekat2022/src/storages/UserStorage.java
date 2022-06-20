@@ -9,16 +9,21 @@ import java.io.*;
 import java.util.*;
 
 public class UserStorage {
+    //private HashMap<String, User> users = new HashMap<String, User>();
     private HashMap<String, User> users = new HashMap<String, User>();
-
-    public UserStorage() {
-        this(".");
+    private static UserStorage instance = null;
+    public static UserStorage getInstance() throws FileNotFoundException {
+        if (instance==null){
+            instance = new UserStorage();
+        }
+        return instance;
     }
 
-    public UserStorage(String path) {
+
+    private UserStorage() throws FileNotFoundException {
         BufferedReader in = null;
         try {
-            File file = new File(path + "/static/users.txt");
+            File file = new File(  "./static/users.txt");
             System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
             readUsers(in);
@@ -35,36 +40,41 @@ public class UserStorage {
         }
     }
 
-    private void readUsers(BufferedReader in){
-        String line, username = "", password = "", name = "", lastName="", gender="", stateOfBirth="";
-        StringTokenizer st;
-        try {
-            while ((line = in.readLine()) != null) {
-                line = line.trim();
-                if (line.equals("") || line.indexOf('#') == 0)
-                    continue;
-                st = new StringTokenizer(line, ";");
-                while (st.hasMoreTokens()) {
-                    username = st.nextToken().trim();
-                    password = st.nextToken().trim();
-                    name = st.nextToken().trim();
+    private void readUsers(BufferedReader in)  {
+        String line, username="", password="", name="",lastName="",gender="",dateOfBirth="",role="";
+		StringTokenizer st;
+		try {
+			while ((line = in.readLine()) != null) {
+				line = line.trim();
+				if (line.equals("") || line.indexOf('#') == 0)
+					continue;
+				st = new StringTokenizer(line, ";");
+				while (st.hasMoreTokens()) {
+					username = st.nextToken().trim();
+					password = st.nextToken().trim();
+					name = st.nextToken().trim();
                     lastName = st.nextToken().trim();
                     gender = st.nextToken().trim();
-                    stateOfBirth = st.nextToken().trim();
-                }
+                    dateOfBirth = st.nextToken().trim();
+                    role = st.nextToken().trim();
+				}
                 Gender gen;
-                if(gender.equals("Male")){
+                if(gender.equals("MALE")){
                     gen = Gender.MALE;
                 }else{
                     gen = Gender.FEMALE;
                 }
+				User user = new User(username,password,name,lastName,gen,dateOfBirth, Role.CUSTOMER);
+				users.put(username, user);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
-                User user = new User(username, password, name, lastName, gen, stateOfBirth, Role.CUSTOMER);
-                users.put(username, user);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    }
+
+    public User FindById(String username){
+        return users.get(username);
     }
 
     public void addUser(User user){
@@ -80,18 +90,21 @@ public class UserStorage {
                     CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
+            User tempUser = users.get(user.getUsername());
+            if(tempUser==null){
+                String[] data1 = {user.getUsername(),user.getPassword(),user.getName(),user.getLastName()
+                        ,user.getGender().toString(),user.getDateOfBirth(),user.getRole().toString()};
+                List<String[]> userList = new ArrayList<>();
+                userList.add(data1);
+                //userList.add(data2);
+                writer.writeAll(userList);
+
+                writer.close();
+            }else{
+                writer.close();
+            }
 
 
-            String[] data1 = {user.getUsername(),user.getPassword(),user.getName(),user.getLastName()
-            ,user.getGender().toString(),user.getDateOfBirth(),user.getRole().toString()};
-            String[] data2 = {"m","m","m","m"
-                    ,Gender.MALE.toString(),"m",Gender.FEMALE.toString()};
-            List<String[]> userList = new ArrayList<>();
-            userList.add(data1);
-            //userList.add(data2);
-            writer.writeAll(userList);
-
-            writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
