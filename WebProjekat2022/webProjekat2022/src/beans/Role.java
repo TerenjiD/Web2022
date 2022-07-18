@@ -3,6 +3,6 @@ package beans;
 public enum Role {
     ADMIN,
     MANAGER,
-    TRAINER,
+    COACH,
     CUSTOMER
 }

@@ -1,5 +1,5 @@
 Vue.component("login",{
-    data: function(){
+    data : function(){
         return{
             loginDTO:{username:null,password:null,role:null},
             facilities: null,
@@ -12,7 +12,7 @@ Vue.component("login",{
             <table>
                 <tr><td>Username</td><td><input type="text" v-model="loginDTO.username" id="username"  /></td></tr>
                 <tr><td>Password</td><td><input type="password" v-model="loginDTO.password" id="password"/></td></tr>
-                <tr><td><button v-on:click = "loginUser" style="padding: 7px 20px;
+                <tr><td><button v-on:click = "loginUser"  style="padding: 7px 20px;
                 background-color: aqua;">Login in</button></td></tr>
                 
             </table>
@@ -67,10 +67,24 @@ Vue.component("login",{
             axios.post('rest/customerHomePage',this.loginDTO).then(response =>{
                 if(response.data != null){
                     
-                    router.push('/customerHomePage/');
-                    alert("Uspesno logovanje");
+                    let check = response.data.role;
+                    
+                    if(check == "CUSTOMER"){
+                        router.push('/customerHomePage/');
+                        alert("Uspesno logovanje");
+                    }else if(check == "MANAGER"){
+                        router.push('/managerHomePage/');
+                        alert("Uspesno logovanje");
+                    }else if(check == "COACH"){
+                        router.push('/coachHomePage/');
+                        alert("Uspesno logovanje");
+                    }else if(check == "ADMIN"){
+                        router.push('/adminHomePage/');
+                        alert("Uspesno logovanje");
+                    }
+
                 }
-        });
+        }).catch(error => alert("Neuspesno logovanje"));
             event.preventDefault();
         },
 
