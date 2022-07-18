@@ -64,7 +64,20 @@ public class UserStorage {
                 }else{
                     gen = Gender.FEMALE;
                 }
-				User user = new User(username,password,name,lastName,gen,dateOfBirth, Role.CUSTOMER);
+                Role roleFlag;
+                if(role.equals("CUSTOMER")){
+                    roleFlag = Role.CUSTOMER;
+                }else if(role.equals("COACH")){
+                    roleFlag = Role.COACH;
+                }
+                else if(role.equals("MANAGER")){
+                    roleFlag = Role.MANAGER;
+                }
+                else{
+                    roleFlag = Role.ADMIN;
+                }
+
+				User user = new User(username,password,name,lastName,gen,dateOfBirth, roleFlag);
 				users.put(username, user);
 			}
 		} catch (Exception ex) {
@@ -74,6 +87,7 @@ public class UserStorage {
     }
 
     public User FindById(String username){
+
         return users.get(username);
     }
 
