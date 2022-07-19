@@ -18,6 +18,7 @@ public class SparkMain {
         TestController.loginUser();
         TestController.addManager();
         TestController.addCoach();
+        TestController.loggedUser();
 
         FacilityController.getFacilities();
         FacilityController.searchFacilities();

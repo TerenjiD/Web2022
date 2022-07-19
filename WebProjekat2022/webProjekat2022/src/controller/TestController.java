@@ -7,10 +7,12 @@ import DTO.UserDTO;
 import beans.*;
 import com.google.gson.Gson;
 import services.TestService;
+import spark.Request;
 import spark.Session;
 
 import java.io.FileNotFoundException;
 
+import static spark.Spark.get;
 import static spark.Spark.post;
 
 
@@ -115,14 +117,8 @@ public class TestController {
                     res.type("application/json");
                     try{
                         LoginDTO loginDTO = g.fromJson(req.body(),LoginDTO.class);
-
                         testService.loginUser(loginDTO);
-
-                        Session session = req.session(true);
-                        User loggedUser = session.attribute("user");
-                        if(loggedUser == null){
-                            session.attribute("user",testService.GetById(loginDTO.getUsername()));
-                        }
+                        userSession(req).setUsername(loginDTO.getUsername());
                         return g.toJson(testService.GetById(loginDTO.getUsername()));
                     }catch (Exception e){
                         e.printStackTrace();
@@ -130,6 +126,26 @@ public class TestController {
                     }
                 }
         );
+    }
+
+    public static void loggedUser(){
+        get(
+                "/rest/managerHomePage/manager",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetById(userSession(req).getUsername()));
+                }
+        );
+    }
+
+    public static User userSession(Request req){
+
+        Session ss = req.session(true);
+        User loggedUser = ss.attribute("loggedUser");
+        if(loggedUser == null){
+            loggedUser = new User();
+            ss.attribute("loggedUser",loggedUser);
+        }
+        return loggedUser;
     }
 
 
