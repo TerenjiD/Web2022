@@ -98,8 +98,6 @@ public class UserStorage {
         try{
             FileWriter outputfile = new FileWriter(file,true);
 
-
-
             CSVWriter writer = new CSVWriter(outputfile, ';',
                     CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
