@@ -1,4 +1,4 @@
-slavko;slavko;Slavko;Jevtic;MALE;14-12-2000;CUSTOMER
+slavko;slavko;NaStaro;Jevtic;MALE;14-12-2000;CUSTOMER
 proba;proba;Proba;Probic;MALE;12.12.1996.;CUSTOMER
 o;o;o;o;MALE;o;CUSTOMER
 prika;prika;Prika;Prikic;MALE;12.12.1976.;CUSTOMER
@@ -12,10 +12,9 @@ ajkgnfsajng;fljkgnsadfgns;sfdajlgnsdafng;dlgfnsadlgfn;MALE;sfgjsafjb;MANAGER
 kjhlfbvjkfdbnsjk;afdkjgnsjkgnsjknfg;ajgnajkfgnadfkjgnbaj;fkgjnsfdjkgskjgn;MALE;afgkjngjsaj;MANAGER
 z;z;s;s;MALE;s;CUSTOMER
 q;q;z;z;MALE;z;CUSTOMER
-c;c;z;z;MALE;z;CUSTOMER
+c;c;DA;z;MALE;z;CUSTOMER
 n;n;n;n;FEMALE;n;CUSTOMER
 r;q;q;q;MALE;q;MANAGER
 t;r;q;q;MALE;q;COACH
 y;y;y;y;MALE;y;COACH
-bilo;sta;adsgf;asdf;MALE;adf;CUSTOMER
-slavko;slavko;Proba;Jevtic;MALE;14-12-2000;CUSTOMER
+bilo;sta;AjdeOPET;asdf;MALE;adf;CUSTOMER
