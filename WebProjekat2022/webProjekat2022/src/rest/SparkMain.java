@@ -18,7 +18,12 @@ public class SparkMain {
         TestController.loginUser();
         TestController.addManager();
         TestController.addCoach();
-        TestController.loggedUser();
+        TestController.loggedUserManager();
+        TestController.changeManagerInfo();
+        TestController.editManager();
+        TestController.loggedUserCustomer();
+        TestController.changeCustomerInfo();
+        TestController.editCustomer();
 
         FacilityController.getFacilities();
         FacilityController.searchFacilities();

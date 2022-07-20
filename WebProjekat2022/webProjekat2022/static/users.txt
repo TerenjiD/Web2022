@@ -17,3 +17,5 @@ n;n;n;n;FEMALE;n;CUSTOMER
 r;q;q;q;MALE;q;MANAGER
 t;r;q;q;MALE;q;COACH
 y;y;y;y;MALE;y;COACH
+bilo;sta;adsgf;asdf;MALE;adf;CUSTOMER
+slavko;slavko;Proba;Jevtic;MALE;14-12-2000;CUSTOMER

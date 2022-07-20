@@ -7,6 +7,7 @@ const LoginManager = {template: '<managerHomePage></managerHomePage>'}
 const RegisterManager = {template : '<registerManager></registerManager>'}
 const RegisterCoach = {template : '<registerCoach></registerCoach>'}
 const ChangeManagerInfo = {template : '<changeInfoManager></changeInfoManager>'}
+const ChangeCustomerInfo = {template : '<changeInfoCustomer></changeInfoCustomer>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -19,7 +20,8 @@ const router = new VueRouter({
         { path: '/register/', component: RegisterCustomer},
 		{ path : '/adminHomePage/registerManager/',component: RegisterManager },
 		{ path : '/adminHomePage/registerCoach/',component: RegisterCoach },
-		{ path : '/managerHomePage/changeInfoManager/',component: ChangeManagerInfo }
+		{ path : '/managerHomePage/changeInfoManager/',component: ChangeManagerInfo },
+		{ path : '/changeInfoCustomer',component: ChangeCustomerInfo }
 	  ]
 });
 

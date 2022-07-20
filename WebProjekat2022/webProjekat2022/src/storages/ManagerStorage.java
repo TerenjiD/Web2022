@@ -97,6 +97,42 @@ public class ManagerStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.managers.put(manager.getUsername(),manager);
     }
 
+    public Manager GetByIdManager(String username){
+        Manager manager = managers.get(username);
+        return manager;
+    }
+
+
+    public void editManager(Manager manager,String username){
+        Manager flag = managers.get(username);
+        flag.setUsername(manager.getUsername());
+        flag.setPassword(manager.getPassword());
+        flag.setName(manager.getName());
+        flag.setLastName(manager.getLastName());
+        flag.setGender(manager.getGender());
+        flag.setDateOfBirth(manager.getDateOfBirth());
+        flag.setFacility(manager.getFacility());
+        File file = new File("./static/managers.txt");
+        Scanner sc = new Scanner(System.in);
+        try{
+            FileWriter outputfile = new FileWriter(file,true);
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+            String[] data1 = {flag.getUsername(),flag.getPassword(),flag.getName(),flag.getLastName()
+                    ,flag.getGender().toString(),flag.getDateOfBirth(),flag.getRole().toString(),flag.getFacility()};
+            List<String[]> managerList = new ArrayList<>();
+            managerList.add(data1);
+            //userList.add(data2);
+            writer.writeAll(managerList);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.managers.put(flag.getUsername(),flag);
+    }
 }

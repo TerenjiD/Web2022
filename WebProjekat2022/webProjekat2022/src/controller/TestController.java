@@ -64,7 +64,7 @@ public class TestController {
                     CoachDTO coachDTO = g.fromJson(req.body(), CoachDTO.class);
                     User flag = testService.GetById(coachDTO.getUsername());
                     Gender gen;
-                    if (coachDTO.getGender().equals("Male")){
+                    if (coachDTO.getGender().equals("MALE")){
                         gen = Gender.MALE;
                     }else{
                         gen = Gender.FEMALE;
@@ -94,7 +94,7 @@ public class TestController {
                     UserDTO userDTO = g.fromJson(req.body(), UserDTO.class);
                     User flag = testService.GetById(userDTO.getUsername());
                     Gender gen = Gender.MALE;
-                    if (userDTO.getGender().equals("Male")) {
+                    if (userDTO.getGender().equals("MALE")) {
                         gen = Gender.MALE;
                     } else {
                         gen = Gender.FEMALE;
@@ -128,11 +128,59 @@ public class TestController {
         );
     }
 
-    public static void loggedUser(){
+    public static void loggedUserCustomer(){
+        get(
+                "/rest/customerHomePage/customer",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetById(userSession(req).getUsername()));
+                }
+        );
+    }
+
+    public static void loggedUserManager(){
         get(
                 "/rest/managerHomePage/manager",(req,res)->{
                     res.type("application/json");
                     return g.toJson(testService.GetById(userSession(req).getUsername()));
+                }
+        );
+    }
+
+    public static void changeManagerInfo(){
+        get(
+                "rest/managerHomePage/changeInfoManager",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetByIdManager(userSession(req).getUsername()));
+                }
+        );
+    }
+    public static void changeCustomerInfo(){
+        get(
+                "/rest/customerHomePage/changeInfoCustomer/",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetById(userSession(req).getUsername()));
+                }
+        );
+    }
+
+    public static void editCustomer(){
+        post(
+                "/rest/customerHomePage/changeInfoCustomer/customer",(req,res)->{
+                    res.type("application/json");
+                    UserDTO flag = g.fromJson(req.body(),UserDTO.class);
+                    testService.EditCustomer(flag);
+                    return "Success";
+                }
+        );
+    }
+
+    public static void editManager(){
+        post(
+                "rest/managerHomePage/changeInfoManager/manager",(req,res)->{
+                    res.type("application/json");
+                    ManagerDTO flag = g.fromJson(req.body(),ManagerDTO.class);
+                    testService.EditManager(flag);
+                    return "success";
                 }
         );
     }

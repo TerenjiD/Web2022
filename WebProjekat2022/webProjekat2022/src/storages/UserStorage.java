@@ -3,14 +3,20 @@ package storages;
 import beans.Gender;
 import beans.Role;
 import beans.User;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class UserStorage {
     //private HashMap<String, User> users = new HashMap<String, User>();
     private HashMap<String, User> users = new HashMap<String, User>();
+    private HashMap<String, User> users1 = new HashMap<String, User>();
     private static UserStorage instance = null;
     public static UserStorage getInstance() throws FileNotFoundException {
         if (instance==null){
@@ -79,11 +85,62 @@ public class UserStorage {
 
 				User user = new User(username,password,name,lastName,gen,dateOfBirth, roleFlag);
 				users.put(username, user);
+
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
+    }
+    private List<String[]> readUsers1(BufferedReader in)  {
+        List<String[]> userList = new ArrayList<>();
+        String line, username="", password="", name="",lastName="",gender="",dateOfBirth="",role="";
+        StringTokenizer st;
+        try {
+            while ((line = in.readLine()) != null) {
+                line = line.trim();
+                if (line.equals("") || line.indexOf('#') == 0)
+                    continue;
+                st = new StringTokenizer(line, ";");
+                while (st.hasMoreTokens()) {
+                    username = st.nextToken().trim();
+                    password = st.nextToken().trim();
+                    name = st.nextToken().trim();
+                    lastName = st.nextToken().trim();
+                    gender = st.nextToken().trim();
+                    dateOfBirth = st.nextToken().trim();
+                    role = st.nextToken().trim();
+                }
+                Gender gen;
+                if(gender.equals("MALE")){
+                    gen = Gender.MALE;
+                }else{
+                    gen = Gender.FEMALE;
+                }
+                Role roleFlag;
+                if(role.equals("CUSTOMER")){
+                    roleFlag = Role.CUSTOMER;
+                }else if(role.equals("COACH")){
+                    roleFlag = Role.COACH;
+                }
+                else if(role.equals("MANAGER")){
+                    roleFlag = Role.MANAGER;
+                }
+                else{
+                    roleFlag = Role.ADMIN;
+                }
+
+                User user = new User(username,password,name,lastName,gen,dateOfBirth, roleFlag);
+                String[] data1 = {user.getUsername(),user.getPassword(),user.getName(),user.getLastName()
+                        ,user.getGender().toString(),user.getDateOfBirth(),user.getRole().toString()};
+                userList.add(data1);
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return userList;
     }
 
     public User FindById(String username){
@@ -121,5 +178,69 @@ public class UserStorage {
             throw new RuntimeException(e);
         }
         this.users.put(user.getUsername(),user);
+    }
+
+    public void editUser(User user,String username){
+        List<String[]> userList = new ArrayList<>();
+        BufferedReader in = null;
+        try {
+            File file = new File(  "./static/users.txt");
+            System.out.println(file.getCanonicalPath());
+            in = new BufferedReader(new FileReader(file));
+            userList=readUsers1(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) { }
+            }
+        }
+        for(String[] usersForSearch: userList){
+            if(usersForSearch[0].equals(user.getUsername())){
+                Gender gen;
+                if(usersForSearch[4].equals("MALE")){
+                    gen=Gender.MALE;
+                }else{
+                    gen=Gender.FEMALE;
+                }
+                User flag = new User(usersForSearch[0],usersForSearch[1],usersForSearch[2],usersForSearch[3],gen,
+                        usersForSearch[5],Role.CUSTOMER);
+            }
+        }
+        User flag = users.get(username);
+        flag.setUsername(user.getUsername());
+        flag.setPassword(user.getPassword());
+        flag.setName(user.getName());
+        flag.setLastName(user.getLastName());
+        flag.setGender(user.getGender());
+        flag.setDateOfBirth(user.getDateOfBirth());
+        File file = new File("./static/users.txt");
+        Scanner sc = new Scanner(System.in);
+        try{
+            FileWriter outputfile = new FileWriter(file,true);
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+                String[] data1 = {flag.getUsername(),flag.getPassword(),flag.getName(),flag.getLastName()
+                        ,flag.getGender().toString(),flag.getDateOfBirth(),flag.getRole().toString()};
+                List<String[]> userList1 = new ArrayList<>();
+                userList1.add(data1);
+                //userList.add(data2);
+                writer.writeAll(userList1);
+
+                writer.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        this.users.put(flag.getUsername(),flag);
     }
 }
