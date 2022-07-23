@@ -2,8 +2,8 @@ Vue.component("login",{
     data : function(){
         return{
             loginDTO:{username:null,password:null,role:null},
-            facilities: null,
-            input: null
+            facilities : null,
+            input : null
         }
     },
     template:`

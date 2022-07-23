@@ -227,7 +227,12 @@ public class UserStorage {
         }catch(Exception e){
             e.printStackTrace();
         }
-
-
     }
+    public Collection<User> getValues() {return users.values();}
+
+    public List<User> GetUsers(){
+        List<User> listToReturn = new ArrayList<>(getValues());
+        return listToReturn;
+    }
+
 }
