@@ -128,6 +128,15 @@ public class TestController {
         );
     }
 
+    public static void getUsers(){
+        get(
+                "/rest/adminHomePage/showUsers",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetUsers());
+                }
+        );
+    }
+
     public static void loggedUserCustomer(){
         get(
                 "/rest/customerHomePage/customer",(req,res)->{

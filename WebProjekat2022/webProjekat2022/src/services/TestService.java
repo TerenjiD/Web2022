@@ -12,6 +12,7 @@ import storages.UserStorage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 public class TestService {
     private UserStorage users = UserStorage.getInstance();
@@ -43,6 +44,11 @@ public class TestService {
         Coach coach = coaches.GetByIdCoach(username);
         return coach;
     }
+
+    public List<User> GetUsers(){
+        return users.GetUsers();
+    }
+
     public User loginUser(LoginDTO loginDTO) throws JsonSyntaxException, IOException {
         User user = users.FindById(loginDTO.getUsername());
 
