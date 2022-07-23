@@ -14,8 +14,8 @@ Vue.component("registerManager",{
                 <tr><td>Name</td><td><input type="text" id="name" v-model="managerDTO.name"/></td></tr>
                 <tr><td>Lastname</td><td><input type="text" id="lastname" v-model="managerDTO.lastName"/></td></tr>
                 <tr><td>Gender</td><td><select type="text" value="" id="gender" v-model="managerDTO.gender">
-                    <option>Male</option>
-                    <option>Terenji</option>
+                    <option>MALE</option>
+                    <option>FEMALE</option>
                 </select></td></tr>
                 <tr><td>Date of birth</td><td><input type="text" id="dateOfBirth" v-model="managerDTO.dateOfBirth"/></td></tr>
                 <tr><td>Facility</td><td ><select type="text" value="" id="facility" v-model="managerDTO.facility">

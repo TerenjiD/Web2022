@@ -13,8 +13,8 @@ Vue.component("register",{
                         <tr><td>Name</td><td><input type="text" id="name" v-model="userDTO.name"/></td></tr>
                         <tr><td>Lastname</td><td><input type="text" id="lastname" v-model="userDTO.lastName"/></td></tr>
                         <tr><td>Gender</td><td><select type="text" value="" id="gender" v-model="userDTO.gender">
-                            <option>Male</option>
-                            <option>Terenji</option>
+                            <option>MALE</option>
+                            <option>FEMALE</option>
                         </select></td></tr>
                         <tr><td>Date of birth</td><td><input type="text" id="dateOfBirth" v-model="userDTO.dateOfBirth"/></td></tr>
                         <tr><td><button type="submit"  v-on:click = "addUser" style="padding: 7px 20px;

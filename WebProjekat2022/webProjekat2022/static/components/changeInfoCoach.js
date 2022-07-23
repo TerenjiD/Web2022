@@ -1,10 +1,11 @@
-Vue.component("registerCoach",{
+Vue.component("changeInfoCoach",{
     data : function(){
         return{
-            coachDTO : {username : null,password : null,name : null,lastname : null,gender : null,dateOfBirth : null,role : null,trainingHistory : null}
+            coachDTO : null
         }
     },
-    template:`
+    template:
+    `
     <div>
         <form method="post">
                 <table>
@@ -18,23 +19,24 @@ Vue.component("registerCoach",{
                         </select></td></tr>
                         <tr><td>Date of birth</td><td><input type="text" id="dateOfBirth" v-model="coachDTO.dateOfBirth"/></td></tr>
                         <tr><td>Training history</td><td><input type="text" id="trainingHistory" v-model="coachDTO.trainingHistory"/></td></tr>
-                        <tr><td><button  v-on:click = "addUser" style="padding: 7px 20px;
-                                                                        background-color: aqua;" >Napravi</button></td>
-                        <td><button v-on:click= "returnToHome" style="padding: 7px 20px;
+                        <tr><td><button  v-on:click = "changeCoachData" style="padding: 7px 20px;
+                                                                        background-color: aqua;" >Izmeni</button></td>
+                        <td><button v-on:click= "returnToCoachHomePage" style="padding: 7px 20px;
                                                                         background-color: aqua;">Vrati se</button></td></tr>
                 </table>
         </form>
     </div>
     `,
+    mounted(){
+            axios.get('/rest/coachHomePage/changeInfoCoach/').then(response => (this.coachDTO=response.data));
+    },
     methods : {
-        addUser : function(event){
-            axios.post('rest/adminHomePage/registerCoach/',this.coachDTO)
-            .then(response => alert("Uspesno pravljenje"))
-            .catch(error => alert("Neuspesno pravljenje trenera"));
-            event.preventDefault();
+        changeCoachData : function(){
+            axios.post('rest/coachHomePage/changeInfoCoach/coach',this.coachDTO);
+            router.push('/coachHomePage/');
         },
-        returnToHome : function(){
-            router.push('/');
+        returnToCoachHomePage : function(){
+            router.push('/coachHomePage/');
         }
     }
 })

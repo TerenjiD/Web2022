@@ -1,7 +1,7 @@
 Vue.component("customerHomePage",{
     data: function() {
         return {
-            customer : null,
+            customer : [],
             facilities: null,
             input: null
         }
@@ -9,6 +9,11 @@ Vue.component("customerHomePage",{
     template:`
     <div>
     <div>
+                <div>
+                    <p>Kupac prikeroni {{customer.name}}</p>
+                    <button v-on:click="changeCustomer" style="padding: 7px 20px;
+                    background-color: aqua;">Izmeni</button>
+                </div>
         		<h3>Prikaz sportskih objekata</h3>
         		</div>
                 <div>
@@ -49,7 +54,8 @@ Vue.component("customerHomePage",{
     mounted () {
         axios
         .get('rest/facilities/')
-        .then(response => (this.facilities = response.data))
+        .then(response => (this.facilities = response.data));
+        axios.get('/rest/customerHomePage/customer').then(response => (this.customer = response.data))
     },
     methods: {
         logoutUser : function(){
@@ -64,6 +70,9 @@ Vue.component("customerHomePage",{
                 axios
                 .get("rest/facilities/search/" + this.input)
                 .then(response => (this.facilities = response.data))
-            }
+        },
+        changeCustomer : function(){
+            router.push('/changeInfoCustomer/')
+        }
     }
 })
