@@ -22,8 +22,8 @@ Vue.component("changeInfoManager",{
                         <tr><td>Facility</td><td ><select type="text" value='' id="facility" v-model="managerDTO.facility">
                                 <option v-for="(p,index) in facilities">{{p.name}}</option></select></td></tr>
                         <tr><td><button  v-on:click = "changeData" style="padding: 7px 20px;
-                                                                        background-color: aqua;" >Izmeni</button></td>
-                        <td><button v-on:click= "returnToHome" style="padding: 7px 20px;
+                                                                        background-color: aqua;" >Izmeni</button></td></tr>
+                        <tr><td><button v-on:click= "returnToManagerHomePage" style="padding: 7px 20px;
                                                                         background-color: aqua;">Vrati se</button></td></tr>
                 </table>
         </form>
@@ -38,8 +38,11 @@ Vue.component("changeInfoManager",{
     },
     methods : {
         changeData : function(event){
-            axios.post('rest/managerHomePage/changeInfoManager/manager',managerDTO).then(response => console.log(data));
-            event.preventDefault();
+            axios.post('rest/managerHomePage/changeInfoManager/manager',this.managerDTO);
+            router.push('/managerHomePage/')
+        },
+        returnToManagerHomePage : function(event){
+            router.push('/managerHomePage/')
         }
     }
 })

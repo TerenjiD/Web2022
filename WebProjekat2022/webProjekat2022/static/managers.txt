@@ -2,5 +2,4 @@ v;v;v;v;MALE;v;MANAGER;v
 suboticanin;suboticanin;David;Terenji;MALE;12/12/2000;MANAGER;FullTrdasdas
 ajkgnfsajng;fljkgnsadfgns;sfdajlgnsdafng;dlgfnsadlgfn;MALE;sfgjsafjb;MANAGER;FullTr
 kjhlfbvjkfdbnsjk;afdkjgnsjkgnsjknfg;ajgnajkfgnadfkjgnbaj;fkgjnsfdjkgskjgn;MALE;afgkjngjsaj;MANAGER;FullTrdasdas
-r;q;q;q;FEMALE;q;MANAGER;FullTrdasdas
-a;a;Prika;q;MALE;q;MANAGER;FullTr
+r;q;proba;q;MALE;q;MANAGER;FullTr

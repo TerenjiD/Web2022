@@ -3,10 +3,7 @@ package storages;
 import beans.Gender;
 import beans.Role;
 import beans.User;
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
+import com.opencsv.*;
 import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.*;
@@ -30,7 +27,7 @@ public class UserStorage {
     private UserStorage() throws FileNotFoundException {
         BufferedReader in = null;
         try {
-            File file = new File(  "./static/users.txt");
+            File file = new File(  "./static/users.csv");
             System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
             readUsers(in);
@@ -151,7 +148,7 @@ public class UserStorage {
 
     public void addUser(User user){
 
-        File file = new File("./static/users.txt");
+        File file = new File("./static/users.csv");
         Scanner sc = new Scanner(System.in);
         try{
             FileWriter outputfile = new FileWriter(file,true);
@@ -182,47 +179,55 @@ public class UserStorage {
     }
 
     public void editUser(User user,String username){
-        String usern="";
-        String password="";
-        String name="";
-        String lastname="";
-        String gender="";
-        String dateOfBirth="";
-        String role="";
-        String tempFile = "./static/temp.txt";
-        File oldFile = new File("./static/users.txt");
-        File newFile = new File(tempFile);
+        users.put(user.getUsername(),user);
+        String usern=user.getUsername();
+        String password=user.getPassword();
+        String name=user.getName();
+        String lastName=user.getLastName();
+        String gender=user.getGender().toString();
+        String dateOfBirth=user.getDateOfBirth();
+        String role=user.getRole().toString();
+        String file = "./static/users.csv";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.csv");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
         try{
-            FileWriter fw = new FileWriter(tempFile,true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-            x = new Scanner(new File("./static/users.txt"));
-            x.useDelimiter("[;\n]");
-            while(x.hasNext()){
-                usern = x.next();
-                password = x.next();
-                name = x.next();
-                lastname = x.next();
-                gender = x.next();
-                dateOfBirth = x.next();
-                role = x.next();
-                if(usern.equals(username)){
-                    pw.println(user.getUsername()+";"+user.getPassword()+";"+user.getName()+";"+user.getLastName()+";"+
-                            user.getGender().toString()+";"+user.getDateOfBirth()+";"+user.getRole().toString());
-                }else{
-                    pw.println(usern+";"+password+";"+name+";"+lastname+";"+
-                            gender+";"+dateOfBirth+";"+role);
+            FileWriter outputfile = new FileWriter("./static/temp.csv",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(username)){
+                    row[0] = usern;
+                    row[1] = password;
+                    row[2] = name;
+                    row[3] = lastName;
+                    row[4] = gender;
+                    row[5] = dateOfBirth;
+                    row[6] = role;
                 }
+                rows.add(row);
 
             }
-            x.close();
-            pw.flush();
-            pw.close();
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
             oldFile.delete();
-            File dump = new File("./static/users.txt");
+            File dump = new File ("./static/users.csv");
             newFile.renameTo(dump);
+
+
         }catch(Exception e){
             e.printStackTrace();
         }
+
+
     }
 }

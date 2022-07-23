@@ -146,6 +146,24 @@ public class TestController {
         );
     }
 
+    public static void loggedUserCoach(){
+        get(
+                "/rest/coachHomePage/coach",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetById(userSession(req).getUsername()));
+                }
+        );
+    }
+
+    public static void loggedUserAdmin(){
+        get(
+                "/rest/adminHomePage/admin",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetById(userSession(req).getUsername()));
+                }
+        );
+    }
+
     public static void changeManagerInfo(){
         get(
                 "rest/managerHomePage/changeInfoManager",(req,res)->{
@@ -162,13 +180,30 @@ public class TestController {
                 }
         );
     }
+    public static void changeCoachInfo(){
+        get(
+                "/rest/coachHomePage/changeInfoCoach/",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetByIdCoach(userSession(req).getUsername()));
+                }
+        );
+    }
+    public static void changeAdminInfo(){
+        get(
+                "/rest/adminHomePage/changeInfoAdmin/",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetById(userSession(req).getUsername()));
+                }
+        );
+    }
 
     public static void editCustomer(){
         post(
                 "/rest/customerHomePage/changeInfoCustomer/customer",(req,res)->{
                     res.type("application/json");
                     UserDTO flag = g.fromJson(req.body(),UserDTO.class);
-                    testService.EditCustomer(flag);
+                    String flagUser = userSession(req).getUsername();
+                    testService.EditCustomer(flag,flagUser);
                     return "Success";
                 }
         );
@@ -176,10 +211,40 @@ public class TestController {
 
     public static void editManager(){
         post(
-                "rest/managerHomePage/changeInfoManager/manager",(req,res)->{
+                    "rest/managerHomePage/changeInfoManager/manager",(req,res)->{
                     res.type("application/json");
                     ManagerDTO flag = g.fromJson(req.body(),ManagerDTO.class);
-                    testService.EditManager(flag);
+                    UserDTO flagUser = new UserDTO(flag.getUsername(),flag.getPassword(),flag.getName(),flag.getLastName(),
+                            flag.getGender(),flag.getDateOfBirth());
+                    String flagUsername = userSession(req).getUsername();
+                    //testService.EditCustomer(flagUser,flagUsername);
+                    testService.EditManager(flag,flagUsername);
+                    return "success";
+                }
+        );
+    }
+    public static void editCoach(){
+        post(
+                "rest/coachHomePage/changeInfoCoach/coach",(req,res)->{
+                    res.type("application/json");
+                    CoachDTO flag = g.fromJson(req.body(),CoachDTO.class);
+                    UserDTO flagUser = new UserDTO(flag.getUsername(),flag.getPassword(),flag.getName(),flag.getLastName(),
+                            flag.getGender(),flag.getDateOfBirth());
+                    String flagUsername = userSession(req).getUsername();
+                    //testService.EditCustomer(flagUser,flagUsername);
+                    testService.EditCoach(flag,flagUsername);
+                    return "success";
+                }
+        );
+    }
+    public static void editAdmin(){
+        post(
+                "rest/adminHomePage/changeInfoAdmin/admin",(req,res)->{
+                    res.type("application/json");
+                    UserDTO flag = g.fromJson(req.body(),UserDTO.class);
+                    String flagUsername = userSession(req).getUsername();
+                    //testService.EditCustomer(flagUser,flagUsername);
+                    testService.EditAdmin(flag,flagUsername);
                     return "success";
                 }
         );

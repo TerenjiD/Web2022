@@ -1,5 +1,6 @@
 package services;
 
+import DTO.CoachDTO;
 import DTO.LoginDTO;
 import DTO.ManagerDTO;
 import DTO.UserDTO;
@@ -38,6 +39,10 @@ public class TestService {
         Manager manager = managers.GetByIdManager(username);
         return manager;
     }
+    public Coach GetByIdCoach(String username){
+        Coach coach = coaches.GetByIdCoach(username);
+        return coach;
+    }
     public User loginUser(LoginDTO loginDTO) throws JsonSyntaxException, IOException {
         User user = users.FindById(loginDTO.getUsername());
 
@@ -49,7 +54,7 @@ public class TestService {
 
     }
 
-    public void EditManager(ManagerDTO manager){
+    public void EditManager(ManagerDTO manager,String flagUsername){
         Gender gen;
         if(manager.getGender().equals("MALE")){
             gen = Gender.MALE;
@@ -72,11 +77,11 @@ public class TestService {
                 gen,manager.getDateOfBirth(),roleFlag);
         Manager flagManager = new Manager(manager.getUsername(), manager.getPassword(), manager.getName(),manager.getLastName(),
                 gen,manager.getDateOfBirth(),roleFlag,manager.getFacility());
-        users.editUser(flagUser,flagUser.getUsername());
-        managers.editManager(flagManager,flagManager.getUsername());
+        users.editUser(flagUser,flagUsername);
+        managers.editManager(flagManager,flagUsername);
     }
 
-    public void EditCustomer(UserDTO userDTO){
+    public void EditCustomer(UserDTO userDTO,String flagUsername){
         Gender gen;
         if(userDTO.getGender().equals("MALE")){
             gen = Gender.MALE;
@@ -85,6 +90,33 @@ public class TestService {
         }
         User flagUser = new User(userDTO.getUsername(), userDTO.getPassword(), userDTO.getName(),userDTO.getLastName(),
                 gen,userDTO.getDateOfBirth(),Role.CUSTOMER);
-        users.editUser(flagUser,flagUser.getUsername());
+        users.editUser(flagUser,flagUsername);
+    }
+
+    public void EditAdmin(UserDTO adminDTO, String flagUsername){
+        Gender gen;
+        if(adminDTO.getGender().equals("MALE")){
+            gen = Gender.MALE;
+        }else{
+            gen = Gender.FEMALE;
+        }
+        User flagUser = new User(adminDTO.getUsername(), adminDTO.getPassword(), adminDTO.getName(),adminDTO.getLastName(),
+                gen,adminDTO.getDateOfBirth(),Role.ADMIN);
+        users.editUser(flagUser,flagUsername);
+    }
+
+    public void EditCoach(CoachDTO coachDTO,String flagUsername){
+        Gender gen;
+        if(coachDTO.getGender().equals("MALE")){
+            gen = Gender.MALE;
+        }else{
+            gen = Gender.FEMALE;
+        }
+        User flagUser = new User(coachDTO.getUsername(), coachDTO.getPassword(), coachDTO.getName(),coachDTO.getLastName(),
+                gen,coachDTO.getDateOfBirth(),Role.COACH);
+        Coach flagCoach = new Coach(coachDTO.getUsername(),coachDTO.getPassword(),coachDTO.getName(),coachDTO.getLastName(),
+                gen,coachDTO.getDateOfBirth(),Role.COACH,coachDTO.getTrainingHistory());
+        users.editUser(flagUser,flagUsername);
+        coaches.editCoach(flagCoach,flagUsername);
     }
 }

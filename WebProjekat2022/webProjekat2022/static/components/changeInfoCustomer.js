@@ -34,7 +34,7 @@ Vue.component("changeInfoCustomer",{
             router.push('/customerHomePage/')
         },
         returnToCusHP : function(){
-
+            router.push('/customerHomePage/')
         }
     }
 })

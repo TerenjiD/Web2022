@@ -99,4 +99,62 @@ public class CoachStorage {
             throw new RuntimeException(e);
         }
     }
+
+    public void editCoach(Coach coach,String username){
+        coaches.put(coach.getUsername(),coach);
+        String usern=coach.getUsername();
+        String password=coach.getPassword();
+        String name=coach.getName();
+        String lastName=coach.getLastName();
+        String gender=coach.getGender().toString();
+        String dateOfBirth=coach.getDateOfBirth();
+        String role=coach.getRole().toString();
+        String trainingHistory = coach.getTrainingHistory();
+        String file = "./static/coaches.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(username)){
+                    row[0] = usern;
+                    row[1] = password;
+                    row[2] = name;
+                    row[3] = lastName;
+                    row[4] = gender;
+                    row[5] = dateOfBirth;
+                    row[6] = role;
+                    row[7] = trainingHistory;
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/coaches.txt");
+            newFile.renameTo(dump);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public Coach GetByIdCoach(String username){
+        Coach coach = coaches.get(username);
+        return coach;
+    }
 }

@@ -3,6 +3,7 @@ package storages;
 import beans.Gender;
 import beans.Manager;
 import beans.Role;
+import beans.User;
 import com.opencsv.CSVWriter;
 
 import java.io.*;
@@ -107,32 +108,54 @@ public class ManagerStorage {
 
 
     public void editManager(Manager manager,String username){
-        Manager flag = managers.get(username);
-        flag.setUsername(manager.getUsername());
-        flag.setPassword(manager.getPassword());
-        flag.setName(manager.getName());
-        flag.setLastName(manager.getLastName());
-        flag.setGender(manager.getGender());
-        flag.setDateOfBirth(manager.getDateOfBirth());
-        flag.setFacility(manager.getFacility());
-        File file = new File("./static/managers.txt");
-        Scanner sc = new Scanner(System.in);
+        managers.put(manager.getUsername(),manager);
+        String usern=manager.getUsername();
+        String password=manager.getPassword();
+        String name=manager.getName();
+        String lastName=manager.getLastName();
+        String gender=manager.getGender().toString();
+        String dateOfBirth=manager.getDateOfBirth();
+        String role=manager.getRole().toString();
+        String facility = manager.getFacility();
+        String file = "./static/managers.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
         try{
-            FileWriter outputfile = new FileWriter(file,true);
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(username)){
+                    row[0] = usern;
+                    row[1] = password;
+                    row[2] = name;
+                    row[3] = lastName;
+                    row[4] = gender;
+                    row[5] = dateOfBirth;
+                    row[6] = role;
+                    row[7] = facility;
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
             CSVWriter writer = new CSVWriter(outputfile, ';',
                     CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
-            String[] data1 = {flag.getUsername(),flag.getPassword(),flag.getName(),flag.getLastName()
-                    ,flag.getGender().toString(),flag.getDateOfBirth(),flag.getRole().toString(),flag.getFacility()};
-            List<String[]> managerList = new ArrayList<>();
-            managerList.add(data1);
-            //userList.add(data2);
-            writer.writeAll(managerList);
+
+            writer.writeAll(rows);
             writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/managers.txt");
+            newFile.renameTo(dump);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.managers.put(flag.getUsername(),flag);
+
     }
 }
