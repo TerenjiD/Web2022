@@ -10,22 +10,24 @@ const ChangeManagerInfo = {template : '<changeInfoManager></changeInfoManager>'}
 const ChangeCustomerInfo = {template : '<changeInfoCustomer></changeInfoCustomer>'}
 const ChangeCoachInfo = {template : '<changeInfoCoach></changeInfoCoach>'}
 const ChangeAdminInfo = {template : '<changeInfoAdmin></changeInfoAdmin>'}
+const CreateFacility = {template : '<createFacility></createFacility>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	    { path: '/', component: Login},
-        { path: '/customerHomePage/', component: LoginCustomer},
-		{ path: '/adminHomePage/', component: LoginAdmin},
-		{ path: '/coachHomePage/', component: LoginCoach},
-		{ path: '/managerHomePage/', component: LoginManager},
-        { path: '/register/', component: RegisterCustomer},
+	    { path : '/', component: Login},
+        { path : '/customerHomePage/', component: LoginCustomer},
+		{ path : '/adminHomePage/', component: LoginAdmin},
+		{ path : '/coachHomePage/', component: LoginCoach},
+		{ path : '/managerHomePage/', component: LoginManager},
+        { path : '/register/', component: RegisterCustomer},
 		{ path : '/adminHomePage/registerManager/',component: RegisterManager },
 		{ path : '/adminHomePage/registerCoach/',component: RegisterCoach },
 		{ path : '/managerHomePage/changeInfoManager/',component: ChangeManagerInfo },
 		{ path : '/changeInfoCustomer',component: ChangeCustomerInfo },
 		{ path : '/coachHomePage/changeInfoCoach/',component: ChangeCoachInfo },
-		{ path : '/adminHomePage/changeInfoAdmin/',component: ChangeAdminInfo }
+		{ path : '/adminHomePage/changeInfoAdmin/',component: ChangeAdminInfo },
+		{ path : '/adminHomePage/createFacility/',component: CreateFacility }
 	  ]
 });
 

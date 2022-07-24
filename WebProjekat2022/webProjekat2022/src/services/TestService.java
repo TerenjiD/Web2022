@@ -27,6 +27,7 @@ public class TestService {
     }
 
     public void addManager(Manager manager){
+
         this.managers.addManager(manager);
     }
     public void addCoach(Coach coach){

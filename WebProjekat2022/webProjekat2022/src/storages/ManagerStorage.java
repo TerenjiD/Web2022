@@ -84,6 +84,7 @@ public class ManagerStorage {
                     CSVWriter.DEFAULT_LINE_END);
             Manager tempManager = managers.get(manager.getUsername());
             if(tempManager==null){
+
                 String[] data1 = {manager.getUsername(),manager.getPassword(),manager.getName(),manager.getLastName()
                         ,manager.getGender().toString(),manager.getDateOfBirth(),manager.getRole().toString(),manager.getFacility()};
                 List<String[]> managerList = new ArrayList<>();

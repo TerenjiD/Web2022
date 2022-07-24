@@ -3,3 +3,5 @@ suboticanin;suboticanin;David;Terenji;MALE;12/12/2000;MANAGER;FullTrdasdas
 ajkgnfsajng;fljkgnsadfgns;sfdajlgnsdafng;dlgfnsadlgfn;MALE;sfgjsafjb;MANAGER;FullTr
 kjhlfbvjkfdbnsjk;afdkjgnsjkgnsjknfg;ajgnajkfgnadfkjgnbaj;fkgjnsfdjkgskjgn;MALE;afgkjngjsaj;MANAGER;FullTrdasdas
 r;q;proba;q;MALE;q;MANAGER;FullTr
+menadzerBezObjekta;sdfafa;adfadfa;adfadfssa;FEMALE;asdfadfa;MANAGER;
+josJedanBezObjekta;adsfadf;Menadzer1;asdfafd;FEMALE;sdafadf;MANAGER;
