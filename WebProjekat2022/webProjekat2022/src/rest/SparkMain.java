@@ -31,6 +31,9 @@ public class SparkMain {
         TestController.changeAdminInfo();
         TestController.editAdmin();
         TestController.getUsers();
+        TestController.getManagersWithoutFacility();
+        TestController.createFacility();
+        TestController.addManagerForFacility();
 
         FacilityController.getFacilities();
         FacilityController.searchFacilities();

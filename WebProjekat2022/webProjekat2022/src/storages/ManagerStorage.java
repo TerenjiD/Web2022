@@ -19,6 +19,23 @@ public class ManagerStorage {
         return instance;
     }
 
+    public Collection<Manager> getValues() {
+        return managers.values();
+    }
+
+    public List<Manager> GetManagersWithoutFacility(){
+        List<Manager> flagList = new ArrayList<>(getValues());
+        List<Manager> listToReturn = new ArrayList<>();
+        for (Manager flag:
+                flagList) {
+            String flagFacility = flag.getFacility();
+            if(flagFacility.equals("nista")){
+                listToReturn.add(flag);
+            }
+        }
+        return  listToReturn;
+    }
+
     private ManagerStorage() throws FileNotFoundException{
         BufferedReader in = null;
         try {
@@ -83,10 +100,16 @@ public class ManagerStorage {
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
             Manager tempManager = managers.get(manager.getUsername());
+            String flagForFacility = "";
+            if(manager.getFacility() != null){
+                flagForFacility = manager.getFacility();
+            }else{
+                flagForFacility = "nista";
+            }
             if(tempManager==null){
 
                 String[] data1 = {manager.getUsername(),manager.getPassword(),manager.getName(),manager.getLastName()
-                        ,manager.getGender().toString(),manager.getDateOfBirth(),manager.getRole().toString(),manager.getFacility()};
+                        ,manager.getGender().toString(),manager.getDateOfBirth(),manager.getRole().toString(),flagForFacility};
                 List<String[]> managerList = new ArrayList<>();
                 managerList.add(data1);
                 //userList.add(data2);

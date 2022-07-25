@@ -11,6 +11,7 @@ const ChangeCustomerInfo = {template : '<changeInfoCustomer></changeInfoCustomer
 const ChangeCoachInfo = {template : '<changeInfoCoach></changeInfoCoach>'}
 const ChangeAdminInfo = {template : '<changeInfoAdmin></changeInfoAdmin>'}
 const CreateFacility = {template : '<createFacility></createFacility>'}
+const CreateManagerFacility = {template : '<managerForFacility></managerForFacility>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -27,7 +28,8 @@ const router = new VueRouter({
 		{ path : '/changeInfoCustomer',component: ChangeCustomerInfo },
 		{ path : '/coachHomePage/changeInfoCoach/',component: ChangeCoachInfo },
 		{ path : '/adminHomePage/changeInfoAdmin/',component: ChangeAdminInfo },
-		{ path : '/adminHomePage/createFacility/',component: CreateFacility }
+		{ path : '/createFacility/',component: CreateFacility },
+		{ path : '/managerForFacility/',component: CreateManagerFacility }
 	  ]
 });
 
