@@ -53,7 +53,7 @@ Vue.component("adminHomePage",{
             router.push('/adminHomePage/changeInfoAdmin/')
         },
         createFacility : function(event){
-            router.push('/createFacility/')
+            router.push('/adminHomePage/createFacility/')
         }
     }
     

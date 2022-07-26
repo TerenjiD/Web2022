@@ -181,46 +181,33 @@ public class TestController {
                     res.type("application/json");
                     FacilityDTO facilityDTO = g.fromJson(req.body(), FacilityDTO.class);
                     flagFacilityName = facilityDTO.getName();
-//                    FacilityType flagType ;
-//                    ContentType flagContent;
-//                    FacilityStatus flagStatus;
-//                    if(facilityDTO.getContentType().equals("GROUP_TRAINING")){
-//                        flagContent = ContentType.GROUP_TRAINING;
-//                    }else if(facilityDTO.getContentType().equals("PERSONAL_TRAINING")){
-//                        flagContent = ContentType.PERSONAL_TRAINING;
-//                    }else{
-//                        flagContent = ContentType.SAUNA;
-//                    }
-//                    if(facilityDTO.getFacilityType().equals("GYM")){
-//                        flagType = FacilityType.GYM;
-//                    }else if(facilityDTO.getFacilityType().equals("POOL")) {
-//                        flagType = FacilityType.POOL;
-//                    }
-//                    else if(facilityDTO.getFacilityType().equals("SPORT_CENTER")) {
-//                        flagType = FacilityType.SPORT_CENTER;
-//                    }else{
-//                        flagType = FacilityType.DANCE_STUDIO;
-//                    }
-//                    if(facilityDTO.getStatus().equals("OPEN")){
-//                        flagStatus = FacilityStatus.OPEN;
-//                    }else{
-//                        flagStatus = FacilityStatus.CLOSED;
-//                    }
-//                    Address flagAddress = new Address(facilityDTO.getStreet(),facilityDTO.getNumber(),
-//                            facilityDTO.getCity(),facilityDTO.getCountry());
-//                    Location flagLocation = new Location(Float.parseFloat(facilityDTO.getLatitude()),
-//                            Float.parseFloat(facilityDTO.getLongitude()),flagAddress);
-//                    Facility facility = new Facility(facilityDTO.getName(),flagType,flagContent,flagStatus,facilityDTO.getLogo(),
-//                            flagLocation,facilityDTO.getWorkingHours(),facilityDTO.getRating());
                     Manager manager = testService.GetByIdManager(facilityDTO.getManager());
                     ManagerDTO managerDTO = new ManagerDTO(manager.getUsername(), manager.getPassword(),manager.getName(),
-                            manager.getLastName(), manager.getGender().toString(),manager.getDateOfBirth(),manager.getRole().toString(),
-                            facilityDTO.getName());
+                            manager.getLastName(), manager.getGender().toString(),manager.getDateOfBirth(),
+                            manager.getRole().toString(),facilityDTO.getName());
 
                     testService.addFacility(facilityDTO);
                     Facility flagCheck = testService.CheckIfExists(facilityDTO.getName());
                     if(flagCheck==null){
                         testService.EditManager(managerDTO,managerDTO.getUsername());
+                        return "Success";
+                    }else{
+                        return null;
+                    }
+
+                }
+        );
+    }
+
+    public static void createFacilitySpecial(){
+        post(
+                "/rest/adminHomePage/createFacility/createSpecial",(req,res)->{
+                    res.type("application/json");
+                    FacilityDTO facilityDTO = g.fromJson(req.body(), FacilityDTO.class);
+                    flagFacilityName = facilityDTO.getName();
+                    testService.addFacility(facilityDTO);
+                    Facility flagCheck = testService.CheckIfExists(facilityDTO.getName());
+                    if(flagCheck==null){
                         return "Success";
                     }else{
                         return null;

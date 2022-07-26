@@ -108,7 +108,7 @@ Vue.component("login",{
         },
 
         Test : function(){
-            router.push('/createFacility/')
+            router.push('managerForFacility')
         }
 
     }

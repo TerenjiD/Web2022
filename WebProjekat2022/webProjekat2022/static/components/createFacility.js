@@ -94,8 +94,10 @@ Vue.component("createFacility",{
             router.push('/adminHomePage/')
         },
         createNewManager : function(){
-            axios.post('/rest/adminHomePage/createFacility/create',this.objectDTO);
-            router.push('/managerForFacility/')
+            axios.post('/rest/adminHomePage/createFacility/createSpecial',this.objectDTO)
+            .then(response => alert("Uspesno pravljenje objekta"))
+            .catch(error => alert("Neuspesno pravljenje objekta"));
+            router.push('/adminHomePage/createFacility/managerForFacility/')
         }
     }
 })

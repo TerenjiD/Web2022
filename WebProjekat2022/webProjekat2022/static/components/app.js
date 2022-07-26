@@ -2,6 +2,7 @@ const Login = { template: '<login></login>' }
 const LoginCustomer = { template: '<customerHomePage></customerHomePage>' }
 const RegisterCustomer = {template: '<register></register>'}
 const LoginAdmin = {template: '<adminHomePage></adminHomePage>'}
+const CreateManagerFacility = {template : '<managerForFacility></managerForFacility>'}
 const LoginCoach = {template: '<coachHomePage></coachHomePage>'}
 const LoginManager = {template: '<managerHomePage></managerHomePage>'}
 const RegisterManager = {template : '<registerManager></registerManager>'}
@@ -11,7 +12,7 @@ const ChangeCustomerInfo = {template : '<changeInfoCustomer></changeInfoCustomer
 const ChangeCoachInfo = {template : '<changeInfoCoach></changeInfoCoach>'}
 const ChangeAdminInfo = {template : '<changeInfoAdmin></changeInfoAdmin>'}
 const CreateFacility = {template : '<createFacility></createFacility>'}
-const CreateManagerFacility = {template : '<managerForFacility></managerForFacility>'}
+
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -28,8 +29,8 @@ const router = new VueRouter({
 		{ path : '/changeInfoCustomer',component: ChangeCustomerInfo },
 		{ path : '/coachHomePage/changeInfoCoach/',component: ChangeCoachInfo },
 		{ path : '/adminHomePage/changeInfoAdmin/',component: ChangeAdminInfo },
-		{ path : '/createFacility/',component: CreateFacility },
-		{ path : '/managerForFacility/',component: CreateManagerFacility }
+		{ path : '/adminHomePage/createFacility/',component: CreateFacility },
+		{ path : '/adminHomePage/createFacility/managerForFacility/',component: CreateManagerFacility }
 	  ]
 });
 

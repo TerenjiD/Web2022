@@ -25,8 +25,8 @@ Vue.component("managerForFacility",{
         </form>
     </div>
     `,
-    mounted(event){
-        event.preventDefault();
+    mounted(){
+    
     },
     methods : {
         addUser : function(event){
@@ -37,5 +37,5 @@ Vue.component("managerForFacility",{
         returnToHome : function(){
             router.push('/adminHomePage/')
         }
-    }
+    },
 })
