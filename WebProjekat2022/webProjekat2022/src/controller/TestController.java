@@ -187,7 +187,7 @@ public class TestController {
                             manager.getRole().toString(),facilityDTO.getName());
 
                     testService.addFacility(facilityDTO);
-                    Facility flagCheck = testService.CheckIfExists(facilityDTO.getName());
+                    Facility flagCheck = testService.GetFacility(facilityDTO.getName());
                     if(flagCheck==null){
                         testService.EditManager(managerDTO,managerDTO.getUsername());
                         return "Success";
@@ -206,11 +206,30 @@ public class TestController {
                     FacilityDTO facilityDTO = g.fromJson(req.body(), FacilityDTO.class);
                     flagFacilityName = facilityDTO.getName();
                     testService.addFacility(facilityDTO);
-                    Facility flagCheck = testService.CheckIfExists(facilityDTO.getName());
+                    Facility flagCheck = testService.GetFacility(facilityDTO.getName());
                     if(flagCheck==null){
                         return "Success";
                     }else{
                         return null;
+                    }
+
+                }
+        );
+    }
+
+    public static void getFacility(){
+        get(
+                "/rest/managerHomePage/getFacility",(req,res)->{
+                    res.type("application/json");
+                    Manager flag = testService.GetByIdManager(userSession(req).getUsername());
+                    FacilityDTO flagFacility = testService.GetFacilityDTO(flag.getFacility());
+                    if(flagFacility == null){
+                        FacilityDTO fac = new FacilityDTO("nista","nista","nista","nista"
+                                ,"nista", "nista","nista","nista","nista","nista","nista","nista",
+                                "nista","nista");
+                        return g.toJson(fac);
+                    }else{
+                        return g.toJson(flagFacility);
                     }
 
                 }
@@ -329,6 +348,19 @@ public class TestController {
     public static void editAdmin(){
         post(
                 "rest/adminHomePage/changeInfoAdmin/admin",(req,res)->{
+                    res.type("application/json");
+                    UserDTO flag = g.fromJson(req.body(),UserDTO.class);
+                    String flagUsername = userSession(req).getUsername();
+                    //testService.EditCustomer(flagUser,flagUsername);
+                    testService.EditAdmin(flag,flagUsername);
+                    return "success";
+                }
+        );
+    }
+
+    public static void addContent(){
+        post(
+                "rest/managerHomePage/changeInfoAdmin/admin",(req,res)->{
                     res.type("application/json");
                     UserDTO flag = g.fromJson(req.body(),UserDTO.class);
                     String flagUsername = userSession(req).getUsername();

@@ -73,7 +73,7 @@ public class FacilityStorage {
                     workingHours = st.nextToken().trim();
                     rating = st.nextToken().trim();
                 }
-                Facility facility = new Facility(name, getFacilityType(facilityType), getContentType(contentType),
+                Facility facility = new Facility(name, getFacilityType(facilityType), contentType,
                         getFacilityStatus(status), logo, getLocation(location),workingHours, rating);
                 facilities.put(name, facility);
             }
@@ -108,6 +108,8 @@ public class FacilityStorage {
         else
             return FacilityStatus.CLOSED;
     }
+
+
 
     private Location getLocation(String location){
         String latitude="", longitude="", address="";
@@ -177,7 +179,7 @@ public class FacilityStorage {
             if(tempFacility==null){
                 //String flagLocation = getLocation(facility.getLocation());
                 String[] data1 = {facility.getName(),facility.getFacilityType().toString(),facility.getContentType().toString(),
-                facility.getFacilityType().toString(),facility.getLogo(),flagLocation,facility.getWorkingHours(),
+                facility.getStatus().toString(),facility.getLogo(),flagLocation,facility.getWorkingHours(),
                 facility.getRating()};
                 List<String[]> facilityList = new ArrayList<>();
                 facilityList.add(data1);
@@ -191,6 +193,59 @@ public class FacilityStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void addContent(String name,String content){
+        Facility flagFacility = facilities.get(name);
+        String flagLocation = Float.toString(flagFacility.getLocation().getLatitude())+"|"+Float.toString(flagFacility.getLocation().getLongitude())
+                +"|"+flagFacility.getLocation().getAddress().getStreet()+"'"+flagFacility.getLocation().getAddress().getNumber()+
+                "'"+flagFacility.getLocation().getAddress().getCity() +"'"+flagFacility.getLocation().getAddress().getCountry();
+        String flagOldContent =flagFacility.getContentType();
+        String flagContent = "";
+        if(flagOldContent.equals("")){
+            flagContent = content;
+        }else{
+            flagContent = flagOldContent + "," + content;
+        }
+        String file = "./static/facilities.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(name)){
+                    row[0] = flagFacility.getName();
+                    row[1] = flagFacility.getFacilityType().toString();
+                    row[2] = flagContent;
+                    row[3] = flagFacility.getStatus().toString();
+                    row[4] = flagFacility.getLogo();
+                    row[5] = flagLocation;
+                    row[6] = flagFacility.getRating();
+                    row[7] = flagFacility.getWorkingHours();
+                }
+                rows.add(row);
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/facilities.txt");
+            newFile.renameTo(dump);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

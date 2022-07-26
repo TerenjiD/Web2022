@@ -6,15 +6,15 @@ import java.util.Comparator;
 public class Facility implements Serializable,Comparable<Facility> {
     private String name;
     private FacilityType facilityType;
-    private ContentType contentType;
+    private String contentType;
     private FacilityStatus status;
     private String logo;
 
-    public ContentType getContentType() {
+    public String getContentType() {
         return contentType;
     }
 
-    public void setContentType(ContentType contentType) {
+    public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
@@ -22,7 +22,7 @@ public class Facility implements Serializable,Comparable<Facility> {
     private String workingHours;
     private String rating;
 
-    public Facility(String name, FacilityType facilityType, ContentType contentType,
+    public Facility(String name, FacilityType facilityType, String contentType,
                     FacilityStatus facilityStatus, String logo, Location location,String workingHours,
                     String rating){
         this.name=name;

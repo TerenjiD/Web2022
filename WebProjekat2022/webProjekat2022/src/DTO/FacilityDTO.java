@@ -40,6 +40,22 @@ public class FacilityDTO {
         this.manager = manager;
     }
 
+    public FacilityDTO(String name, String facilityType, String contentType, String status, String logo, String latitude, String longitude, String street, String number, String city, String country, String workingHours, String rating) {
+        this.name = name;
+        this.facilityType = facilityType;
+        this.contentType = contentType;
+        this.status = status;
+        this.logo = logo;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.street = street;
+        this.number = number;
+        this.city = city;
+        this.country = country;
+        this.workingHours = workingHours;
+        this.rating = rating;
+    }
+
     public FacilityDTO() {
     }
 

@@ -134,7 +134,21 @@ public class TestService {
         coaches.editCoach(flagCoach,flagUsername);
     }
 
-    public Facility CheckIfExists(String name){
+    public Facility GetFacility(String name){
         return facilities.CheckIfExists(name);
+    }
+
+    public FacilityDTO GetFacilityDTO(String name){
+        Facility flag = facilities.CheckIfExists(name);
+        FacilityDTO flagFacility = new FacilityDTO(flag.getName(),flag.getFacilityType().toString(),flag.getContentType().toString(),
+                flag.getStatus().toString(),flag.getLogo(),Float.toString(flag.getLocation().getLatitude())
+                ,Float.toString(flag.getLocation().getLongitude()), flag.getLocation().getAddress().getStreet(),
+                flag.getLocation().getAddress().getNumber(), flag.getLocation().getAddress().getCity(),
+                flag.getLocation().getAddress().getCountry(), flag.getWorkingHours(),flag.getRating());
+        return flagFacility;
+    }
+
+    public void addContent(String name,String content){
+        facilities.addContent(name,content);
     }
 }

@@ -2,6 +2,6 @@ FullTr;POOL;PERSONAL_TRAINING;OPEN;logololol;15154|15484|Ulica'broj'grad'drzava;
 FullTrdasdas;POOL;SAUNA;CLOSED;logoooooo;15154|15484|Ulica'broj'grad'drzava;8;5.4
 UOPAAAAA;POOL;SAUNA;OPEN;logoooooo;15154|15484|Ulica'broj'grad'drzava;8;5.4
 CUPAAAA;POOL;SAUNA;CLOSED;logoooooo;15154|15484|Ulica'broj'grad'drzava;8;5.4
-test;GYM;GROUP_TRAINING;GYM;test;15154|15484|Ulica'broj'grad'drzava;8.9;16
-test2;DANCE_STUDIO;SAUNA;DANCE_STUDIO;test2;789789|987987|test2'test2'test2'test2;7;20
-test3;SPORT_CENTER;PERSONAL_TRAINING;SPORT_CENTER;test3;54894156|56489415|test3'test3'test3'test3;7;6
+test;GYM;GROUP_TRAINING;OPEN;test;15154|15484|Ulica'broj'grad'drzava;8.9;16
+test2;DANCE_STUDIO;SAUNA;OPEN;test2;789789|987987|test2'test2'test2'test2;7;20
+test3;SPORT_CENTER;PERSONAL_TRAINING;OPEN;test3;54894156|56489415|test3'test3'test3'test3;7;6
