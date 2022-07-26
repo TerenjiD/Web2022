@@ -54,6 +54,10 @@ Vue.component("login",{
                     <td>{{p.rating}}</td>
             	</tr>
             </table>
+            <div>
+            <button v-on:click = "Test"  style="padding: 7px 20px;
+                background-color: aqua;">Test</button>
+            </div>
     </div>
     `,
      mounted () {
@@ -101,6 +105,10 @@ Vue.component("login",{
                  axios
                  .get("rest/facilities/search/" + this.input)
                  .then(response => (this.facilities = response.data))
+        },
+
+        Test : function(){
+            router.push('managerForFacility')
         }
 
     }

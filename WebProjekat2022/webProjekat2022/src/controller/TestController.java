@@ -1,11 +1,9 @@
 package controller;
 
-import DTO.CoachDTO;
-import DTO.LoginDTO;
-import DTO.ManagerDTO;
-import DTO.UserDTO;
+import DTO.*;
 import beans.*;
 import com.google.gson.Gson;
+import services.FacilityService;
 import services.TestService;
 import spark.Request;
 import spark.Session;
@@ -17,6 +15,8 @@ import static spark.Spark.post;
 
 
 public class TestController {
+
+    private static String flagFacilityName;
 
     private static Gson g = new Gson();
     private static TestService testService;
@@ -43,6 +43,35 @@ public class TestController {
                     }
                     Manager manager = new Manager(managerDTO.getUsername(),managerDTO.getPassword(),managerDTO.getName(),
                             managerDTO.getLastName(),gen,managerDTO.getDateOfBirth(),Role.MANAGER,managerDTO.getFacility());
+                    User user = new User(managerDTO.getUsername(),managerDTO.getPassword(),managerDTO.getName(),
+                            managerDTO.getLastName(),gen,managerDTO.getDateOfBirth(),Role.MANAGER);
+                    testService.addUser(user);
+
+
+                    if(flag == null) {
+                        testService.addManager(manager);
+                        return "success";
+                    }
+                    else
+                        return null;
+                }
+        );
+    }
+
+    public static void addManagerForFacility(){
+        post(
+                "/rest/adminHomePage/createFacility/managerForFacility/create", (req,res) -> {
+                    res.type("application/json");
+                    ManagerDTO managerDTO = g.fromJson(req.body(),ManagerDTO.class);
+                    User flag = testService.GetById(managerDTO.getUsername());
+                    Gender gen;
+                    if (managerDTO.getGender().equals("Male")){
+                        gen = Gender.MALE;
+                    }else{
+                        gen = Gender.FEMALE;
+                    }
+                    Manager manager = new Manager(managerDTO.getUsername(),managerDTO.getPassword(),managerDTO.getName(),
+                            managerDTO.getLastName(),gen,managerDTO.getDateOfBirth(),Role.MANAGER,flagFacilityName);
                     User user = new User(managerDTO.getUsername(),managerDTO.getPassword(),managerDTO.getName(),
                             managerDTO.getLastName(),gen,managerDTO.getDateOfBirth(),Role.MANAGER);
                     testService.addUser(user);
@@ -133,6 +162,57 @@ public class TestController {
                 "/rest/adminHomePage/showUsers",(req,res)->{
                     res.type("application/json");
                     return g.toJson(testService.GetUsers());
+                }
+        );
+    }
+
+    public static void getManagersWithoutFacility(){
+        get(
+                "/rest/adminHomePage/createFacility/getManagers",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetManagersWithoutFacility());
+                }
+        );
+    }
+
+    public static void createFacility(){
+        post(
+                "/rest/adminHomePage/createFacility/create",(req,res)->{
+                    res.type("application/json");
+                    FacilityDTO facilityDTO = g.fromJson(req.body(), FacilityDTO.class);
+                    flagFacilityName = facilityDTO.getName();
+                    Manager manager = testService.GetByIdManager(facilityDTO.getManager());
+                    ManagerDTO managerDTO = new ManagerDTO(manager.getUsername(), manager.getPassword(),manager.getName(),
+                            manager.getLastName(), manager.getGender().toString(),manager.getDateOfBirth(),
+                            manager.getRole().toString(),facilityDTO.getName());
+
+                    testService.addFacility(facilityDTO);
+                    Facility flagCheck = testService.CheckIfExists(facilityDTO.getName());
+                    if(flagCheck==null){
+                        testService.EditManager(managerDTO,managerDTO.getUsername());
+                        return "Success";
+                    }else{
+                        return null;
+                    }
+
+                }
+        );
+    }
+
+    public static void createFacilitySpecial(){
+        post(
+                "/rest/adminHomePage/createFacility/createSpecial",(req,res)->{
+                    res.type("application/json");
+                    FacilityDTO facilityDTO = g.fromJson(req.body(), FacilityDTO.class);
+                    flagFacilityName = facilityDTO.getName();
+                    testService.addFacility(facilityDTO);
+                    Facility flagCheck = testService.CheckIfExists(facilityDTO.getName());
+                    if(flagCheck==null){
+                        return "Success";
+                    }else{
+                        return null;
+                    }
+
                 }
         );
     }

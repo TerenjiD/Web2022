@@ -1,6 +1,8 @@
 package storages;
 
+import DTO.FacilityDTO;
 import beans.*;
+import com.opencsv.CSVWriter;
 
 import java.io.*;
 import java.io.BufferedReader;
@@ -11,6 +13,17 @@ import java.util.*;
 public class FacilityStorage {
 
     private HashMap<String, Facility> facilities = new HashMap<String, Facility>();
+    private  static FacilityStorage instance = null;
+    public static FacilityStorage getInstance() throws FileNotFoundException {
+        if (instance == null) {
+            instance = new FacilityStorage();
+        }
+        return instance;
+    }
+
+    public Facility CheckIfExists(String name){
+        return facilities.get(name);
+    }
 
     public FacilityStorage() {
         this(".");
@@ -147,6 +160,37 @@ public class FacilityStorage {
         List<Facility> list = new ArrayList<Facility>(temp);
         Collections.sort(list);
         return list;
+    }
+
+    public void addFacility(FacilityDTO facility){
+        File file = new File("./static/facilities.txt");
+        Scanner sc = new Scanner(System.in);
+        try{
+            FileWriter outputfile = new FileWriter(file,true);
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+            Facility tempFacility = facilities.get(facility.getName());
+            String flagLocation = facility.getLatitude()+"|"+facility.getLongitude()+"|"+facility.getStreet()+"'"+
+                    facility.getNumber()+"'"+facility.getCity()+"'"+facility.getCountry();
+            if(tempFacility==null){
+                //String flagLocation = getLocation(facility.getLocation());
+                String[] data1 = {facility.getName(),facility.getFacilityType().toString(),facility.getContentType().toString(),
+                facility.getFacilityType().toString(),facility.getLogo(),flagLocation,facility.getWorkingHours(),
+                facility.getRating()};
+                List<String[]> facilityList = new ArrayList<>();
+                facilityList.add(data1);
+                //userList.add(data2);
+                writer.writeAll(facilityList);
+
+                writer.close();
+            }else{
+                writer.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

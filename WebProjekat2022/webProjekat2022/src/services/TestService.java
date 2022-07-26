@@ -1,12 +1,10 @@
 package services;
 
-import DTO.CoachDTO;
-import DTO.LoginDTO;
-import DTO.ManagerDTO;
-import DTO.UserDTO;
+import DTO.*;
 import beans.*;
 import com.google.gson.JsonSyntaxException;
 import storages.CoachStorage;
+import storages.FacilityStorage;
 import storages.ManagerStorage;
 import storages.UserStorage;
 
@@ -19,14 +17,20 @@ public class TestService {
     private ManagerStorage managers = ManagerStorage.getInstance();
     private CoachStorage coaches = CoachStorage.getInstance();
 
+    private FacilityStorage facilities = FacilityStorage.getInstance();
+
     public TestService() throws FileNotFoundException {
     }
 
+    public void addFacility(FacilityDTO facility){
+        this.facilities.addFacility(facility);
+    }
     public void addUser(User user){
         this.users.addUser(user);
     }
 
     public void addManager(Manager manager){
+
         this.managers.addManager(manager);
     }
     public void addCoach(Coach coach){
@@ -47,6 +51,10 @@ public class TestService {
 
     public List<User> GetUsers(){
         return users.GetUsers();
+    }
+
+    public List<Manager> GetManagersWithoutFacility(){
+        return managers.GetManagersWithoutFacility();
     }
 
     public User loginUser(LoginDTO loginDTO) throws JsonSyntaxException, IOException {
@@ -124,5 +132,9 @@ public class TestService {
                 gen,coachDTO.getDateOfBirth(),Role.COACH,coachDTO.getTrainingHistory());
         users.editUser(flagUser,flagUsername);
         coaches.editCoach(flagCoach,flagUsername);
+    }
+
+    public Facility CheckIfExists(String name){
+        return facilities.CheckIfExists(name);
     }
 }

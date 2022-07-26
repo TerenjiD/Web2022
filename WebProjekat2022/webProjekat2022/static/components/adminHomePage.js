@@ -15,6 +15,8 @@ Vue.component("adminHomePage",{
             background-color: aqua;">Napravi trenera</button>
             <button v-on:click="changeInfoAdmin" style="padding: 7px 20px;
             background-color: aqua;">Izmeni podatke</button>
+            <button v-on:click="createFacility" style="padding: 7px 20px;
+            background-color: aqua;">Napravi objekat sportski</button>
         </div>
         <div>
             <table border="1">
@@ -49,6 +51,9 @@ Vue.component("adminHomePage",{
         },
         changeInfoAdmin : function(event){
             router.push('/adminHomePage/changeInfoAdmin/')
+        },
+        createFacility : function(event){
+            router.push('/adminHomePage/createFacility/')
         }
     }
     

@@ -9,6 +9,15 @@ public class Facility implements Serializable,Comparable<Facility> {
     private ContentType contentType;
     private FacilityStatus status;
     private String logo;
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
+
     private Location location;
     private String workingHours;
     private String rating;
@@ -49,5 +58,21 @@ public class Facility implements Serializable,Comparable<Facility> {
     @Override
     public int compareTo(Facility o) {
         return this.getStatus().compareTo(o.getStatus());
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(String workingHours) {
+        this.workingHours = workingHours;
     }
 }
