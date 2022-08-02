@@ -360,12 +360,15 @@ public class TestController {
 
     public static void addContent(){
         post(
-                "rest/managerHomePage/changeInfoAdmin/admin",(req,res)->{
+                "rest/managerHomePage/addContent/",(req,res)->{
                     res.type("application/json");
-                    UserDTO flag = g.fromJson(req.body(),UserDTO.class);
+                    FacilityDTO flag = g.fromJson(req.body(),FacilityDTO.class);
+                    String flagName = flag.getContentType();
                     String flagUsername = userSession(req).getUsername();
+                    Manager flagManager = testService.GetByIdManager(flagUsername);
+                    String flagFacility = flagManager.getFacility();
                     //testService.EditCustomer(flagUser,flagUsername);
-                    testService.EditAdmin(flag,flagUsername);
+                    testService.addContent(flagFacility,flagName);
                     return "success";
                 }
         );

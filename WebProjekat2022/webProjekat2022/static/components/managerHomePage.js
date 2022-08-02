@@ -98,6 +98,9 @@ Vue.component("managerHomePage",{
                  axios
                  .get("rest/facilities/search/" + this.input)
                  .then(response => (this.facilities = response.data))
+        },
+        addContent : function(event){
+            router.push('/managerHomePage/addContent/')
         }
     }
     

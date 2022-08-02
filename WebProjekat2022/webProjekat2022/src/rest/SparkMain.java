@@ -36,6 +36,7 @@ public class SparkMain {
         TestController.addManagerForFacility();
         TestController.createFacilitySpecial();
         TestController.getFacility();
+        TestController.addContent();
 
         FacilityController.getFacilities();
         FacilityController.searchFacilities();

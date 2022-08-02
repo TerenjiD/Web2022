@@ -12,6 +12,7 @@ const ChangeCustomerInfo = {template : '<changeInfoCustomer></changeInfoCustomer
 const ChangeCoachInfo = {template : '<changeInfoCoach></changeInfoCoach>'}
 const ChangeAdminInfo = {template : '<changeInfoAdmin></changeInfoAdmin>'}
 const CreateFacility = {template : '<createFacility></createFacility>'}
+const AddContent = {template : '<addContent></addContent>'}
 
 
 const router = new VueRouter({
@@ -30,7 +31,8 @@ const router = new VueRouter({
 		{ path : '/coachHomePage/changeInfoCoach/',component: ChangeCoachInfo },
 		{ path : '/adminHomePage/changeInfoAdmin/',component: ChangeAdminInfo },
 		{ path : '/adminHomePage/createFacility/',component: CreateFacility },
-		{ path : '/adminHomePage/createFacility/managerForFacility/',component: CreateManagerFacility }
+		{ path : '/adminHomePage/createFacility/managerForFacility/',component: CreateManagerFacility },
+		{ path : '/managerHomePage/addContent/',component: AddContent }
 	  ]
 });
 
