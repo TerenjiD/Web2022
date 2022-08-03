@@ -1,13 +1,10 @@
 package storages;
 
 import beans.*;
+import com.opencsv.CSVWriter;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class ContentStorage {
 
@@ -16,10 +13,14 @@ public class ContentStorage {
     private static ContentStorage instance = null;
 
     public static ContentStorage getInstance() throws FileNotFoundException{
-        if(instance==null){
+        if(instance == null){
             instance = new ContentStorage();
         }
         return instance;
+    }
+
+    public Content CheckIfExist(String nameID){
+        return contents.get(nameID);
     }
 
     private ContentStorage() throws FileNotFoundException {
@@ -62,16 +63,68 @@ public class ContentStorage {
                     duration = st.nextToken().trim();
                 }
                 ContentType flagContent;
+                if(type.equals("GROUP_TRAINING")){
+                    flagContent = ContentType.GROUP_TRAINING;
+                }else if(type.equals("PERSONAL_TRAINING")){
+                    flagContent = ContentType.PERSONAL_TRAINING;
+                }else{
+                    flagContent = ContentType.SAUNA;
+                }
 
-
-                Content flag = new Content();
-                users.put(username, user);
+                Content flag = new Content(nameID,facilityName,name,flagContent,coach,logo,description,duration);
+                contents.put(nameID, flag);
 
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
+    }
+
+    public void addContent(Content content){
+
+        File file = new File("./static/contentlist.txt");
+        Scanner sc = new Scanner(System.in);
+        try{
+            FileWriter outputfile = new FileWriter(file,true);
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+            Content tempUser = contents.get(content.getNameID());
+            if(tempUser==null){
+                String[] data1 = {content.getNameID(),content.getFacilityName(),content.getName(),content.getType().toString(),
+                content.getCoachID(),content.getLogo(),content.getDescription(),content.getDuration()};
+                List<String[]> userList = new ArrayList<>();
+                userList.add(data1);
+                //userList.add(data2);
+                writer.writeAll(userList);
+
+                writer.close();
+            }else{
+                writer.close();
+            }
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.contents.put(content.getNameID(),content);
+    }
+
+    public Collection<Content> getValues() {return contents.values();}
+
+    public List<Content> GetContents(String facilityName){
+        List<Content> listToCheck = new ArrayList<>(getValues());
+        List<Content> listToReturn  =  new ArrayList<>();
+        for(Content con : listToCheck){
+            String flag = con.getFacilityName();
+            if (flag.equals(facilityName)){
+                listToReturn.add(con);
+            }
+        }
+        return listToReturn;
     }
 
 }

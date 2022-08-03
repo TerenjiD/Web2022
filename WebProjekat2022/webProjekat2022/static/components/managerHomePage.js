@@ -3,7 +3,8 @@ Vue.component("managerHomePage",{
         return{
             userDTO : null,
             facilities : null,
-            facilityDTO : null
+            facilityDTO : null,
+            contentToShow : null
         }
     },
     template:`
@@ -40,6 +41,26 @@ Vue.component("managerHomePage",{
         </table>
         <button v-on:click="addContent" style="padding: 7px 20px;
                         background-color: aqua;">Dodaj sadrzaj</button>
+        <table v-for="(p, index) in contentToShow">
+        <tr><td>Name:</td>
+            <td>{{p.name}}</td>
+        </tr>
+        <tr><td>Type:</td>
+            <td>{{p.type}}</td>
+        </tr>
+        <tr><td>Coach:</td>
+            <td>{{p.coachID}}</td>
+        </tr>
+        <tr><td>Logo:</td>
+            <td>{{p.logo}}</td>
+        </tr>
+        <tr><td>Description:</td>
+            <td>{{p.description}}</td>
+        </tr>
+        <tr><td>Duration:</td>
+            <td>{{p.duration}}</td>
+        </tr>
+        </table>
         </div>
                         <div>
                         <h3>Prikaz sportskih objekata</h3>
@@ -84,6 +105,7 @@ Vue.component("managerHomePage",{
                .get('rest/facilities/')
                .then(response => (this.facilities = response.data));
         axios.get('/rest/managerHomePage/getFacility').then(response => (this.facilityDTO = response.data));
+        axios.get('/rest/managerHomePage/getContent/').then(response => (this.contentToShow = response.data));
     },
     methods : {
         changeInfo : function() {

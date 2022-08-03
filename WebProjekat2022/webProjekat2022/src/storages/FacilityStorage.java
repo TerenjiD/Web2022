@@ -193,6 +193,7 @@ public class FacilityStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        //this.facilities.put(facility.getName(),facility);
     }
 
     public void addContent(String name,String content){

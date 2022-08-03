@@ -1,23 +1,33 @@
 Vue.component("addContent",{
     data : function(){
         return{
-            contentToSend : {name:null,facilityType:null,contentType:null,status:null,logo:null,
-                latitude:null,longitude:null,street:null,number:null,city:null,country:null,
-                workingHours:null,rating:null,manager:null}
+            contentToSend : {nameID : null,facilityName : null,name : null,type : null,coach : null,
+                logo : null,description : null,duration : null}
         }
     },
     template:
     `
     <div>
-        <tr><td></td></tr>
-        <select type="text" value="" id="type" v-model="contentToSend.contentType">
+    <table>
+        <tr><td>Content name:</td>
+        <td><input type="text" id="name" v-model="contentToSend.name"/></td></tr>
+        <tr><td>Content type:</td>
+        <td>
+        <select type="text" value="" id="type" v-model="contentToSend.type">
             <option>GROUP_TRAINING</option>
             <option>PERSONAL_TRAINING</option>
             <option>SAUNA</option> 
         </select>
-        </b>
-        <button v-on:click = "createContent"  style="padding: 7px 20px;
-                background-color: aqua;">Dodaj</button>
+        </td></tr>
+        <tr><td>Logo:</td>
+        <td><input type="text" id="logo" v-model="contentToSend.logo"/></td></tr>
+        <tr><td>Description:</td>
+        <td><input type="text" id="description" v-model="contentToSend.description"/></td></tr>
+        <tr><td>Duration:</td>
+        <td><input type="text" id="duration" v-model="contentToSend.duration"/></td></tr>
+        <tr><td><button v-on:click = "createContent"  style="padding: 7px 20px;
+        background-color: aqua;">Dodaj</button></td></tr>
+    </table>
     </div>
     `,
     mounted(){
@@ -25,7 +35,8 @@ Vue.component("addContent",{
     },
     methods : {
         createContent : function(event){
-            axios.post('rest/managerHomePage/addContent/',this.contentToSend).then(response => (alert("Content added")));
+            axios.post('rest/managerHomePage/addContent/',this.contentToSend).then(response => (alert("Content added")))
+            .catch(error => (alert("Content not added")));
             event.preventDefault();
             router.push('/managerHomePage/')
         }

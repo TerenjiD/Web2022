@@ -5,7 +5,7 @@ public class Content {
     private String facilityName;
     private String name;
     private ContentType type;
-    private Trainer coach;
+    private String coachID;
     private String logo;
     private String description;
     private String duration;
@@ -20,12 +20,12 @@ public class Content {
         this.duration = duration;
     }
 
-    public Content(String nameID, String facilityName, String name, ContentType type, Trainer coach, String logo, String description, String duration) {
+    public Content(String nameID, String facilityName, String name, ContentType type, String coachID, String logo, String description, String duration) {
         this.nameID = nameID;
         this.facilityName = facilityName;
         this.name = name;
         this.type = type;
-        this.coach = coach;
+        this.coachID = coachID;
         this.logo = logo;
         this.description = description;
         this.duration = duration;
@@ -88,5 +88,13 @@ public class Content {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getCoachID() {
+        return coachID;
+    }
+
+    public void setCoachID(String coachID) {
+        this.coachID = coachID;
     }
 }

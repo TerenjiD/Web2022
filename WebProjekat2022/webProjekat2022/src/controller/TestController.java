@@ -362,14 +362,36 @@ public class TestController {
         post(
                 "rest/managerHomePage/addContent/",(req,res)->{
                     res.type("application/json");
-                    FacilityDTO flag = g.fromJson(req.body(),FacilityDTO.class);
-                    String flagName = flag.getContentType();
+                    ContentDTO flag = g.fromJson(req.body(),ContentDTO.class);
+                    //String flagName = flag.getContentType();
+                    String flagUsername = userSession(req).getUsername();
+                    Manager flagManager = testService.GetByIdManager(flagUsername);
+                    String flagContentName = flag.getName();
+                    String flagFacility = flagManager.getFacility();
+                    String flagNameID = flagContentName + flagFacility;
+                    //ContentDTO.setNameID(flagNameID);
+                    //testService.EditCustomer(flagUser,flagUsername);
+                    //testService.addContent(flagFacility,flagName);
+                    Content flagContent = testService.CheckContent(flagNameID);
+                    if(flagContent==null){
+                        testService.addContent(flagFacility,flagNameID,flagManager,flag);
+                        return "success";
+                    }else{
+                        return  null;
+                    }
+
+                }
+        );
+    }
+
+    public static void getContent(){
+        get(
+                "rest/managerHomePage/getContent/",(req,res)->{
+                    res.type("application/json");
                     String flagUsername = userSession(req).getUsername();
                     Manager flagManager = testService.GetByIdManager(flagUsername);
                     String flagFacility = flagManager.getFacility();
-                    //testService.EditCustomer(flagUser,flagUsername);
-                    testService.addContent(flagFacility,flagName);
-                    return "success";
+                    return g.toJson(testService.GetContent(flagFacility));
                 }
         );
     }
