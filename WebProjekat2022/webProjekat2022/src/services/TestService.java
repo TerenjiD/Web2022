@@ -3,10 +3,7 @@ package services;
 import DTO.*;
 import beans.*;
 import com.google.gson.JsonSyntaxException;
-import storages.CoachStorage;
-import storages.FacilityStorage;
-import storages.ManagerStorage;
-import storages.UserStorage;
+import storages.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,6 +15,8 @@ public class TestService {
     private CoachStorage coaches = CoachStorage.getInstance();
 
     private FacilityStorage facilities = FacilityStorage.getInstance();
+
+    private ContentStorage contents = ContentStorage.getInstance();
 
     public TestService() throws FileNotFoundException {
     }
@@ -134,7 +133,46 @@ public class TestService {
         coaches.editCoach(flagCoach,flagUsername);
     }
 
-    public Facility CheckIfExists(String name){
+    public Facility GetFacility(String name){
         return facilities.CheckIfExists(name);
     }
+
+    public FacilityDTO GetFacilityDTO(String name){
+        Facility flag = facilities.CheckIfExists(name);
+        FacilityDTO flagFacility = new FacilityDTO(flag.getName(),flag.getFacilityType().toString(),flag.getContentType().toString(),
+                flag.getStatus().toString(),flag.getLogo(),Float.toString(flag.getLocation().getLatitude())
+                ,Float.toString(flag.getLocation().getLongitude()), flag.getLocation().getAddress().getStreet(),
+                flag.getLocation().getAddress().getNumber(), flag.getLocation().getAddress().getCity(),
+                flag.getLocation().getAddress().getCountry(), flag.getWorkingHours(),flag.getRating());
+        return flagFacility;
+    }
+
+    public void addContent(String name,String content,Manager manager,ContentDTO contentDTO){
+        facilities.addContent(name,content);
+        String flagContentName = contentDTO.getName();
+        String flagFacility = manager.getFacility();
+        String flagNameID = flagContentName + flagFacility;
+        ContentType flagType;
+        String flagForCheck = contentDTO.getType();
+        ContentType flagContent;
+        if(flagForCheck.equals("GROUP_TRAINING")){
+            flagContent = ContentType.GROUP_TRAINING;
+        }else if(flagForCheck.equals("PERSONAL_TRAINING")){
+            flagContent = ContentType.PERSONAL_TRAINING;
+        }else{
+            flagContent = ContentType.SAUNA;
+        }
+        Content contentToSend = new Content(flagNameID,flagFacility,contentDTO.getName(),flagContent,"nema",
+                contentDTO.getLogo(),contentDTO.getDescription(),contentDTO.getDuration());
+        contents.addContent(contentToSend);
+    }
+
+    public List<Content> GetContent(String facilityName){
+        return contents.GetContents(facilityName);
+    }
+
+    public Content CheckContent(String nameID){
+        return contents.CheckIfExist(nameID);
+    }
+
 }
