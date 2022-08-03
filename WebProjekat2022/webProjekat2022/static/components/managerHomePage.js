@@ -38,6 +38,7 @@ Vue.component("managerHomePage",{
             <tr><td>Rating:</td>
                 <td>{{facilityDTO.rating}}</td>
             </tr>
+            
         </table>
         <button v-on:click="addContent" style="padding: 7px 20px;
                         background-color: aqua;">Dodaj sadrzaj</button>
@@ -60,6 +61,12 @@ Vue.component("managerHomePage",{
         <tr><td>Duration:</td>
             <td>{{p.duration}}</td>
         </tr>
+        <tr>
+            <td><button v-on:click="changeContent" style="padding: 7px 20px;
+                        background-color: aqua;">Izmeni sadrzaj</button></td>
+            <td><button v-on:click="addCoachToContent" style="padding: 7px 20px;
+                        background-color: aqua;">Dodaj trenera</button></td>
+            </tr>
         </table>
         </div>
                         <div>
@@ -123,6 +130,12 @@ Vue.component("managerHomePage",{
         },
         addContent : function(event){
             router.push('/managerHomePage/addContent/')
+        },
+        changeContent : function(event){
+
+        },
+        addCoachToContent : function(event){
+
         }
     }
     

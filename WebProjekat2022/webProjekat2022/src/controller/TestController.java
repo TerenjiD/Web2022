@@ -21,6 +21,8 @@ public class TestController {
     private static Gson g = new Gson();
     private static TestService testService;
 
+    private static String flagContentForShow = "";
+
     static {
         try {
             testService = new TestService();
