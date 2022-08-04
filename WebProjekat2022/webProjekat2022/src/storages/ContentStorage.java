@@ -127,4 +127,53 @@ public class ContentStorage {
         return listToReturn;
     }
 
+    public void ChangeCoach(Coach coach,Content content){
+        String coachNameAndSurname = coach.getUsername()+" "+coach.getName()+" "+coach.getLastName();
+        String nameID = content.getNameID();
+        String file = "./static/contentlist.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(nameID)){
+                    row[4] = coachNameAndSurname;
+                    ContentType flagContent;
+                    if(row[3].equals("GROUP_TRAINING")){
+                        flagContent = ContentType.GROUP_TRAINING;
+                    }else if(row[3].equals("PERSONAL_TRAINING")){
+                        flagContent = ContentType.PERSONAL_TRAINING;
+                    }else{
+                        flagContent = ContentType.SAUNA;
+                    }
+                    Content flagContent1 = new Content(row[0],row[1],row[2],flagContent,row[4],row[5],row[6],row[7]);
+                    contents.put(row[0],flagContent1);
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/contentlist.txt");
+            newFile.renameTo(dump);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

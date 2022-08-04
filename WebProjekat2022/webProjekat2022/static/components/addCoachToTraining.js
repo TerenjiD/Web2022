@@ -1,7 +1,9 @@
 Vue.component("addCoachToTraining",{
     data : function(){
         return{
-            coaches : null
+            coaches : null,
+            content : null,
+            coachToSend : {}
         }
     },
     template:
@@ -10,26 +12,30 @@ Vue.component("addCoachToTraining",{
         <table>
             <tr>
                 <td>Ime sadrzaja:</td>
-                <td></td>
+                <td>{{content.name}}</td>
             </tr>
-            <tr>
-                <td><select>
-
-                </select></td>
-            </tr>
-            <tr>
-                <td><button v-on:click="addCoachToContent" style="padding: 7px 20px;
+            <tr v-for="p in coaches">
+                <td>
+                    {{p.name}} 
+                </td>
+                <td>
+                    {{p.lastName}}
+                </td>
+                <td><button v-on:click="addCoachToContent(p)" style="padding: 7px 20px;
                         background-color: aqua;">Dodaj trenera</button></td>
             </tr>
         </table>
     </div>
     `,
     mounted(){
-
+        axios.get('/rest/managerHomePage/setContent/').then(response => (this.content = response.data));
+        axios.get('/rest/managerHomePage/getCoaches/').then(response => (this.coaches = response.data));
+        
     },
     methods : {
-        addCoachToContent : function(event){
-            
+        addCoachToContent : function(coach){
+            axios.post('rest/managerHomePage/addCoach/',coach);
+            router.push('/managerHomePage/')
         }
     }
 })

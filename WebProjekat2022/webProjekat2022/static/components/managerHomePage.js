@@ -64,7 +64,7 @@ Vue.component("managerHomePage",{
         <tr>
             <td><button v-on:click="changeContent" style="padding: 7px 20px;
                         background-color: aqua;">Izmeni sadrzaj</button></td>
-            <td><button v-on:click="addCoachToContent" style="padding: 7px 20px;
+            <td><button v-on:click="addCoachToContent(p)" style="padding: 7px 20px;
                         background-color: aqua;">Dodaj trenera</button></td>
             </tr>
         </table>
@@ -134,8 +134,9 @@ Vue.component("managerHomePage",{
         changeContent : function(event){
 
         },
-        addCoachToContent : function(event){
-
+        addCoachToContent : function(p){
+            axios.post('rest/managerHomePage/setContent/',p);
+            router.push('/managerHomePage/addCoachToTraining');
         }
     }
     
