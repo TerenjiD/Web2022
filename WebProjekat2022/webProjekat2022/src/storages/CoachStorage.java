@@ -1,9 +1,6 @@
 package storages;
 
-import beans.Coach;
-import beans.Gender;
-import beans.Manager;
-import beans.Role;
+import beans.*;
 import com.opencsv.CSVWriter;
 
 import java.io.*;
@@ -156,5 +153,12 @@ public class CoachStorage {
     public Coach GetByIdCoach(String username){
         Coach coach = coaches.get(username);
         return coach;
+    }
+
+    public Collection<Coach> getValues(){ return  coaches.values(); }
+
+    public List<Coach> GetCoaches(){
+        List<Coach> listToReturn = new ArrayList<>(getValues());
+        return listToReturn;
     }
 }

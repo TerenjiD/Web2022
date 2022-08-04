@@ -175,4 +175,12 @@ public class TestService {
         return contents.CheckIfExist(nameID);
     }
 
+    public List<Coach> GetCoaches(){
+        return coaches.GetCoaches();
+    }
+
+    public void ChangeCoach(Coach coach,Content content){
+        contents.ChangeCoach(coach,content);
+    }
+
 }

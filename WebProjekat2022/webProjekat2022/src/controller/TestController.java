@@ -21,6 +21,8 @@ public class TestController {
     private static Gson g = new Gson();
     private static TestService testService;
 
+    private static Content ContentToChange ;
+
     static {
         try {
             testService = new TestService();
@@ -396,6 +398,49 @@ public class TestController {
         );
     }
 
+    public static void setContent(){
+        post(
+                "rest/managerHomePage/setContent/",(req,res)->{
+                    res.type("application/json");
+                    Content flag = g.fromJson(req.body(),Content.class);
+                    String nameID = flag.getNameID();
+                    ContentToChange(nameID);
+                    return "Success";
+                }
+        );
+    }
+
+    public static void contentToChangeFunction(){
+        get(
+                "rest/managerHomePage/setContent/",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(ContentToChange);
+                }
+        );
+    }
+
+    public static void getCoaches(){
+        get(
+            "rest/managerHomePage/getCoaches/",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.GetCoaches());
+                }
+        );
+    }
+
+    public static void addCoachToContent(){
+        post(
+                "rest/managerHomePage/addCoach/",(req,res)->{
+                    res.type("application/json");
+                    Coach flag = g.fromJson(req.body(),Coach.class);
+                    testService.ChangeCoach(flag,ContentToChange);
+                    return "SUCCESS";
+                }
+        );
+    }
+
+
+
     public static User userSession(Request req){
 
         Session ss = req.session(true);
@@ -406,6 +451,11 @@ public class TestController {
         }
         return loggedUser;
     }
+
+    public static void ContentToChange(String nameID){
+        ContentToChange = testService.CheckContent(nameID);
+    }
+
 
 
 }
