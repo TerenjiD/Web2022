@@ -42,6 +42,7 @@ public class SparkMain {
         TestController.contentToChangeFunction();
         TestController.getCoaches();
         TestController.addCoachToContent();
+        TestController.changeContent();
 
         FacilityController.getFacilities();
         FacilityController.searchFacilities();

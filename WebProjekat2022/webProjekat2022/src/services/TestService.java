@@ -183,4 +183,8 @@ public class TestService {
         contents.ChangeCoach(coach,content);
     }
 
+    public void ChangeContent(Content content){
+        contents.ChangeContent(content);
+    }
+
 }

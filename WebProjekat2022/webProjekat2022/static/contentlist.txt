@@ -1,2 +1,3 @@
-AjDAVidimotest;test;AjDAVidimo;SAUNA;y y y;AjDAVidimo;AjDAVidimo;AjDAVidimo
+AjDAVidimotest;test;AjDAVidimoProba;GROUP_TRAINING;y y y;AjDAVidimo;AjDAVidimo;AjDAVidimo
 Cistotest;test;Cisto;PERSONAL_TRAINING;nema;Cisto;Cisto;Cisto
+ContentZaDrugogFullTr;FullTr;ContentZaDrugog;GROUP_TRAINING;t q q;ContentZaDrugog;Da vidimo da li radi;24h

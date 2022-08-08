@@ -439,6 +439,17 @@ public class TestController {
         );
     }
 
+    public static void changeContent(){
+        post(
+                "rest/managerHomePage/changeContent/",(req,res)->{
+                    res.type("application/json");
+                    Content flag = g.fromJson(req.body(),Content.class);
+                    testService.ChangeContent(flag);
+                    return "SUCCESS";
+                }
+        );
+    }
+
 
 
     public static User userSession(Request req){
