@@ -1,5 +1,6 @@
 package storages;
 
+import DTO.ChangeContentDTO;
 import beans.*;
 import com.opencsv.CSVWriter;
 
@@ -152,6 +153,56 @@ public class ContentStorage {
                         flagContent = ContentType.SAUNA;
                     }
                     Content flagContent1 = new Content(row[0],row[1],row[2],flagContent,row[4],row[5],row[6],row[7]);
+                    contents.put(row[0],flagContent1);
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/contentlist.txt");
+            newFile.renameTo(dump);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void ChangeContent(Content content){
+        String nameID = content.getNameID();
+        String name = content.getName();
+        ContentType typeToSend = content.getType();
+        String type = content.getType().toString();
+        String logo = content.getLogo();
+        String description = content.getDescription();
+        String duration = content.getDuration();
+        String file = "./static/contentlist.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(nameID)){
+                    row[2]=name;
+                    row[3]=type;
+                    row[5]=logo;
+                    row[6]=description;
+                    row[7]=duration;
+                    Content flagContent1 = new Content(row[0],row[1],row[2],typeToSend,row[4],row[5],row[6],row[7]);
                     contents.put(row[0],flagContent1);
                 }
                 rows.add(row);

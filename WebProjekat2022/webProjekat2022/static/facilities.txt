@@ -1,4 +1,4 @@
-FullTr;POOL;PERSONAL_TRAINING;OPEN;logololol;15154|15484|Ulica'broj'grad'drzava;8;5.4
+FullTr;POOL;PERSONAL_TRAINING,ContentZaDrugogFullTr;OPEN;logololol;15154.0|15484.0|Ulica'broj'grad'drzava;5.4;8
 FullTrdasdas;POOL;SAUNA;CLOSED;logoooooo;15154|15484|Ulica'broj'grad'drzava;8;5.4
 UOPAAAAA;POOL;SAUNA;OPEN;logoooooo;15154|15484|Ulica'broj'grad'drzava;8;5.4
 CUPAAAA;POOL;SAUNA;CLOSED;logoooooo;15154|15484|Ulica'broj'grad'drzava;8;5.4
