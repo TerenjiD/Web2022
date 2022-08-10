@@ -37,7 +37,7 @@ Vue.component("createFacility",{
             </select></td>
             </tr>
             <tr><td>Logo</td>
-            <td><input type="text" id="logo" v-model="objectDTO.logo"></td>
+            <td><input type="file" id="logo" v-model="objectDTO.logo"></td>
             </tr>
             <tr><td>latitude</td>
             <td><input type="text" id="latitude" v-model="objectDTO.latitude"></td>
@@ -85,7 +85,10 @@ Vue.component("createFacility",{
     methods : {
         addFacility : function(event){
             axios.post('/rest/adminHomePage/createFacility/create',this.objectDTO)
-            .then(response => alert("Uspesno pravljenje objekta"))
+            .then(response => {
+                //this.objectDTO.logo = event.target.files[0]
+                alert("Uspesno pravljenje objekta")
+            })
             .catch(error => alert("Neuspesno pravljenje objekta"));
             router.push('/adminHomePage/');
             event.preventDefault();

@@ -5,6 +5,8 @@ kjhlfbvjkfdbnsjk;afdkjgnsjkgnsjknfg;ajgnajkfgnadfkjgnbaj;fkgjnsfdjkgskjgn;MALE;a
 r;q;proba;q;MALE;q;MANAGER;FullTr
 menadzerBezObjekta;sdfafa;adfadfa;adfadfssa;FEMALE;asdfadfa;MANAGER;nista
 josJedanBezObjekta;adsfadf;Menadzer1;asdfafd;FEMALE;sdafadf;MANAGER;nista
-opsti;opsti;Opsti;Opsti;FEMALE;14-12-2000;MANAGER;nista
+opsti;opsti;Opsti;Opsti;FEMALE;14-12-2000;MANAGER;test5
 MenadzerZaObjekat;s;test1;test1;FEMALE;12-12-1996;MANAGER;test1
 test3;test3;test3;test3;FEMALE;12-12-2000;MANAGER;test3
+lee;lee;Luka;Licina;FEMALE;17-12-2000;MANAGER;nista
+sdgagafggsg;sdghfdhgfdhdhd;dfghdhdhdgfhd;dgfhdhgdhgdgfh;FEMALE;dghdgfhdghdhdgfh;MANAGER;test4
