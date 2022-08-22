@@ -18,6 +18,8 @@ public class TestService {
 
     private ContentStorage contents = ContentStorage.getInstance();
 
+    private CustomerStorage customers = CustomerStorage.getInstance();
+
     public TestService() throws FileNotFoundException {
     }
 
@@ -26,6 +28,9 @@ public class TestService {
     }
     public void addUser(User user){
         this.users.addUser(user);
+        Customer customer = new Customer(user.getUsername(),user.getPassword(),user.getName(),user.getLastName(),user.getGender(),
+                user.getDateOfBirth(),user.getRole(),0,new CustomerType("nista"),new Membership("nista"));
+        this.customers.addCustomer(customer);
     }
 
     public void addManager(Manager manager){

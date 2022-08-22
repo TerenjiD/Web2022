@@ -142,6 +142,10 @@ public class TestController {
         );
     }
 
+    public static void addCustomer(){
+
+    }
+
     public static void loginUser(){
         post(
             "/rest/customerHomePage",( req , res) -> {
