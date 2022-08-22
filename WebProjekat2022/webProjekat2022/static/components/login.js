@@ -48,7 +48,7 @@ Vue.component("login",{
             	    <td>{{p.facilityType}}</td>
             	    <td>{{p.contentType}}</td>
                     <td>{{p.status}}</td>
-                    <td>{{p.logo}}</td>
+                    <td><img :src="p.logo" width="50" height="50"></td>
                     <td>{{p.location.address.street}},{{p.location.address.number}},{{p.location.address.city}},{{p.location.address.country}}</td>
                     <td>{{p.workingHours}}</td>
                     <td>{{p.rating}}</td>
