@@ -7,8 +7,12 @@ import services.FacilityService;
 import services.TestService;
 import spark.Request;
 import spark.Session;
+import storages.TrainingHistoryStorage;
 
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -20,6 +24,17 @@ public class TestController {
 
     private static Gson g = new Gson();
     private static TestService testService;
+    //Za terenjija
+    private static FacilityService facilityService;
+
+    static {
+        try {
+            facilityService = new FacilityService();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //Za terenjija
 
     private static Content ContentToChange ;
 
@@ -148,7 +163,7 @@ public class TestController {
 
     public static void loginUser(){
         post(
-            "/rest/customerHomePage",( req , res) -> {
+                "/rest/customerHomePage",( req , res) -> {
                     res.type("application/json");
                     try{
                         LoginDTO loginDTO = g.fromJson(req.body(),LoginDTO.class);
@@ -325,7 +340,7 @@ public class TestController {
 
     public static void editManager(){
         post(
-                    "rest/managerHomePage/changeInfoManager/manager",(req,res)->{
+                "rest/managerHomePage/changeInfoManager/manager",(req,res)->{
                     res.type("application/json");
                     ManagerDTO flag = g.fromJson(req.body(),ManagerDTO.class);
                     UserDTO flagUser = new UserDTO(flag.getUsername(),flag.getPassword(),flag.getName(),flag.getLastName(),
@@ -425,7 +440,7 @@ public class TestController {
 
     public static void getCoaches(){
         get(
-            "rest/managerHomePage/getCoaches/",(req,res)->{
+                "rest/managerHomePage/getCoaches/",(req,res)->{
                     res.type("application/json");
                     return g.toJson(testService.GetCoaches());
                 }
@@ -453,7 +468,119 @@ public class TestController {
                 }
         );
     }
+    public static void buyMembership(){
+        post("/rest/customerHomePage/buyMembership",(req,res)->{
+            res.type("application/json");
+            MembershipDTO membershipDTO = g.fromJson(req.body(),MembershipDTO.class);
+            LocalDateTime currentDate = LocalDateTime.now();
+            String flagMemType = membershipDTO.getType();
+            //String flagStatus = membershipDTO.getStatus();
+            String customerUsername = userSession(req).getUsername();
+            String appNum = membershipDTO.getAppointmentNumber();
+            int price = membershipDTO.getPrice();
+            LocalDateTime expirationDate;
+            MembershipType memType;
+            if(flagMemType.equals("Mesecno")){
+                memType = MembershipType.MONTHLY;
+                //expirationDate = currentDate.plusMonths(1);
+                expirationDate = currentDate.plusDays(1);
+            }else if(flagMemType.equals("Godisnje")){
+                memType = MembershipType.YEARLY;
+                //expirationDate = currentDate.plusMonths(12);
+                expirationDate = currentDate.plusMinutes(1);
+            }else{
+                memType = MembershipType.SIXMONTHLY;
+                //expirationDate = currentDate.plusMonths(6);
+                expirationDate = currentDate.plusMinutes(1);
+            }
+            String idFlag = Integer.toString(facilityService.GetMembershipIDCount()+1);
+            String usernameFlag = userSession(req).getUsername();
+            String facility = membershipDTO.getFacility();
+            Membership membership = new Membership(idFlag,facility,memType,currentDate,
+                    expirationDate,price,customerUsername,MembershipStatus.ACTIVE,appNum);
+            facilityService.createMembership(membership,usernameFlag);
+            return "SUCCESS";
+        });
+    }
 
+    public static void CheckExpirationDate(){
+        get("/rest/customerHomePage/getDate",(req,res)->{
+            res.type("application/json");
+            String username = userSession(req).getUsername();
+            Customer userFlag = facilityService.GetByUsernameCustomer(username);
+            String membershipID = userFlag.getMembership();
+            boolean check = facilityService.CheckIfExpired(membershipID,username);
+            if(check==true){
+                return "SUCCESS";
+            }else{
+                return null;
+            }
+
+        });
+    }
+
+    public static void OpenFacility(){
+        post("rest/customerHomePage/FacilityOpen",(req,res)->{
+            res.type("application/json");
+            Facility facility = g.fromJson(req.body(),Facility.class);
+            Customer customer = facilityService.GetByUsernameCustomer(userSession(req).getUsername());
+            String membershipID = customer.getMembership();
+            Membership membership = facilityService.GetMembershipById(membershipID);
+            String facilityName = membership.getFacility();
+            String facilityFlag = facility.getName();
+            LocalDate currentDate = LocalDate.now();
+            if(membershipID.equals("nista")){
+                return null;
+            }else{
+                if(facilityName.equals(facilityFlag)){
+                    facilityService.EditMembership(currentDate,membershipID);
+                    return "Success";
+                }else{
+                    return null;
+                }
+            }
+
+
+        });
+    }
+
+    public static void getContentCustomer(){
+        get(
+                "rest/customerHomePage/FacilityOpen/getContents",(req,res)->{
+                    res.type("application/json");
+                    Customer customer = facilityService.GetByUsernameCustomer(userSession(req).getUsername());
+                    String memId = customer.getMembership();
+                    Membership membership = facilityService.GetMembershipById(memId);
+                    String flagFacility = membership.getFacility();
+                    return g.toJson(testService.GetContent(flagFacility));
+                }
+        );
+    }
+
+    public static void BeginTraining(){
+        post(
+                "rest/customerHomePage/FacilityOpen/beginTraining",(req,res)->{
+                    Content content = g.fromJson(req.body(),Content.class);
+                    Customer customer = facilityService.GetByUsernameCustomer(userSession(req).getUsername());
+                    String coach = content.getCoachID();
+                    LocalDate currentDate = LocalDate.now();
+                    int idToParse = facilityService.GetTrainingSize()+1;
+                    String id = Integer.toString(idToParse);
+                    TrainingHistory training = new TrainingHistory(id,currentDate,content,customer,coach);
+                    facilityService.AddTraining(training);
+                    return "success";
+                });
+    }
+
+    public static void GetTrainingsForCustomer(){
+        get(
+                "/rest/customerHomePage/getTrainingHistory",(req,res)->{
+                    Customer customer = facilityService.GetByUsernameCustomer(userSession(req).getUsername());
+                    String username = customer.getUsername();
+                    return g.toJson(facilityService.GetTrainingsForCustomer(username));
+                }
+        );
+    }
 
 
     public static User userSession(Request req){
@@ -470,7 +597,4 @@ public class TestController {
     public static void ContentToChange(String nameID){
         ContentToChange = testService.CheckContent(nameID);
     }
-
-
-
 }

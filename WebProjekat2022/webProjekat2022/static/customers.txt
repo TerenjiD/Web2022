@@ -1,2 +1,2 @@
 NeZnam;neznma;NeZnam;NeZnam;MALE;14-12-2022;CUSTOMER;0;nista;nista
-zjuuuuu;zjuuuuu;zju;zju;MALE;18-12-1812;CUSTOMER;0;nista;nista
+q;q;zju;zju;MALE;18-12-1812;CUSTOMER;21;nista;3

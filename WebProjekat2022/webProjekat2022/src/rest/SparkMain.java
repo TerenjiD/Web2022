@@ -46,5 +46,12 @@ public class SparkMain {
 
         FacilityController.getFacilities();
         FacilityController.searchFacilities();
+
+        TestController.buyMembership();
+        TestController.CheckExpirationDate();
+        TestController.OpenFacility();
+        TestController.getContentCustomer();
+        TestController.BeginTraining();
+        TestController.GetTrainingsForCustomer();
     }
 }

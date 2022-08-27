@@ -3,7 +3,9 @@ Vue.component("customerHomePage",{
         return {
             customer : [],
             facilities: null,
-            input: null
+            input: null,
+            facility : null,
+            trainings : null
         }
     },
     template:`
@@ -13,6 +15,37 @@ Vue.component("customerHomePage",{
                     <p>Kupac prikeroni {{customer.name}}</p>
                     <button v-on:click="changeCustomer" style="padding: 7px 20px;
                     background-color: aqua;">Izmeni</button>
+                <div>
+                <div>
+                <h4>Istorija treninga<h4>
+                </div>
+                <table v-for="(p,index) in trainings">
+                        <tr>
+                        <td>Ime:</td><td>{{p.name}}</td>
+                        </tr>
+                        <tr>
+                        <td>Objekat:</td><td>{{p.facilityName}}</td>
+                        </tr>
+                        <tr>
+                        <td>Datum treninga:</td><td>{{p.applicationDate}}</td>
+                        </tr>
+                        <tr>
+                        <td>Tip:</td><td>{{p.type}}</td>
+                        </tr>
+                        <tr>
+                        <td>Logo:</td><td>{{p.logo}}</td>
+                        </tr>
+                        <tr>
+                        <td>Opis:</td><td>{{p.description}}</td>
+                        </tr>
+                        <tr>
+                        <td>Trajanje:</td><td>{{p.duration}}</td>
+                        </tr>
+                        <tr>
+                        <td>Trener:</td><td>{{p.coach}}</td>
+                        </tr>
+                </table>
+                </div>
                 </div>
         		<h3>Prikaz sportskih objekata</h3>
         		</div>
@@ -45,17 +78,23 @@ Vue.component("customerHomePage",{
                         <td>{{p.location.address.street}},{{p.location.address.number}},{{p.location.address.city}},{{p.location.address.country}}</td>
                         <td>{{p.workingHours}}</td>
                         <td>{{p.rating}}</td>
+                        <td><button v-on:click="goIntoFacility(p)">Udji u objekat</button></td>
                 	</tr>
                 </table>
     <button v-on:click = "logoutUser" style="padding: 7px 20px;
     background-color: aqua;" >Log out</button>
     </div>
     `,
-    mounted () {
+    mounted (event) {
         axios
         .get('rest/facilities/')
         .then(response => (this.facilities = response.data));
-        axios.get('/rest/customerHomePage/customer').then(response => (this.customer = response.data))
+        axios.get('/rest/customerHomePage/customer').then(response => (this.customer = response.data));
+        axios.get('/rest/customerHomePage/getDate')
+        .then(response => (alert("Nije istekla clanarina")))
+        .catch(error => (alert("Istekla clanarina")))
+        axios.get('/rest/customerHomePage/getTrainingHistory')
+        .then(response => (this.trainings = response.data))
     },
     methods: {
         logoutUser : function(){
@@ -73,6 +112,12 @@ Vue.component("customerHomePage",{
         },
         changeCustomer : function(){
             router.push('/changeInfoCustomer/')
+        },
+        goIntoFacility : function(p){
+            axios.post('rest/customerHomePage/FacilityOpen',p).then(response => {
+                alert("Uspesan ulazak")
+                router.push('/customerHomePage/FacilityOpen')
+            }).catch(error => (alert("Neuspesan ulazak")))
         }
     }
 })

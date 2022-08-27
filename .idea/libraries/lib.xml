@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/javaxt-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/websocket-common-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-xml-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-webapp-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/websocket-api-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-server-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/websocket-servlet-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-security-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/opencsv-5.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/spark-core-2.5.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/gson-2.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-io-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/slf4j-api-1.7.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jjwt-impl-0.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-util-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/slf4j-simple-1.7.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/javax.servlet-api-3.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/websocket-server-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/websocket-client-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-servlet-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jjwt-api-0.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jjwt-gson-0.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/jetty-http-9.3.6.v20151106.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebProjekat2022/webProjekat2022/lib/slf4j-api-1.7.13.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

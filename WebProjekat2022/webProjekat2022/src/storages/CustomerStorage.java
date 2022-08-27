@@ -78,8 +78,8 @@ public class CustomerStorage {
                 else{
                     roleFlag = Role.ADMIN;
                 }
-                Customer customer = new Customer(username,password,name,lastName,gen,dateOfBirth, roleFlag,Integer.parseInt(points),
-                        typeStor.FindById(customerType),memStor.FindById(membership));
+                Customer customer = new Customer(username,password,name,lastName,gen,dateOfBirth, roleFlag,Long.parseLong(points),
+                        customerType,membership);
                 customers.put(username, customer);
 
             }
@@ -122,4 +122,100 @@ public class CustomerStorage {
         this.customers.put(customer.getUsername(),customer);
     }
 
+    public Customer GetByID(String username){
+        return customers.get(username);
+    }
+
+    public void editMembership(Customer customer,String idToAdd){
+        //users.put(user.getUsername(),user);
+        //customers.remove(username);
+        String usern=customer.getUsername();
+        Membership membership = memStor.FindById(idToAdd);
+        String idflag;
+        if(membership == null){
+            idflag = "nista";
+        }else{
+            idflag = membership.getId();
+        }
+        customer.setMembership(idflag);
+        customers.put(usern,customer);
+        String file = "./static/customers.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(usern)){
+                    row[9] = idToAdd;
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/customers.txt");
+            newFile.renameTo(dump);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void editMembershipAndPoints(Customer customer,String oldId,String idToAdd,long points){
+        //users.put(user.getUsername(),user);
+        //customers.remove(username);
+        String usern=customer.getUsername();
+        Membership membership = memStor.FindById(oldId);
+        String idflag="nista";
+        Long oldPoints = customer.getPoints();
+        customer.setMembership(idflag);
+        Long newPoints = oldPoints+points;
+        customer.setPoints(newPoints);
+        customers.put(usern,customer);
+        String file = "./static/customers.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(usern)){
+                    row[7]= Long.toString(newPoints);
+                    row[9] = idToAdd;
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/customers.txt");
+            newFile.renameTo(dump);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

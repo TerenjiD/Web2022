@@ -1,12 +1,12 @@
 package storages;
 
-import beans.CustomerType;
-import beans.Membership;
-import beans.MembershipStatus;
-import beans.MembershipType;
+import beans.*;
 import com.opencsv.CSVWriter;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MembershipStorage {
@@ -19,6 +19,10 @@ public class MembershipStorage {
             instance = new MembershipStorage();
         }
         return instance;
+    }
+
+    public int CountID(){
+        return memberships.size();
     }
 
     private MembershipStorage() throws FileNotFoundException {
@@ -42,7 +46,7 @@ public class MembershipStorage {
     }
 
     private void readMemberships(BufferedReader in)  {
-        String line, id="", type="", paymentDate="",expirationDate="",price="",customer="",status="",appointmentNumber="";
+        String line, id="",facility="", type="", paymentDate="",expirationDate="",price="",customer="",status="",appointmentNumber="";
         StringTokenizer st;
         try {
             while ((line = in.readLine()) != null) {
@@ -52,6 +56,7 @@ public class MembershipStorage {
                 st = new StringTokenizer(line, ";");
                 while (st.hasMoreTokens()) {
                     id = st.nextToken().trim();
+                    facility = st.nextToken().trim();
                     type = st.nextToken().trim();
                     paymentDate = st.nextToken().trim();
                     expirationDate = st.nextToken().trim();
@@ -78,9 +83,10 @@ public class MembershipStorage {
                 }else{
                     memFlagStatus = MembershipStatus.INACTIVE;
                 }
-                Date flagPaymentDate = new Date(paymentDate);
-                Date flagExpirationDate = new Date(expirationDate);
-                Membership membership = new Membership(id,memFlagType,flagPaymentDate,flagExpirationDate,Integer.parseInt(price)
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+                LocalDateTime flagPaymentDate =  LocalDateTime.parse(paymentDate,formatter);
+                LocalDateTime flagExpirationDate =  LocalDateTime.parse(expirationDate,formatter);
+                Membership membership = new Membership(id,facility,memFlagType,flagPaymentDate,flagExpirationDate,Integer.parseInt(price)
                         ,customer, memFlagStatus,appointmentNumber);
                 memberships.put(id, membership);
 
@@ -103,11 +109,15 @@ public class MembershipStorage {
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
             Membership tempUser = memberships.get(membership.getId());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             if(tempUser==null){
-                String[] data1 = {membership.getId(), membership.getType().toString(),
-                        membership.getPaymentDate().toString(),membership.getExpirationDate().toString(),
-                        String.valueOf(membership.getPrice()),membership.getCustomer(),membership.getStatus().toString(),
-                        membership.getAppointmentNumber()};
+                LocalDateTime currDate = membership.getPaymentDate();
+                String formattedCurrentDate = currDate.format(formatter);
+                LocalDateTime exDate = membership.getExpirationDate();
+                String formattedExpirationDate = exDate.format(formatter);
+                String[] data1 = {membership.getId(),membership.getFacility(), membership.getType().toString(),
+                        formattedCurrentDate,formattedExpirationDate, String.valueOf(membership.getPrice()),
+                        membership.getCustomer(),membership.getStatus().toString(), membership.getAppointmentNumber()};
                 List<String[]> userList = new ArrayList<>();
                 userList.add(data1);
                 //userList.add(data2);
@@ -123,6 +133,47 @@ public class MembershipStorage {
             throw new RuntimeException(e);
         }
         this.memberships.put(membership.getId(),membership);
+    }
+
+    public void editAppNumber(String id){
+        //users.put(user.getUsername(),user);
+        //customers.remove(username);
+        Membership membership = memberships.get(id);
+
+        int newAppNum = Integer.parseInt(membership.getAppointmentNumber())-1;
+        membership.setAppointmentNumber(Integer.toString(newAppNum));
+        memberships.put(id,membership);
+        String file = "./static/memberships.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(id)){
+                    row[8] = Integer.toString(newAppNum);
+                }
+                rows.add(row);
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/memberships.txt");
+            newFile.renameTo(dump);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public Membership FindById(String id){
