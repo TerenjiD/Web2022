@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class UserStorage {
-    //private HashMap<String, User> users = new HashMap<String, User>();
     private HashMap<String, User> users = new HashMap<String, User>();
     private HashMap<String, User> users1 = new HashMap<String, User>();
     private static Scanner x;
@@ -45,53 +44,6 @@ public class UserStorage {
     }
 
     private void readUsers(BufferedReader in)  {
-        String line, username="", password="", name="",lastName="",gender="",dateOfBirth="",role="";
-		StringTokenizer st;
-		try {
-			while ((line = in.readLine()) != null) {
-				line = line.trim();
-				if (line.equals("") || line.indexOf('#') == 0)
-					continue;
-				st = new StringTokenizer(line, ";");
-				while (st.hasMoreTokens()) {
-					username = st.nextToken().trim();
-					password = st.nextToken().trim();
-					name = st.nextToken().trim();
-                    lastName = st.nextToken().trim();
-                    gender = st.nextToken().trim();
-                    dateOfBirth = st.nextToken().trim();
-                    role = st.nextToken().trim();
-				}
-                Gender gen;
-                if(gender.equals("MALE")){
-                    gen = Gender.MALE;
-                }else{
-                    gen = Gender.FEMALE;
-                }
-                Role roleFlag;
-                if(role.equals("CUSTOMER")){
-                    roleFlag = Role.CUSTOMER;
-                }else if(role.equals("COACH")){
-                    roleFlag = Role.COACH;
-                }
-                else if(role.equals("MANAGER")){
-                    roleFlag = Role.MANAGER;
-                }
-                else{
-                    roleFlag = Role.ADMIN;
-                }
-
-				User user = new User(username,password,name,lastName,gen,dateOfBirth, roleFlag);
-				users.put(username, user);
-
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-    }
-    private List<String[]> readUsers1(BufferedReader in)  {
-        List<String[]> userList = new ArrayList<>();
         String line, username="", password="", name="",lastName="",gender="",dateOfBirth="",role="";
         StringTokenizer st;
         try {
@@ -129,16 +81,13 @@ public class UserStorage {
                 }
 
                 User user = new User(username,password,name,lastName,gen,dateOfBirth, roleFlag);
-                String[] data1 = {user.getUsername(),user.getPassword(),user.getName(),user.getLastName()
-                        ,user.getGender().toString(),user.getDateOfBirth(),user.getRole().toString()};
-                userList.add(data1);
+                users.put(username, user);
 
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return userList;
+
     }
 
     public User FindById(String username){

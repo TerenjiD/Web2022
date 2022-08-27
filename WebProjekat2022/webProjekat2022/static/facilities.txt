@@ -2,7 +2,7 @@ FullTr;POOL;PERSONAL_TRAINING,ContentZaDrugogFullTr;OPEN;./#/static/asad.jpg;151
 FullTrdasdas;POOL;SAUNA;CLOSED;./#/static/asad.jpg;15154|15484|Ulica'broj'grad'drzava;8;5.4
 UOPAAAAA;POOL;SAUNA;OPEN;./#/static/asad.jpg;15154|15484|Ulica'broj'grad'drzava;8;5.4
 CUPAAAA;POOL;SAUNA;CLOSED;./#/static/asad.jpg;15154|15484|Ulica'broj'grad'drzava;8;5.4
-test;GYM;GROUP_TRAINING,SAUNA,AjDAVidimotest,Cistotest;OPEN;./#/static/asad.jpg;15154.0|15484.0|Ulica'broj'grad'drzava;8.9;16
+test;GYM;SAUNA,AjDAVidimotest,Cistotest,TerenjiDavidtest;OPEN;./#/static/asad.jpg;15154.0|15484.0|Ulica'broj'grad'drzava;16;8.9
 test2;DANCE_STUDIO;SAUNA;OPEN;./#/static/asad.jpg;789789|987987|test2'test2'test2'test2;7;20
 test3;SPORT_CENTER;PERSONAL_TRAINING;OPEN;./#/static/asad.jpg;54894156|56489415|test3'test3'test3'test3;7;6
 test4;DANCE_STUDIO;SAUNA;OPEN;./#/static/asad.jpg;4564654654|6554654465|test4'test4'test4'test4;6;1

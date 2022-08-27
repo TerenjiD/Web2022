@@ -15,6 +15,8 @@ const CreateFacility = {template : '<createFacility></createFacility>'}
 const AddContent = {template : '<addContent></addContent>'}
 const AddCoachToContent = {template : '<addCoachToTraining></addCoachToTraining>'}
 const ChangeContent = {template : '<changeContent></changeContent>'}
+const BuyMembership = {template : '<buyFitPass></buyFitPass>'}
+const FacilityOpen = {template : '<FacilityOpen></FacilityOpen>'}
 
 
 const router = new VueRouter({
@@ -36,7 +38,9 @@ const router = new VueRouter({
 		{ path : '/adminHomePage/createFacility/managerForFacility/',component: CreateManagerFacility },
 		{ path : '/managerHomePage/addContent/',component: AddContent },
 		{ path : '/managerHomePage/addCoachToTraining/',component: AddCoachToContent },
-		{ path : '/managerHomePage/changeContent/',component: ChangeContent }
+		{ path : '/managerHomePage/changeContent/',component: ChangeContent },
+		{ path : '/customerHomePage/buyFitPass', component: BuyMembership},
+		{ path : '/customerHomePage/FacilityOpen', component: FacilityOpen}
 	  ]
 });
 

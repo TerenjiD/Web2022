@@ -1,19 +1,20 @@
 package beans;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Membership implements Serializable {
     private String id;
+    private String facility;
     private MembershipType type;
-    private Date paymentDate;
-    private Date expirationDate;
+    private LocalDateTime paymentDate;
+    private LocalDateTime expirationDate;
     private int price;
     private String customer;
     private MembershipStatus status;
     private String appointmentNumber;
 
-    public Membership(String id, MembershipType type, Date paymentDate, Date expirationDate,
+    public Membership(String id, MembershipType type, LocalDateTime paymentDate, LocalDateTime expirationDate,
                       int price, String customer, MembershipStatus status, String appointmentNumber) {
         this.id = id;
         this.type = type;
@@ -23,6 +24,27 @@ public class Membership implements Serializable {
         this.customer = customer;
         this.status = status;
         this.appointmentNumber = appointmentNumber;
+    }
+
+    public Membership(String id, String facility, MembershipType type, LocalDateTime paymentDate,
+                      LocalDateTime expirationDate, int price, String customer, MembershipStatus status, String appointmentNumber) {
+        this.id = id;
+        this.facility = facility;
+        this.type = type;
+        this.paymentDate = paymentDate;
+        this.expirationDate = expirationDate;
+        this.price = price;
+        this.customer = customer;
+        this.status = status;
+        this.appointmentNumber = appointmentNumber;
+    }
+
+    public String getFacility() {
+        return facility;
+    }
+
+    public void setFacility(String facility) {
+        this.facility = facility;
     }
 
     public Membership() {
@@ -48,19 +70,19 @@ public class Membership implements Serializable {
         this.type = type;
     }
 
-    public Date getPaymentDate() {
+    public LocalDateTime getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(LocalDateTime paymentDate) {
         this.paymentDate = paymentDate;
     }
 
-    public Date getExpirationDate() {
+    public LocalDateTime getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(LocalDateTime expirationDate) {
         this.expirationDate = expirationDate;
     }
 
