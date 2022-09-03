@@ -9,6 +9,7 @@ import java.util.*;
 
 public class ContentStorage {
 
+
     private static HashMap<String, Content> contents = new HashMap<String, Content>();
 
     private static ContentStorage instance = null;
@@ -45,7 +46,8 @@ public class ContentStorage {
     }
 
     private void readContents(BufferedReader in)  {
-        String line, nameID="", facilityName="", name="",type="",coach="",logo="",description="",duration="";
+        String line, nameID="", facilityName="", name="",type="",coach="",logo="",description="",duration="",
+                startTime="",endTime="",isDeleted="";
         StringTokenizer st;
         try {
             while ((line = in.readLine()) != null) {
@@ -62,6 +64,9 @@ public class ContentStorage {
                     logo = st.nextToken().trim();
                     description = st.nextToken().trim();
                     duration = st.nextToken().trim();
+                    startTime = st.nextToken().trim();
+                    endTime = st.nextToken().trim();
+                    isDeleted = st.nextToken().trim();
                 }
                 ContentType flagContent;
                 if(type.equals("GROUP_TRAINING")){
@@ -72,7 +77,8 @@ public class ContentStorage {
                     flagContent = ContentType.SAUNA;
                 }
 
-                Content flag = new Content(nameID,facilityName,name,flagContent,coach,logo,description,duration);
+                Content flag = new Content(nameID,facilityName,name,flagContent,coach,logo,
+                        description,duration,startTime,endTime,Integer.parseInt(isDeleted));
                 contents.put(nameID, flag);
 
             }
@@ -96,7 +102,8 @@ public class ContentStorage {
             Content tempUser = contents.get(content.getNameID());
             if(tempUser==null){
                 String[] data1 = {content.getNameID(),content.getFacilityName(),content.getName(),content.getType().toString(),
-                content.getCoachID(),content.getLogo(),content.getDescription(),content.getDuration()};
+                        content.getCoachID(),content.getLogo(),content.getDescription(),content.getDuration(),content.getStartTime(),
+                        content.getEndTime(),"0"};
                 List<String[]> userList = new ArrayList<>();
                 userList.add(data1);
                 //userList.add(data2);
@@ -121,7 +128,33 @@ public class ContentStorage {
         List<Content> listToReturn  =  new ArrayList<>();
         for(Content con : listToCheck){
             String flag = con.getFacilityName();
-            if (flag.equals(facilityName)){
+            int isDel = con.getIsDeleted();
+            if (flag.equals(facilityName) && isDel == 0){
+                listToReturn.add(con);
+            }
+        }
+        return listToReturn;
+    }
+
+
+    public List<Content> GetTrainingsForCoach(String username){
+        String user="",name="",surname="";
+        List<Content> listToCheck = new ArrayList<>(getValues());
+        List<Content> listToReturn  =  new ArrayList<>();
+        StringTokenizer st;
+        for(Content con : listToCheck){
+            String flag = con.getCoachID();
+            int isDel = con.getIsDeleted();
+            if(flag.equals("nema")){
+                continue;
+            }
+            st = new StringTokenizer(flag," ");
+            while (st.hasMoreTokens()) {
+                user = st.nextToken().trim();
+                name = st.nextToken().trim();
+                surname = st.nextToken().trim();
+            }
+            if (user.equals(username) && isDel == 0){
                 listToReturn.add(con);
             }
         }
@@ -152,7 +185,8 @@ public class ContentStorage {
                     }else{
                         flagContent = ContentType.SAUNA;
                     }
-                    Content flagContent1 = new Content(row[0],row[1],row[2],flagContent,row[4],row[5],row[6],row[7]);
+                    Content flagContent1 = new Content(row[0],row[1],row[2],flagContent,
+                            row[4],row[5],row[6],row[7],row[8],row[9],Integer.parseInt(row[10]));
                     contents.put(row[0],flagContent1);
                 }
                 rows.add(row);
@@ -202,7 +236,59 @@ public class ContentStorage {
                     row[5]=logo;
                     row[6]=description;
                     row[7]=duration;
-                    Content flagContent1 = new Content(row[0],row[1],row[2],typeToSend,row[4],row[5],row[6],row[7]);
+                    Content flagContent1 = new Content(row[0],row[1],row[2],typeToSend,row[4],
+                            row[5],row[6],row[7],row[8],row[9],Integer.parseInt(row[10]));
+                    contents.put(row[0],flagContent1);
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/contentlist.txt");
+            newFile.renameTo(dump);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void CancelContent(Content training){
+        String nameID = training.getNameID();
+        String name = training.getName();
+        ContentType typeToSend = training.getType();
+        String type = training.getType().toString();
+        String logo = training.getLogo();
+        String description = training.getDescription();
+        String duration = training.getDuration();
+        String file = "./static/contentlist.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(nameID)){
+                    row[2]=name;
+                    row[3]=type;
+                    row[5]=logo;
+                    row[6]=description;
+                    row[7]=duration;
+                    Content flagContent1 = new Content(row[0],row[1],row[2],typeToSend,row[4],
+                            row[5],row[6],row[7],row[8],row[9],1);
                     contents.put(row[0],flagContent1);
                 }
                 rows.add(row);

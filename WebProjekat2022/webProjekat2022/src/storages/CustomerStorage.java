@@ -218,4 +218,13 @@ public class CustomerStorage {
             e.printStackTrace();
         }
     }
+
+    private Collection<Customer> getValues(){return customers.values();}
+
+    public List<Customer> GetCustomers(){
+        List<Customer> list = new ArrayList<>(getValues());
+        return list;
+    }
+
+    public Customer FindById(String username){return customers.get(username);}
 }

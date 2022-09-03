@@ -90,11 +90,20 @@ Vue.component("customerHomePage",{
         .get('rest/facilities/')
         .then(response => (this.facilities = response.data));
         axios.get('/rest/customerHomePage/customer').then(response => (this.customer = response.data));
+        //za terenjija
         axios.get('/rest/customerHomePage/getDate')
         .then(response => (alert("Nije istekla clanarina")))
         .catch(error => (alert("Istekla clanarina")))
         axios.get('/rest/customerHomePage/getTrainingHistory')
         .then(response => (this.trainings = response.data))
+        //za terenjija
+        //ja
+        axios.get('rest/customerHomePage/checkComment').then(response =>{
+            alert("Prvi put u objektu")
+        }).cathc(error =>{
+            alert("Nije prvi put u objektu")
+        })
+        //ja
     },
     methods: {
         logoutUser : function(){

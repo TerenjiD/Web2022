@@ -53,5 +53,14 @@ public class SparkMain {
         TestController.getContentCustomer();
         TestController.BeginTraining();
         TestController.GetTrainingsForCustomer();
+
+        TestController.GetTrainingsForCoach();
+        TestController.SetTrainingToShow();
+        TestController.ShowTraining();
+        TestController.CancelPersonalTraining();
+        TestController.GetCustomers();
+        TestController.GetCoachesForSpecificFacility();
+
+        TestController.PutComment();
     }
 }

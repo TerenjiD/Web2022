@@ -13,10 +13,10 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
-
 
 public class TestController {
 
@@ -24,7 +24,9 @@ public class TestController {
 
     private static Gson g = new Gson();
     private static TestService testService;
-    //Za terenjija
+
+    private static Boolean boolIfFirstTime;
+
     private static FacilityService facilityService;
 
     static {
@@ -34,9 +36,10 @@ public class TestController {
             throw new RuntimeException(e);
         }
     }
-    //Za terenjija
 
     private static Content ContentToChange ;
+
+    private static Content TrainingToShow ;
 
     static {
         try {
@@ -468,6 +471,7 @@ public class TestController {
                 }
         );
     }
+
     public static void buyMembership(){
         post("/rest/customerHomePage/buyMembership",(req,res)->{
             res.type("application/json");
@@ -497,7 +501,7 @@ public class TestController {
             String usernameFlag = userSession(req).getUsername();
             String facility = membershipDTO.getFacility();
             Membership membership = new Membership(idFlag,facility,memType,currentDate,
-                    expirationDate,price,customerUsername,MembershipStatus.ACTIVE,appNum);
+                    expirationDate,price,customerUsername,MembershipStatus.ACTIVE,appNum,appNum);
             facilityService.createMembership(membership,usernameFlag);
             return "SUCCESS";
         });
@@ -560,6 +564,7 @@ public class TestController {
     public static void BeginTraining(){
         post(
                 "rest/customerHomePage/FacilityOpen/beginTraining",(req,res)->{
+                    res.type("application/json");
                     Content content = g.fromJson(req.body(),Content.class);
                     Customer customer = facilityService.GetByUsernameCustomer(userSession(req).getUsername());
                     String coach = content.getCoachID();
@@ -568,8 +573,31 @@ public class TestController {
                     String id = Integer.toString(idToParse);
                     TrainingHistory training = new TrainingHistory(id,currentDate,content,customer,coach);
                     facilityService.AddTraining(training);
+                    //ja
+                    String customerUserName = userSession(req).getUsername();
+                    String facilityName = content.getFacilityName();
+                    CheckIfCustomerIsFirstTimeInFacility(customerUserName,facilityName);
+                    //ja
                     return "success";
                 });
+    }
+
+    public static void CheckIfCustomerIsFirstTimeInFacility(String customerUsername,String facilityName){
+        boolIfFirstTime = testService.CheckIfFirstTime(customerUsername,facilityName);
+    }
+
+    public static void PutComment(){
+        get(
+                "rest/customerHomePage/checkComment",(req,res)->{
+                    res.body("application/json");
+                    if(boolIfFirstTime==true){
+                        boolIfFirstTime=false;
+                        return "Success";
+                    }else{
+                        return null;
+                    }
+                }
+        );
     }
 
     public static void GetTrainingsForCustomer(){
@@ -582,6 +610,68 @@ public class TestController {
         );
     }
 
+    public static void GetTrainingsForCoach(){
+        get(
+                "rest/coachHomePage/getTrainings",(req,res)->{
+                    res.type("application/json");
+                    User user = userSession(req);
+                    String username = user.getUsername();
+                    return g.toJson(facilityService.getTrainings(username));
+                }
+        );
+    }
+
+    public static void SetTrainingToShow(){
+        post(
+                "rest/coachHomePage/viewTraining",(req,res)->{
+                    res.type("application/json");
+                    TrainingToShow  = g.fromJson(req.body(),Content.class);
+                    return "SUCCESS";
+                }
+        );
+    }
+
+    public static void ShowTraining(){
+        get(
+                "rest/coachHomePage/view",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(TrainingToShow);
+                }
+        );
+    }
+
+    public static void CancelPersonalTraining(){
+        post(
+                "rest/coachHomePage/view/delete",(req,res)->{
+                    res.type("application/json");
+                    facilityService.CancelTraining(TrainingToShow);
+                    return "SUCCESS";
+                }
+        );
+    }
+
+    public static void GetCustomers(){
+        get(
+                "rest/managerHomePage/GetCustomers",(req,res)->{
+                    res.type("application/json");
+                    String username = userSession(req).getUsername();
+                    Manager manager = testService.GetByIdManager(username);
+                    return g.toJson(facilityService.GetCustomersToShowForManager(manager));
+                }
+        );
+    }
+
+    public static void GetCoachesForSpecificFacility(){
+        get(
+                "rest/managerHomePage/GetCoachesForSpecificFacility",(req,res)->{
+                    res.type("application/json");
+                    String username = userSession(req).getUsername();
+                    Manager manager = testService.GetByIdManager(username);
+                    String facility = manager.getFacility();
+                    return g.toJson(facilityService.GetCoachesToShowForManager(facility));
+                }
+        );
+    }
 
     public static User userSession(Request req){
 

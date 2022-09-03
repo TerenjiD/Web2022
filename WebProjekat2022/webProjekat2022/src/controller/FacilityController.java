@@ -45,28 +45,4 @@ public class FacilityController {
             return gson.toJson(facilityService.searchFacilities(input));
         });
     }
-
-
-    public static void buyMembership(){
-        post("/rest/customerHomePage/buyMembership",(req,res)->{
-           res.type("application/json");
-           Membership membership = gson.fromJson(req.body(),Membership.class);
-           LocalDate currentDate = LocalDate.now();
-           MembershipType memType = membership.getType();
-           LocalDate expirationDate;
-           if(memType == MembershipType.MONTHLY){
-               expirationDate = currentDate.plusMonths(1);
-           }else if(memType == MembershipType.YEARLY){
-               expirationDate = currentDate.plusMonths(12);
-           }else{
-               expirationDate = currentDate.plusMonths(6);
-           }
-           String idFlag = Integer.toString(facilityService.GetMembershipIDCount()+1);
-           membership.setId(idFlag);
-           membership.setPaymentDate(currentDate);
-           membership.setExpirationDate(expirationDate);
-           facilityService.createMembership(membership);
-           return "SUCCESS";
-        });
-    }
 }

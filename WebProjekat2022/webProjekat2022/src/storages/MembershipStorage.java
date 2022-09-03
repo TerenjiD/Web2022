@@ -46,7 +46,8 @@ public class MembershipStorage {
     }
 
     private void readMemberships(BufferedReader in)  {
-        String line, id="",facility="", type="", paymentDate="",expirationDate="",price="",customer="",status="",appointmentNumber="";
+        String line, id="",facility="", type="", paymentDate="",expirationDate="",price="",
+                customer="",status="",appointmentNumber="",appointmentNumberMax="";
         StringTokenizer st;
         try {
             while ((line = in.readLine()) != null) {
@@ -64,6 +65,7 @@ public class MembershipStorage {
                     customer = st.nextToken().trim();
                     status = st.nextToken().trim();
                     appointmentNumber = st.nextToken().trim();
+                    appointmentNumberMax = st.nextToken().trim();
                 }
                 MembershipType memFlagType;
                 if(type.equals("YEARLY")){
@@ -87,7 +89,7 @@ public class MembershipStorage {
                 LocalDateTime flagPaymentDate =  LocalDateTime.parse(paymentDate,formatter);
                 LocalDateTime flagExpirationDate =  LocalDateTime.parse(expirationDate,formatter);
                 Membership membership = new Membership(id,facility,memFlagType,flagPaymentDate,flagExpirationDate,Integer.parseInt(price)
-                        ,customer, memFlagStatus,appointmentNumber);
+                        ,customer, memFlagStatus,appointmentNumber,appointmentNumberMax);
                 memberships.put(id, membership);
 
             }
@@ -178,5 +180,12 @@ public class MembershipStorage {
 
     public Membership FindById(String id){
         return memberships.get(id);
+    }
+
+    private Collection<Membership> getValues(){return memberships.values();}
+
+    public List<Membership> GetMemberships(){
+        List<Membership> list = new ArrayList<>(getValues());
+        return list;
     }
 }
