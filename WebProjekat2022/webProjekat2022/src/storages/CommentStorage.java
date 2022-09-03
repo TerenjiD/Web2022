@@ -19,6 +19,10 @@ public class CommentStorage {
         return instance;
     }
 
+    public int GetSize(){
+        return comments.size();
+    }
+
     private CommentStorage() throws FileNotFoundException {
         BufferedReader in = null;
         try {

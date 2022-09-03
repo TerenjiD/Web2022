@@ -25,9 +25,11 @@ public class TestController {
     private static Gson g = new Gson();
     private static TestService testService;
 
-    private static Boolean boolIfFirstTime;
+    private static Boolean boolIfFirstTime=false;
 
     private static FacilityService facilityService;
+
+    private static String facilityForCustomer;
 
     static {
         try {
@@ -576,6 +578,7 @@ public class TestController {
                     //ja
                     String customerUserName = userSession(req).getUsername();
                     String facilityName = content.getFacilityName();
+                    facilityForCustomer = facilityName;
                     CheckIfCustomerIsFirstTimeInFacility(customerUserName,facilityName);
                     //ja
                     return "success";
@@ -586,7 +589,7 @@ public class TestController {
         boolIfFirstTime = testService.CheckIfFirstTime(customerUsername,facilityName);
     }
 
-    public static void PutComment(){
+    public static void RouteComment(){
         get(
                 "rest/customerHomePage/checkComment",(req,res)->{
                     res.body("application/json");
@@ -598,6 +601,22 @@ public class TestController {
                     }
                 }
         );
+    }
+
+    public static void AddComment(){
+        post(
+                "rest/customerHomePage/putComment/add",(req,res)-> {
+                    res.body("application/json");
+                    CommentDTO comment = g.fromJson(req.body(), CommentDTO.class);
+                    comment.setId(testService.GetSizeComments()+1);
+                    comment.setFacilityID(facilityForCustomer);
+                    comment.setCustomerID(userSession(req).getUsername());
+                    comment.setAvailable(0);
+                    comment.setIsDeleted(0);
+                    testService.AddComment(comment);
+                    return "Success";
+                }
+                );
     }
 
     public static void GetTrainingsForCustomer(){

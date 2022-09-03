@@ -198,7 +198,7 @@ public class TestService {
     }
 
     public Boolean CheckIfFirstTime(String customerUsername,String facilityName){
-        Boolean boolToReturn = false;
+        Boolean boolToReturn = true;
         List<CommentDTO> commentList = comments.GetComments();
         for (CommentDTO comment: commentList) {
             String facilityToCheck = comment.getFacilityID();
@@ -209,6 +209,14 @@ public class TestService {
             }
         }
         return boolToReturn;
+    }
+
+    public int GetSizeComments(){
+        return comments.GetSize();
+    }
+
+    public void AddComment(CommentDTO comment){
+        comments.AddComment(comment);
     }
 
 }

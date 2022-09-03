@@ -100,7 +100,8 @@ Vue.component("customerHomePage",{
         //ja
         axios.get('rest/customerHomePage/checkComment').then(response =>{
             alert("Prvi put u objektu")
-        }).cathc(error =>{
+            router.push('customerHomePage/putComment')
+        }).catch(error =>{
             alert("Nije prvi put u objektu")
         })
         //ja

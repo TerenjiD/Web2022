@@ -44,7 +44,7 @@ const router = new VueRouter({
 		{ path : '/customerHomePage/buyFitPass', component: BuyMembership},
 		{ path : '/customerHomePage/FacilityOpen', component: FacilityOpen},
 		{ path : '/coachHomePage/view', component: ViewTraining},
-		{ path : '/customerHomePage/addComment', component: AddComment}
+		{ path : '/customerHomePage/putComment', component: AddComment}
 	  ]
 });
 
