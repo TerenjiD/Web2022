@@ -17,6 +17,8 @@ const AddCoachToContent = {template : '<addCoachToTraining></addCoachToTraining>
 const ChangeContent = {template : '<changeContent></changeContent>'}
 const BuyMembership = {template : '<buyFitPass></buyFitPass>'}
 const FacilityOpen = {template : '<FacilityOpen></FacilityOpen>'}
+const ViewTraining = {template : '<viewTrainingCoach></viewTrainingCoach>'}
+const AddComment = {template : '<putComment></putComment>'}
 
 
 const router = new VueRouter({
@@ -40,7 +42,9 @@ const router = new VueRouter({
 		{ path : '/managerHomePage/addCoachToTraining/',component: AddCoachToContent },
 		{ path : '/managerHomePage/changeContent/',component: ChangeContent },
 		{ path : '/customerHomePage/buyFitPass', component: BuyMembership},
-		{ path : '/customerHomePage/FacilityOpen', component: FacilityOpen}
+		{ path : '/customerHomePage/FacilityOpen', component: FacilityOpen},
+		{ path : '/coachHomePage/view', component: ViewTraining},
+		{ path : '/customerHomePage/addComment', component: AddComment}
 	  ]
 });
 

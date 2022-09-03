@@ -14,20 +14,13 @@ public class Membership implements Serializable {
     private MembershipStatus status;
     private String appointmentNumber;
 
-    public Membership(String id, MembershipType type, LocalDateTime paymentDate, LocalDateTime expirationDate,
-                      int price, String customer, MembershipStatus status, String appointmentNumber) {
-        this.id = id;
-        this.type = type;
-        this.paymentDate = paymentDate;
-        this.expirationDate = expirationDate;
-        this.price = price;
-        this.customer = customer;
-        this.status = status;
-        this.appointmentNumber = appointmentNumber;
-    }
+    private String appointmentNumberMax;
+
+
 
     public Membership(String id, String facility, MembershipType type, LocalDateTime paymentDate,
-                      LocalDateTime expirationDate, int price, String customer, MembershipStatus status, String appointmentNumber) {
+                      LocalDateTime expirationDate, int price, String customer, MembershipStatus status,
+                      String appointmentNumber, String appointmentNumberMax) {
         this.id = id;
         this.facility = facility;
         this.type = type;
@@ -37,6 +30,15 @@ public class Membership implements Serializable {
         this.customer = customer;
         this.status = status;
         this.appointmentNumber = appointmentNumber;
+        this.appointmentNumberMax = appointmentNumberMax;
+    }
+
+    public String getAppointmentNumberMax() {
+        return appointmentNumberMax;
+    }
+
+    public void setAppointmentNumberMax(String appointmentNumberMax) {
+        this.appointmentNumberMax = appointmentNumberMax;
     }
 
     public String getFacility() {

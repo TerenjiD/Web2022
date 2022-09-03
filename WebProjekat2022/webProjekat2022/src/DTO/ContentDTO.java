@@ -10,6 +10,9 @@ public class ContentDTO {
     private String description;
     private String duration;
 
+    private String startTime;
+    private String endTime;
+
     public ContentDTO(String nameID, String facilityName, String name, String type, String logo, String description, String duration) {
         this.nameID = nameID;
         this.facilityName = facilityName;
@@ -31,7 +34,45 @@ public class ContentDTO {
         this.duration = duration;
     }
 
+    public ContentDTO(String nameID, String facilityName, String name, String type, String coach, String logo,
+                      String description, String duration, String startTime, String endTime) {
+        this.nameID = nameID;
+        this.facilityName = facilityName;
+        this.name = name;
+        this.type = type;
+        this.coach = coach;
+        this.logo = logo;
+        this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public ContentDTO() {
+    }
+
+    public String getCoach() {
+        return coach;
+    }
+
+    public void setCoach(String coach) {
+        this.coach = coach;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getNameID() {

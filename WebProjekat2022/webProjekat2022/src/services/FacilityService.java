@@ -1,28 +1,22 @@
 package services;
 
 import DTO.TrainingHistoryDTO;
-import beans.Customer;
-import beans.Facility;
-import beans.Membership;
-import beans.TrainingHistory;
-import storages.CustomerStorage;
-import storages.FacilityStorage;
-import storages.MembershipStorage;
-import storages.TrainingHistoryStorage;
+import beans.*;
+import storages.*;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FacilityService {
     private FacilityStorage facilities= new FacilityStorage();
     private CustomerStorage customers = CustomerStorage.getInstance();
 
     private TrainingHistoryStorage trainings = TrainingHistoryStorage.getInstance();
+
+    private CoachStorage coaches = CoachStorage.getInstance();
+    private ContentStorage contents = ContentStorage.getInstance();
 
     private MembershipStorage memberships = MembershipStorage.getInstance();
 
@@ -33,6 +27,7 @@ public class FacilityService {
     public Customer GetByUsernameCustomer(String username){
         return customers.GetByID(username);
     }
+    //Za Terenjija
 
 
     public List<Facility> getFacilities() {
@@ -44,7 +39,7 @@ public class FacilityService {
         List<Facility> list= facilities.sortCollection(this.facilities.getSearched(input));
         return list;
     }
-
+    //Za terenjija
     public int GetMembershipIDCount(){
         return memberships.CountID();
     }
@@ -114,4 +109,66 @@ public class FacilityService {
         return listToReturn;
     }
 
+    public List<Content> getTrainings(String username){
+        List<Content> listToReturn = contents.GetTrainingsForCoach(username);
+        return listToReturn;
+    }
+
+    public void CancelTraining(Content training){
+        String id = training.getNameID();
+        contents.CancelContent(training);
+    }
+
+    public List<Customer> GetCustomersToShowForManager(Manager manager){
+        List<Customer> listToIterate =  customers.GetCustomers();
+        List<Customer> listToReturn = new ArrayList<>();
+        String facilityFlag = manager.getFacility();
+        Facility facility = facilities.getFacility(facilityFlag);
+        //String memFlag = customer.getMembership();
+        for (Customer customerToCheck: listToIterate
+        ) {
+            String membershipFlag = customerToCheck.getMembership();
+            if(membershipFlag.equals("nista")){
+                continue;
+            }
+            Membership membership = memberships.FindById(membershipFlag);
+            String facilityFlag1 = membership.getFacility();
+
+            int appNum = Integer.parseInt(membership.getAppointmentNumber());
+            int appNumMax = Integer.parseInt(membership.getAppointmentNumberMax());
+            int sum = appNumMax-appNum;
+            if(facilityFlag1.equals(facilityFlag) && sum != 0){
+                listToReturn.add(customerToCheck);
+            }
+        }
+        return listToReturn;
+    }
+
+    public Customer GetCustomer(String username){
+        return customers.FindById(username);
+    }
+
+    public List<Coach> GetCoachesToShowForManager(String facility){
+        String username="",name="",lastName="";
+        List<Coach> coachList = coaches.GetCoaches();
+        List<Content> contentList = contents.GetContents(facility);
+        List<Coach> listToReturn = new ArrayList<>();
+        Coach coach;
+        StringTokenizer st;
+        for (Content content: contentList) {
+            String coachToTrim = content.getCoachID();
+            if(coachToTrim.equals("nema")){
+                continue;
+            }
+            StringTokenizer str = new StringTokenizer(coachToTrim, " ");
+            while (str.hasMoreTokens()) {
+                username = str.nextToken().trim();
+                name = str.nextToken().trim();
+                lastName = str.nextToken().trim();
+            }
+            coach = coaches.GetByIdCoach(username);
+            listToReturn.add(coach);
+        }
+        return listToReturn;
+    }
 }

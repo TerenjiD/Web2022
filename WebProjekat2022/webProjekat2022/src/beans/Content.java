@@ -10,17 +10,14 @@ public class Content {
     private String description;
     private String duration;
 
-    public Content(String nameID, String facilityName, String name, ContentType type, String logo, String description, String duration) {
-        this.nameID = nameID;
-        this.facilityName = facilityName;
-        this.name = name;
-        this.type = type;
-        this.logo = logo;
-        this.description = description;
-        this.duration = duration;
-    }
+    private String startTime;
+    private String endTime;
 
-    public Content(String nameID, String facilityName, String name, ContentType type, String coachID, String logo, String description, String duration) {
+    private int isDeleted;
+
+
+    public Content(String nameID, String facilityName, String name, ContentType type, String coachID, String logo,
+                   String description, String duration, int isDeleted) {
         this.nameID = nameID;
         this.facilityName = facilityName;
         this.name = name;
@@ -29,9 +26,49 @@ public class Content {
         this.logo = logo;
         this.description = description;
         this.duration = duration;
+        this.isDeleted = isDeleted;
+    }
+
+    public Content(String nameID, String facilityName, String name, ContentType type, String coachID, String logo,
+                   String description, String duration, String startTime, String endTime, int isDeleted) {
+        this.nameID = nameID;
+        this.facilityName = facilityName;
+        this.name = name;
+        this.type = type;
+        this.coachID = coachID;
+        this.logo = logo;
+        this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isDeleted = isDeleted;
     }
 
     public Content() {
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public String getNameID() {

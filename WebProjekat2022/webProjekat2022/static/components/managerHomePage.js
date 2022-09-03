@@ -4,7 +4,9 @@ Vue.component("managerHomePage",{
             userDTO : null,
             facilities : null,
             facilityDTO : null,
-            contentToShow : null
+            contentToShow : null,
+            customers : null,
+            coaches : null
         }
     },
     template:`
@@ -38,8 +40,18 @@ Vue.component("managerHomePage",{
             <tr><td>Rating:</td>
                 <td>{{facilityDTO.rating}}</td>
             </tr>
-            
+
         </table>
+        <div>
+                        <table >
+                            <tr><td>Korisnici:</td><td v-for="(p,index) in customers">{{p.name}} {{p.lastName}}</td></tr>
+                        </table>
+        </div>
+        <div>
+                        <table >
+                            <tr><td>Treneri:</td><td v-for="(p,index) in coaches">{{p.name}} {{p.lastName}}</td></tr>
+                        </table>
+        </div>
         <button v-on:click="addContent" style="padding: 7px 20px;
                         background-color: aqua;">Dodaj sadrzaj</button>
         <table v-for="(p, index) in contentToShow">
@@ -68,6 +80,9 @@ Vue.component("managerHomePage",{
                         background-color: aqua;">Dodaj trenera</button></td>
             </tr>
         </table>
+        <div>
+            <table></table>
+        </div>
         </div>
                         <div>
                         <h3>Prikaz sportskih objekata</h3>
@@ -103,7 +118,7 @@ Vue.component("managerHomePage",{
                                 <td>{{p.rating}}</td>
                             </tr>
                         </table>
-    
+
     </div>
     `,
     mounted(){
@@ -113,6 +128,8 @@ Vue.component("managerHomePage",{
                .then(response => (this.facilities = response.data));
         axios.get('/rest/managerHomePage/getFacility').then(response => (this.facilityDTO = response.data));
         axios.get('/rest/managerHomePage/getContent/').then(response => (this.contentToShow = response.data));
+        axios.get('rest/managerHomePage/GetCustomers').then(response => (this.customers = response.data))
+        axios.get('rest/managerHomePage/GetCoachesForSpecificFacility').then(response => (this.coaches = response.data))
     },
     methods : {
         changeInfo : function() {

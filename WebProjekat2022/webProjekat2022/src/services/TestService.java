@@ -20,6 +20,10 @@ public class TestService {
 
     private CustomerStorage customers = CustomerStorage.getInstance();
 
+    //ja
+    private CommentStorage comments = CommentStorage.getInstance();
+    //ja
+
     public TestService() throws FileNotFoundException {
     }
 
@@ -29,7 +33,7 @@ public class TestService {
     public void addUser(User user){
         this.users.addUser(user);
         Customer customer = new Customer(user.getUsername(),user.getPassword(),user.getName(),user.getLastName(),user.getGender(),
-                user.getDateOfBirth(),user.getRole(),0,new CustomerType("nista"),new Membership("nista"));
+                user.getDateOfBirth(),user.getRole(),0,"nista","nista");
         this.customers.addCustomer(customer);
     }
 
@@ -168,7 +172,8 @@ public class TestService {
             flagContent = ContentType.SAUNA;
         }
         Content contentToSend = new Content(flagNameID,flagFacility,contentDTO.getName(),flagContent,"nema",
-                contentDTO.getLogo(),contentDTO.getDescription(),contentDTO.getDuration());
+                contentDTO.getLogo(),contentDTO.getDescription(),contentDTO.getDuration(),contentDTO.getStartTime(),
+                contentDTO.getEndTime(),0);
         contents.addContent(contentToSend);
     }
 
@@ -190,6 +195,20 @@ public class TestService {
 
     public void ChangeContent(Content content){
         contents.ChangeContent(content);
+    }
+
+    public Boolean CheckIfFirstTime(String customerUsername,String facilityName){
+        Boolean boolToReturn = false;
+        List<CommentDTO> commentList = comments.GetComments();
+        for (CommentDTO comment: commentList) {
+            String facilityToCheck = comment.getFacilityID();
+            String customerToCheck = comment.getCustomerID();
+            if(facilityToCheck.equals(facilityName) && customerToCheck.equals(customerUsername)){
+                boolToReturn = false;
+                break;
+            }
+        }
+        return boolToReturn;
     }
 
 }
