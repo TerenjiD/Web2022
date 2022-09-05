@@ -692,6 +692,56 @@ public class TestController {
         );
     }
 
+    public static void getComments(){
+        get(
+                "rest/adminHomePage/viewComments",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.getComments());
+                }
+        );
+    }
+
+    public static void commentAccpetance(){
+        post(
+                "rest/adminHomePage/viewComments/acceptance",(req,res)->{
+                    res.type("application/json");
+                    CommentDTO comment = g.fromJson(req.body(),CommentDTO.class);
+                    testService.acceptComment(comment);
+                    return "SUccess";
+                }
+        );
+    }
+
+    public static void getAllCommentsAdmin(){
+        get(
+                "rest/adminHomePage/viewCommentsForAdmin",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.getAllComments());
+                }
+        );
+    }
+
+    public static void getAllCommentsManager(){
+        get(
+                "rest/managerHomePage/viewCommentsForManager",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.getAllComments());
+                }
+        );
+    }
+
+    public static void getCommentsForFacility(){
+        get(
+                "rest/customerHomePage/viewCommentsForFacility",(req,res)->{
+                    res.type("application/json");
+                    Customer customer = facilityService.GetCustomer(userSession(req).getUsername());
+                    Membership membership = facilityService.GetMembershipById(customer.getMembership());
+                    String facility = membership.getFacility();
+                    return g.toJson(testService.getCommentsForFacility(facility));
+                }
+        );
+    }
+
     public static User userSession(Request req){
 
         Session ss = req.session(true);

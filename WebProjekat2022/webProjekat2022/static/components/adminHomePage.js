@@ -2,7 +2,8 @@ Vue.component("adminHomePage",{
     data : function(){
         return{
             adminDTO : null,
-            users : null
+            users : null,
+            //viewcomments : false
         }
     },
     template:`
@@ -17,6 +18,10 @@ Vue.component("adminHomePage",{
             background-color: aqua;">Izmeni podatke</button>
             <button v-on:click="createFacility" style="padding: 7px 20px;
             background-color: aqua;">Napravi objekat sportski</button>
+        </div>
+        <div>
+            <button v-on:click="viewComment" style="padding: 7px 20px;
+            background-color: aqua;">Pregledaj komentare</button>
         </div>
         <div>
             <table border="1">
@@ -54,6 +59,9 @@ Vue.component("adminHomePage",{
         },
         createFacility : function(event){
             router.push('/adminHomePage/createFacility/')
+        },
+        viewComment : function(event){
+            router.push('/adminHomePage/viewComments')
         }
     }
     

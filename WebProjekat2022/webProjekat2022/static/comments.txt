@@ -1,1 +1,5 @@
-1;test;q;Prvi pokusaj.;7;0;0
+1;test;q;Prvi pokusaj.;7;1;0
+2;test;nijebilo;Drugi pokusaj.;7;1;0
+3;test;c;Treci pokusaj.;7;1;0
+4;test;z;Cetvrti pokusaj.;7;0;1
+5;test;o;Peti pokusaj.;7;0;0

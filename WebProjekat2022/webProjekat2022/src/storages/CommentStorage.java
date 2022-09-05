@@ -132,6 +132,7 @@ public class CommentStorage {
                     row[4] = Integer.toString(stars);
                     row[5] = Integer.toString(available);
                     row[6] = Integer.toString(isDeleted);
+                    comments.remove(id);
                     comments.put(id,comment);
                 }
                 rows.add(row);
