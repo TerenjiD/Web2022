@@ -173,15 +173,15 @@ public class CustomerStorage {
         }
     }
 
-    public void editMembershipAndPoints(Customer customer,String oldId,String idToAdd,long points){
+    public void editMembershipAndPoints(Customer customer,String oldId,String idToAdd,double points){
         //users.put(user.getUsername(),user);
         //customers.remove(username);
         String usern=customer.getUsername();
         Membership membership = memStor.FindById(oldId);
         String idflag="nista";
-        Long oldPoints = customer.getPoints();
+        double oldPoints = customer.getPoints();
         customer.setMembership(idflag);
-        Long newPoints = oldPoints+points;
+        double newPoints = oldPoints+points;
         customer.setPoints(newPoints);
         customers.put(usern,customer);
         String file = "./static/customers.txt";
@@ -196,7 +196,7 @@ public class CustomerStorage {
             while((line=reader.readLine()) != null){
                 String[] row = line.split(";");
                 if(row[0].equals(usern)){
-                    row[7]= Long.toString(newPoints);
+                    row[7]= Double.toString(newPoints);
                     row[9] = idToAdd;
                 }
                 rows.add(row);

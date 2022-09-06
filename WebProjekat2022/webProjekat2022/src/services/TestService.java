@@ -290,4 +290,14 @@ public class TestService {
         promocodes.addPromocode(promocode);
     }
 
+    public Promocode getPromocode(String name){
+        return promocodes.getByName(name);
+    }
+
+    public void decrementPromocode(Promocode promocode){
+        int flag = promocode.getNumberOfCode();
+        promocode.setNumberOfCode(flag-1);
+        promocodes.editPromocode(promocode);
+    }
+
 }

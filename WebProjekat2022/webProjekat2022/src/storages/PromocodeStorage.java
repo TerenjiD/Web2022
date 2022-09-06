@@ -177,4 +177,18 @@ public class PromocodeStorage {
         return promocodes.size();
     }
 
+    public Promocode getByName(String name){
+        List<Promocode> listToIterate = new ArrayList<>(getValues());
+        Promocode promocodeFlag = new Promocode();
+        for (Promocode promocode:listToIterate
+             ) {
+            String flag = promocode.getName();
+            if(flag.equals(name)){
+                promocodeFlag = promocode;
+                break;
+            }
+        }
+        return promocodeFlag;
+    }
+
 }

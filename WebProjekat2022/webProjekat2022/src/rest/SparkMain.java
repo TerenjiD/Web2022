@@ -70,5 +70,6 @@ public class SparkMain {
         TestController.getAllCommentsManager();
         TestController.setFacilityForComments();
         TestController.addPromocode();
+        TestController.inputPromocode();
     }
 }
