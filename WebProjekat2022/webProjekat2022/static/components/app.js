@@ -50,7 +50,7 @@ const router = new VueRouter({
 		{ path : '/coachHomePage/view', component: ViewTraining},
 		{ path : '/customerHomePage/putComment', component: AddComment},
 		{ path : '/adminHomePage/viewComments', component: ViewComments},
-		{ path : '/adminHomePage/commentsToViewAdimin', component: ViewCommentsAdmin},
+		{ path : '/adminHomePage/commentsToViewAdmin', component: ViewCommentsAdmin},
 		{ path : '/managerHomePage/commentsToViewManager', component: ViewCommentsManager},
 		{ path : '/customerHomePage/viewCommentsForFacility', component: ViewCommentsForFacility},
 	  ]

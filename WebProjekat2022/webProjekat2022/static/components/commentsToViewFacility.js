@@ -22,7 +22,7 @@ Vue.component("viewCommentsForFacility",{
     },
     methods : {
         goBack : function(){
-            router.push('rest/customerHomePage')
+            router.push('/customerHomePage')
         }
     }
 })

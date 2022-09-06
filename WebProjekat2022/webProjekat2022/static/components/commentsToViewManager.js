@@ -24,7 +24,7 @@ Vue.component("commentsToViewManager",{
     },
     methods : {
         goBack : function(){
-            router.push('rest/managerHomePage')
+            router.push('/managerHomePage')
         }
     }
 })

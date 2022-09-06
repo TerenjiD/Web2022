@@ -240,6 +240,17 @@ public class TestService {
         List<CommentDTO> listToReturn = comments.GetComments();
         return listToReturn;
     }
+    public List<CommentDTO> getAllCommentsForManager(String facility){
+        List<CommentDTO> listToIterate = comments.GetComments();
+        List<CommentDTO> listToReturn = new ArrayList<>();
+        for (CommentDTO comment:listToIterate) {
+            String facilityToCheck = comment.getFacilityID();
+            if (facilityToCheck.equals(facility) && comment.getIsDeleted() == 0){
+                listToReturn.add(comment);
+            }
+        }
+        return listToReturn;
+    }
 
     public List<CommentDTO> getCommentsForFacility(String facility){
         List<CommentDTO> listToIterate = comments.GetComments();

@@ -22,6 +22,8 @@ Vue.component("adminHomePage",{
         <div>
             <button v-on:click="viewComment" style="padding: 7px 20px;
             background-color: aqua;">Pregledaj komentare</button>
+            <button v-on:click="viewComments" style="padding: 7px 20px;
+            background-color: aqua;">Pregledaj sve komentare</button>
         </div>
         <div>
             <table border="1">
@@ -62,6 +64,9 @@ Vue.component("adminHomePage",{
         },
         viewComment : function(event){
             router.push('/adminHomePage/viewComments')
+        },
+        viewComments : function(event){
+            router.push('/adminHomePage/commentsToViewAdmin')
         }
     }
     

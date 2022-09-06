@@ -24,7 +24,7 @@ Vue.component("commentsToViewAdmin",{
     },
     methods : {
         goBack : function(){
-            router.push('rest/adminHomePage')
+            router.push('/adminHomePage')
         }
     }
 })

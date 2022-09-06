@@ -31,6 +31,8 @@ public class TestController {
 
     private static String facilityForCustomer;
 
+    private static String setFacilityForCommentsFlag;
+
     static {
         try {
             facilityService = new FacilityService();
@@ -725,7 +727,9 @@ public class TestController {
         get(
                 "rest/managerHomePage/viewCommentsForManager",(req,res)->{
                     res.type("application/json");
-                    return g.toJson(testService.getAllComments());
+                    Manager manager = testService.GetByIdManager(userSession(req).getUsername());
+                    String facility = manager.getFacility();
+                    return g.toJson(testService.getAllCommentsForManager(facility));
                 }
         );
     }
@@ -734,10 +738,18 @@ public class TestController {
         get(
                 "rest/customerHomePage/viewCommentsForFacility",(req,res)->{
                     res.type("application/json");
-                    Customer customer = facilityService.GetCustomer(userSession(req).getUsername());
-                    Membership membership = facilityService.GetMembershipById(customer.getMembership());
-                    String facility = membership.getFacility();
-                    return g.toJson(testService.getCommentsForFacility(facility));
+                    return g.toJson(testService.getCommentsForFacility(setFacilityForCommentsFlag));
+                }
+        );
+    }
+
+    public static void setFacilityForComments(){
+        post(
+                "rest/customerHomePage/setFacilityForComments",(req,res)->{
+                    res.type("application/json");
+                    Facility facility = g.fromJson(req.body(),Facility.class);
+                    setFacilityForCommentsFlag = facility.getName();
+                    return "Success";
                 }
         );
     }

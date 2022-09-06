@@ -15,6 +15,10 @@ Vue.component("managerHomePage",{
         <button v-on:click="changeInfo" style="padding: 7px 20px;
                         background-color: aqua;">Izmeni</button>
         <div>
+        <div>
+        <button v-on:click="viewComments" style="padding: 7px 20px;
+        background-color: aqua;">Komentari</button>
+        </div>
         <p>Objekat od ovog menadzera : {{facilityDTO.name}}</p>
         <table>
             <tr><td>Facility type:</td>
@@ -155,6 +159,9 @@ Vue.component("managerHomePage",{
         addCoachToContent : function(p){
             axios.post('rest/managerHomePage/setContent/',p);
             router.push('/managerHomePage/addCoachToTraining');
+        },
+        viewComments : function(){
+            router.push('/managerHomePage/commentsToViewManager')
         }
     }
     

@@ -68,5 +68,6 @@ public class SparkMain {
         TestController.getCommentsForFacility();
         TestController.getAllCommentsAdmin();
         TestController.getAllCommentsManager();
+        TestController.setFacilityForComments();
     }
 }
