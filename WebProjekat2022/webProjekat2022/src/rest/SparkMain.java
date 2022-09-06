@@ -69,5 +69,6 @@ public class SparkMain {
         TestController.getAllCommentsAdmin();
         TestController.getAllCommentsManager();
         TestController.setFacilityForComments();
+        TestController.addPromocode();
     }
 }

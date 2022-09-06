@@ -754,6 +754,23 @@ public class TestController {
         );
     }
 
+    public static void addPromocode(){
+        post(
+                "rest/adminHomePage/definePromocode/addPromocode",(req,res)->{
+                    res.type("application/json");
+                    PromocodeDTO promocode = g.fromJson(req.body(),PromocodeDTO.class);
+                    Boolean checkFlag = testService.checkIfPromocodesNameIsUnique(promocode.getName());
+                    if(checkFlag==true){
+                        testService.addPromocode(promocode);
+                        return "Success";
+                    }else{
+                        return null;
+                    }
+
+                }
+        );
+    }
+
     public static User userSession(Request req){
 
         Session ss = req.session(true);
