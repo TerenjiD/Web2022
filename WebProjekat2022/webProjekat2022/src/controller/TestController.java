@@ -25,9 +25,13 @@ public class TestController {
     private static Gson g = new Gson();
     private static TestService testService;
 
-    private static Boolean boolIfFirstTime;
+    private static Boolean boolIfFirstTime=false;
 
     private static FacilityService facilityService;
+
+    private static String facilityForCustomer;
+
+    private static String setFacilityForCommentsFlag;
 
     static {
         try {
@@ -576,6 +580,7 @@ public class TestController {
                     //ja
                     String customerUserName = userSession(req).getUsername();
                     String facilityName = content.getFacilityName();
+                    facilityForCustomer = facilityName;
                     CheckIfCustomerIsFirstTimeInFacility(customerUserName,facilityName);
                     //ja
                     return "success";
@@ -586,7 +591,7 @@ public class TestController {
         boolIfFirstTime = testService.CheckIfFirstTime(customerUsername,facilityName);
     }
 
-    public static void PutComment(){
+    public static void RouteComment(){
         get(
                 "rest/customerHomePage/checkComment",(req,res)->{
                     res.body("application/json");
@@ -598,6 +603,22 @@ public class TestController {
                     }
                 }
         );
+    }
+
+    public static void AddComment(){
+        post(
+                "rest/customerHomePage/putComment/add",(req,res)-> {
+                    res.body("application/json");
+                    CommentDTO comment = g.fromJson(req.body(), CommentDTO.class);
+                    comment.setId(testService.GetSizeComments()+1);
+                    comment.setFacilityID(facilityForCustomer);
+                    comment.setCustomerID(userSession(req).getUsername());
+                    comment.setAvailable(0);
+                    comment.setIsDeleted(0);
+                    testService.AddComment(comment);
+                    return "Success";
+                }
+                );
     }
 
     public static void GetTrainingsForCustomer(){
@@ -669,6 +690,66 @@ public class TestController {
                     Manager manager = testService.GetByIdManager(username);
                     String facility = manager.getFacility();
                     return g.toJson(facilityService.GetCoachesToShowForManager(facility));
+                }
+        );
+    }
+
+    public static void getComments(){
+        get(
+                "rest/adminHomePage/viewComments",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.getComments());
+                }
+        );
+    }
+
+    public static void commentAccpetance(){
+        post(
+                "rest/adminHomePage/viewComments/acceptance",(req,res)->{
+                    res.type("application/json");
+                    CommentDTO comment = g.fromJson(req.body(),CommentDTO.class);
+                    testService.acceptComment(comment);
+                    return "SUccess";
+                }
+        );
+    }
+
+    public static void getAllCommentsAdmin(){
+        get(
+                "rest/adminHomePage/viewCommentsForAdmin",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.getAllComments());
+                }
+        );
+    }
+
+    public static void getAllCommentsManager(){
+        get(
+                "rest/managerHomePage/viewCommentsForManager",(req,res)->{
+                    res.type("application/json");
+                    Manager manager = testService.GetByIdManager(userSession(req).getUsername());
+                    String facility = manager.getFacility();
+                    return g.toJson(testService.getAllCommentsForManager(facility));
+                }
+        );
+    }
+
+    public static void getCommentsForFacility(){
+        get(
+                "rest/customerHomePage/viewCommentsForFacility",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.getCommentsForFacility(setFacilityForCommentsFlag));
+                }
+        );
+    }
+
+    public static void setFacilityForComments(){
+        post(
+                "rest/customerHomePage/setFacilityForComments",(req,res)->{
+                    res.type("application/json");
+                    Facility facility = g.fromJson(req.body(),Facility.class);
+                    setFacilityForCommentsFlag = facility.getName();
+                    return "Success";
                 }
         );
     }

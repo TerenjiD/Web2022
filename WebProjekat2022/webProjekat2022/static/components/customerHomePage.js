@@ -79,6 +79,7 @@ Vue.component("customerHomePage",{
                         <td>{{p.workingHours}}</td>
                         <td>{{p.rating}}</td>
                         <td><button v-on:click="goIntoFacility(p)">Udji u objekat</button></td>
+                        <td><button v-on:click="viewComments(p)">Komentari</button></td>
                 	</tr>
                 </table>
     <button v-on:click = "logoutUser" style="padding: 7px 20px;
@@ -100,7 +101,8 @@ Vue.component("customerHomePage",{
         //ja
         axios.get('rest/customerHomePage/checkComment').then(response =>{
             alert("Prvi put u objektu")
-        }).cathc(error =>{
+            router.push('customerHomePage/putComment')
+        }).catch(error =>{
             alert("Nije prvi put u objektu")
         })
         //ja
@@ -127,6 +129,9 @@ Vue.component("customerHomePage",{
                 alert("Uspesan ulazak")
                 router.push('/customerHomePage/FacilityOpen')
             }).catch(error => (alert("Neuspesan ulazak")))
+        },
+        viewComments : function(p){
+            axios.post('rest/customerHomePage/setFacilityForComments',p).then(response => (router.push('/customerHomePage/viewCommentsForFacility')))
         }
     }
 })

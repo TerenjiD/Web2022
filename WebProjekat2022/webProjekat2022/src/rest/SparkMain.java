@@ -61,6 +61,13 @@ public class SparkMain {
         TestController.GetCustomers();
         TestController.GetCoachesForSpecificFacility();
 
-        TestController.PutComment();
+        TestController.RouteComment();
+        TestController.AddComment();
+        TestController.getComments();
+        TestController.commentAccpetance();
+        TestController.getCommentsForFacility();
+        TestController.getAllCommentsAdmin();
+        TestController.getAllCommentsManager();
+        TestController.setFacilityForComments();
     }
 }

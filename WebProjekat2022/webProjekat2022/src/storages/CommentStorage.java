@@ -19,6 +19,10 @@ public class CommentStorage {
         return instance;
     }
 
+    public int GetSize(){
+        return comments.size();
+    }
+
     private CommentStorage() throws FileNotFoundException {
         BufferedReader in = null;
         try {
@@ -128,6 +132,7 @@ public class CommentStorage {
                     row[4] = Integer.toString(stars);
                     row[5] = Integer.toString(available);
                     row[6] = Integer.toString(isDeleted);
+                    comments.remove(id);
                     comments.put(id,comment);
                 }
                 rows.add(row);
