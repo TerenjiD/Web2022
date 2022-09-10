@@ -796,7 +796,9 @@ public class TestController {
                     if(checkFlag==false){
                         usePromocode = true;
                         promocodeName = promocodeDTO.getName();
-                        return "Success";
+                        Promocode promocode = testService.getPromocode(promocodeName);
+                        int percent = promocode.getPercent();
+                        return percent;
                     }else{
                         return null;
                     }

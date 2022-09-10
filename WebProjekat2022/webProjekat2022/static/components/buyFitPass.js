@@ -88,6 +88,7 @@ Vue.component("buyFitPass",{
                 alert("Ispravan promo kod")
                 this.step1 = false
                 this.step2 = true
+                
             }).catch(error => {
                 alert("Promo kod sa tim imenom ne postoji")
             })
