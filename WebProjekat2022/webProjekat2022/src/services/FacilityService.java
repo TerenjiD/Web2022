@@ -60,9 +60,9 @@ public class FacilityService {
         int seconds = timeToWork.getSecond();
         int day = timeToWork.getDayOfMonth();
         LocalDateTime currentTime = LocalDateTime.now();
-        int price = membership.getPrice();
+        double price = membership.getPrice();
         int usage = Integer.parseInt(membership.getAppointmentNumber());
-        long points =(price/1000)*(30-usage);
+        double points =(price/1000)*(30-usage);
         if(points == 0){
             points = 1;
         }

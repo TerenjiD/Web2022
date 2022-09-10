@@ -33,6 +33,10 @@ public class TestController {
 
     private static String setFacilityForCommentsFlag;
 
+    private static String promocodeName;
+
+    private static Boolean usePromocode = false;
+
     static {
         try {
             facilityService = new FacilityService();
@@ -485,7 +489,7 @@ public class TestController {
             //String flagStatus = membershipDTO.getStatus();
             String customerUsername = userSession(req).getUsername();
             String appNum = membershipDTO.getAppointmentNumber();
-            int price = membershipDTO.getPrice();
+            long price = membershipDTO.getPrice();
             LocalDateTime expirationDate;
             MembershipType memType;
             if(flagMemType.equals("Mesecno")){
@@ -506,8 +510,20 @@ public class TestController {
             String facility = membershipDTO.getFacility();
             Membership membership = new Membership(idFlag,facility,memType,currentDate,
                     expirationDate,price,customerUsername,MembershipStatus.ACTIVE,appNum,appNum);
-            facilityService.createMembership(membership,usernameFlag);
-            return "SUCCESS";
+            if(usePromocode == true){
+                Promocode promocode = testService.getPromocode(promocodeName);
+                double test = promocode.getPercent();
+                double test1 = (1-(test/100));
+                double newPrice = price * test1;
+                membership.setPrice(newPrice);
+                testService.decrementPromocode(promocode);
+                facilityService.createMembership(membership,usernameFlag);
+                return "Success";
+            }else{
+                facilityService.createMembership(membership,usernameFlag);
+                return "SUCCESS";
+            }
+
         });
     }
 
@@ -750,6 +766,42 @@ public class TestController {
                     Facility facility = g.fromJson(req.body(),Facility.class);
                     setFacilityForCommentsFlag = facility.getName();
                     return "Success";
+                }
+        );
+    }
+
+    public static void addPromocode(){
+        post(
+                "rest/adminHomePage/definePromocode/addPromocode",(req,res)->{
+                    res.type("application/json");
+                    PromocodeDTO promocode = g.fromJson(req.body(),PromocodeDTO.class);
+                    Boolean checkFlag = testService.checkIfPromocodesNameIsUnique(promocode.getName());
+                    if(checkFlag==true){
+                        testService.addPromocode(promocode);
+                        return "Success";
+                    }else{
+                        return null;
+                    }
+
+                }
+        );
+    }
+
+    public static void inputPromocode(){
+        post(
+                "rest/customerHomePage/buyFitPass/checkPromo",(req,res)->{
+                    res.type("application/json");
+                    PromocodeDTO promocodeDTO = g.fromJson(req.body(),PromocodeDTO.class);
+                    Boolean checkFlag = testService.checkIfPromocodesNameIsUnique(promocodeDTO.getName());
+                    if(checkFlag==false){
+                        usePromocode = true;
+                        promocodeName = promocodeDTO.getName();
+                        Promocode promocode = testService.getPromocode(promocodeName);
+                        int percent = promocode.getPercent();
+                        return "Success";
+                    }else{
+                        return null;
+                    }
                 }
         );
     }

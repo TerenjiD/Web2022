@@ -26,6 +26,10 @@ Vue.component("adminHomePage",{
             background-color: aqua;">Pregledaj sve komentare</button>
         </div>
         <div>
+            <button v-on:click="createPromoCode" style="padding: 7px 20px;
+            background-color: aqua;">Napravi promo kod</button>
+        </div>
+        <div>
             <table border="1">
             <tr bgcolor="lightgrey">
                     <th>Ime</th>
@@ -67,6 +71,9 @@ Vue.component("adminHomePage",{
         },
         viewComments : function(event){
             router.push('/adminHomePage/commentsToViewAdmin')
+        },
+        createPromoCode : function(){
+            router.push('/adminHomePage/definePromocode')
         }
     }
     

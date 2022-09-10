@@ -119,7 +119,8 @@ public class MembershipStorage {
                 String formattedExpirationDate = exDate.format(formatter);
                 String[] data1 = {membership.getId(),membership.getFacility(), membership.getType().toString(),
                         formattedCurrentDate,formattedExpirationDate, String.valueOf(membership.getPrice()),
-                        membership.getCustomer(),membership.getStatus().toString(), membership.getAppointmentNumber()};
+                        membership.getCustomer(),membership.getStatus().toString(), membership.getAppointmentNumber(),
+                        membership.getAppointmentNumber()};
                 List<String[]> userList = new ArrayList<>();
                 userList.add(data1);
                 //userList.add(data2);

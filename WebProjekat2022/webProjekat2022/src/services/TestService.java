@@ -8,6 +8,8 @@ import storages.*;
 import javax.xml.stream.events.Comment;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class TestService {
     //ja
     private CommentStorage comments = CommentStorage.getInstance();
     //ja
+    private PromocodeStorage promocodes = PromocodeStorage.getInstance();
 
     public TestService() throws FileNotFoundException {
     }
@@ -262,6 +265,39 @@ public class TestService {
             }
         }
         return listToReturn;
+    }
+
+    public boolean checkIfPromocodesNameIsUnique(String name){
+        Boolean returnStatement = true;
+        List<Promocode> listToIterate = promocodes.getAllPromocodes();
+        for (Promocode promocode: listToIterate) {
+            String nameFlag = promocode.getName();
+            if(nameFlag.equals(name)){
+                returnStatement = false;
+                break;
+            }
+        }
+        return returnStatement;
+    }
+
+    public void addPromocode(PromocodeDTO promocodeDTO){
+        int idFlag = promocodes.getId()+1;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate flagStartTime =  LocalDate.parse(promocodeDTO.getStartTime(),formatter);
+        LocalDate flagEndTime =  LocalDate.parse(promocodeDTO.getEndTime(),formatter);
+        Promocode promocode = new Promocode(idFlag,promocodeDTO.getName(),flagStartTime,flagEndTime,
+                Integer.parseInt(promocodeDTO.getNumberOfCode()),Integer.parseInt(promocodeDTO.getPercent()),0);
+        promocodes.addPromocode(promocode);
+    }
+
+    public Promocode getPromocode(String name){
+        return promocodes.getByName(name);
+    }
+
+    public void decrementPromocode(Promocode promocode){
+        int flag = promocode.getNumberOfCode();
+        promocode.setNumberOfCode(flag-1);
+        promocodes.editPromocode(promocode);
     }
 
 }

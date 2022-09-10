@@ -23,6 +23,7 @@ const ViewComments = {template : '<viewComments></viewComments>'}
 const ViewCommentsAdmin = {template : '<commentsToViewAdmin></commentsToViewAdmin>'}
 const ViewCommentsManager = {template : '<commentsToViewManager></commentsToViewManager>'}
 const ViewCommentsForFacility = {template : '<viewCommentsForFacility></viewCommentsForFacility>'}
+const DefinePromocode = {template : '<definePromocode></definePromocode>'}
 
 
 const router = new VueRouter({
@@ -53,6 +54,7 @@ const router = new VueRouter({
 		{ path : '/adminHomePage/commentsToViewAdmin', component: ViewCommentsAdmin},
 		{ path : '/managerHomePage/commentsToViewManager', component: ViewCommentsManager},
 		{ path : '/customerHomePage/viewCommentsForFacility', component: ViewCommentsForFacility},
+		{ path : '/adminHomePage/definePromocode', component: DefinePromocode},
 	  ]
 });
 
