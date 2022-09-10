@@ -798,7 +798,7 @@ public class TestController {
                         promocodeName = promocodeDTO.getName();
                         Promocode promocode = testService.getPromocode(promocodeName);
                         int percent = promocode.getPercent();
-                        return percent;
+                        return "Success";
                     }else{
                         return null;
                     }
