@@ -29,6 +29,8 @@ public class TestService {
     //ja
     private PromocodeStorage promocodes = PromocodeStorage.getInstance();
 
+    private CustomerTypeStorage types = CustomerTypeStorage.getInstance();
+
     public TestService() throws FileNotFoundException {
     }
 
@@ -298,6 +300,25 @@ public class TestService {
         int flag = promocode.getNumberOfCode();
         promocode.setNumberOfCode(flag-1);
         promocodes.editPromocode(promocode);
+    }
+
+    public void changeCustomerType(Customer customer,double newPoints){
+        String type = customer.getCustomerType();
+        List<CustomerType> listToIterate = types.getTypes();
+        for (CustomerType typeFlag:listToIterate
+             ) {
+            String flag = typeFlag.getName();//flag silver
+            double flagNum = typeFlag.getRequiredPoints();
+            if(flag.equals(type)){
+                continue;
+            }else{
+                if(flagNum<newPoints){
+                    customers.editType(customer,flag);
+                    type=flag;
+                }
+            }
+        }
+
     }
 
 }

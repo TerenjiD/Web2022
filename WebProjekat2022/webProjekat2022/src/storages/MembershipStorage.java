@@ -88,7 +88,7 @@ public class MembershipStorage {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
                 LocalDateTime flagPaymentDate =  LocalDateTime.parse(paymentDate,formatter);
                 LocalDateTime flagExpirationDate =  LocalDateTime.parse(expirationDate,formatter);
-                Membership membership = new Membership(id,facility,memFlagType,flagPaymentDate,flagExpirationDate,Integer.parseInt(price)
+                Membership membership = new Membership(id,facility,memFlagType,flagPaymentDate,flagExpirationDate,Double.parseDouble(price)
                         ,customer, memFlagStatus,appointmentNumber,appointmentNumberMax);
                 memberships.put(id, membership);
 

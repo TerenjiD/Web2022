@@ -78,7 +78,7 @@ public class CustomerStorage {
                 else{
                     roleFlag = Role.ADMIN;
                 }
-                Customer customer = new Customer(username,password,name,lastName,gen,dateOfBirth, roleFlag,Long.parseLong(points),
+                Customer customer = new Customer(username,password,name,lastName,gen,dateOfBirth, roleFlag,Double.parseDouble(points),
                         customerType,membership);
                 customers.put(username, customer);
 
@@ -137,8 +137,8 @@ public class CustomerStorage {
         }else{
             idflag = membership.getId();
         }
-        customer.setMembership(idflag);
-        customers.put(usern,customer);
+        customer.setMembership(idToAdd);
+
         String file = "./static/customers.txt";
         File oldFile = new File(file);
         File newFile = new File("./static/temp.txt");
@@ -152,6 +152,8 @@ public class CustomerStorage {
                 String[] row = line.split(";");
                 if(row[0].equals(usern)){
                     row[9] = idToAdd;
+                    customers.remove(usern);
+                    customers.put(usern,customer);
                 }
                 rows.add(row);
 
@@ -198,6 +200,47 @@ public class CustomerStorage {
                 if(row[0].equals(usern)){
                     row[7]= Double.toString(newPoints);
                     row[9] = idToAdd;
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/customers.txt");
+            newFile.renameTo(dump);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void editType(Customer customer,String newType){
+        //users.put(user.getUsername(),user);
+        //customers.remove(username);
+        String usern=customer.getUsername();
+        customer.setCustomerType(newType);
+        String file = "./static/customers.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(usern)){
+                    row[8]= newType;
+                    customers.remove(usern);
+                    customers.put(usern,customer);
                 }
                 rows.add(row);
 

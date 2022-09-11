@@ -10,6 +10,10 @@ Vue.component("adminHomePage",{
     <div>
         <div>
             <p>Admin prikeroni {{adminDTO.name}}</p>
+            <div>
+            <button v-on:click="logout" style="padding: 7px 20px;
+            background-color: aqua;">Izloguj se</button><br>
+            </div>
             <button v-on:click="registerManager" style="padding: 7px 20px;
             background-color: aqua;">Napravi menadzera</button>
             <button v-on:click="registerCoach" style="padding: 7px 20px;
@@ -74,6 +78,13 @@ Vue.component("adminHomePage",{
         },
         createPromoCode : function(){
             router.push('/adminHomePage/definePromocode')
+        },
+        logout : function(event){
+            axios.post('rest/adminHomePage/logout').then(response => {
+                alert("Izlogovan si")
+                router.push('/')
+            })
+
         }
     }
     

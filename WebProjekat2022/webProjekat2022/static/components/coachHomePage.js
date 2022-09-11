@@ -8,6 +8,8 @@ Vue.component("coachHomePage",{
     template:`
     <div>
         <p>Trener prikeroni {{coachDTO.name}}</p>
+        <button v-on:click="logout" style="padding: 7px 20px;
+                    background-color: aqua;">Izloguj se</button><br>
         <button v-on:click="changeInfoCoach" style="padding: 7px 20px;
                         background-color: aqua;">Izmeni</button>
         <div>
@@ -28,6 +30,12 @@ Vue.component("coachHomePage",{
         },
         viewTraining : function(p,event){
             axios.post('rest/coachHomePage/viewTraining',p).then(response => (router.push('/coachHomePage/view')))
+        },
+        logout : function(event){
+            axios.post('rest/coachHomePage/logout').then(response => {
+                alert("Izlogovan si")
+                router.push('/')
+            })
         }
     }
     
