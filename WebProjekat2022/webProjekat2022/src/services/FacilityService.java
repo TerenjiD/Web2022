@@ -1,6 +1,8 @@
 package services;
 
+import DTO.FacilitySearchDTO;
 import DTO.TrainingHistoryDTO;
+import DTO.TrainingSearchDTO;
 import beans.*;
 import storages.*;
 
@@ -27,19 +29,18 @@ public class FacilityService {
     public Customer GetByUsernameCustomer(String username){
         return customers.GetByID(username);
     }
-    //Za Terenjija
 
 
     public List<Facility> getFacilities() {
-        List<Facility> list= facilities.sortCollection(this.facilities.getValues());
+        List<Facility> list= new ArrayList<>(this.facilities.getValues());
         return list;
     }
 
-    public List<Facility> searchFacilities(String input) {
-        List<Facility> list= facilities.sortCollection(this.facilities.getSearched(input));
+    public List<Facility> searchFacilities(FacilitySearchDTO input) {
+        List<Facility> list= this.facilities.getSearched(input);
         return list;
     }
-    //Za terenjija
+
     public int GetMembershipIDCount(){
         return memberships.CountID();
     }
@@ -170,5 +171,15 @@ public class FacilityService {
             listToReturn.add(coach);
         }
         return listToReturn;
+    }
+
+    public List<TrainingHistoryDTO> searchTrainingsCustomer(TrainingSearchDTO input,List<TrainingHistoryDTO> list) {
+        List<TrainingHistoryDTO> listReturn= this.trainings.getSearchedTrainings(input,list);
+        return listReturn;
+    }
+
+    public List<Content> searchTrainingsCoach(TrainingSearchDTO input, List<Content> list) {
+        List<Content> listReturn= this.contents.getSearchedTrainingsCoach(input,list);
+        return listReturn;
     }
 }

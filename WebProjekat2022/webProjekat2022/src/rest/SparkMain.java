@@ -62,5 +62,8 @@ public class SparkMain {
         TestController.GetCoachesForSpecificFacility();
 
         TestController.PutComment();
+        TestController.searchUsers();
+        TestController.searchTrainingsCustomer();
+        TestController.searchTrainingsCoach();
     }
 }

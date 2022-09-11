@@ -1,6 +1,7 @@
 package storages;
 
 import DTO.FacilityDTO;
+import DTO.FacilitySearchDTO;
 import beans.*;
 import com.opencsv.CSVWriter;
 
@@ -150,17 +151,141 @@ public class FacilityStorage {
         return list;
     }
 
-    public List<Facility> getSearched(String search) {
-        List<Facility> temp = new ArrayList<Facility>();
+    public List<Facility> getSearched(FacilitySearchDTO search) {
+        Collection<Facility> temp = new ArrayList<Facility>();
+        temp = searchByName(search.getName());
+        temp = searchByType(search.getType(),temp);
+        temp = searchByLocation(search.getLocation(),temp);
+        temp = searchByRating(search.getRating(),temp);
+        if(search.getSortBy() != null && search.getSortType() != null){
+            temp=sortList(search.getSortBy(),search.getSortType(),temp);
+        }
+        if(search.getFilterBy() != null){
+            temp = filterList(search.getFilterBy(),temp);
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+    public Collection<Facility> searchByName(String name){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (name == null || name ==""){
+             temp = getValues();
+        }else{
             for (Facility f : getValues()) {
-                if (f.getName().toUpperCase().contains(search.toUpperCase()) || f.getFacilityType().toString().contains(search.toUpperCase()) ||
-                        f.getLocation().getAddress().getCountry().toUpperCase().contains(search.toUpperCase()) ||
-                        f.getLocation().getAddress().getCity().toUpperCase().contains(search.toUpperCase()) ||
-                        f.getRating().toUpperCase().contains(search.toUpperCase()))
+                if (f.getName().toUpperCase().contains(name.toUpperCase()))
+                    temp.add(f);
+                }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+    public Collection<Facility> searchByType(String type,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (type == "" || type == null){
+            temp = starter;
+        }else{
+            for (Facility f : starter) {
+                if (f.getFacilityType().toString().contains(type.toUpperCase()))
                     temp.add(f);
             }
+        }
         List<Facility> list = new ArrayList<Facility>(temp);
-        Collections.sort(list);
+        return list;
+    }
+
+    public Collection<Facility> searchByLocation(String location,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (location == "" || location == null){
+            temp = starter;
+        }else{
+            for (Facility f : starter) {
+                if (f.getLocation().getAddress().getCountry().toUpperCase().contains(location.toUpperCase()) ||
+                        f.getLocation().getAddress().getCity().toUpperCase().contains(location.toUpperCase()))
+                    temp.add(f);
+            }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+    public Collection<Facility> searchByRating(String rating,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (rating == "" || rating == null){
+            temp = starter;
+        }else{
+            for (Facility f : starter) {
+                if ( f.getRating().toUpperCase().contains(rating.toUpperCase()))
+                    temp.add(f);
+            }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+     public Collection<Facility> sortList(String criterium,String type,Collection<Facility> starter){
+         List<Facility> list = new ArrayList<Facility>(starter);
+         if(type.equals("1")){
+             if (criterium.equals("1")) {
+                 Collections.sort(list,new FacilityComparator());
+             }else if(criterium.equals("2")){
+                 Collections.sort(list,new FacilityComparatorByLocation());
+             }else{
+                 Collections.sort(list,new FacilityComparatorByGrade());
+             }
+         }else{
+             if (criterium.equals("1")) {
+                 Collections.sort(list,new FacilityComparator().reversed());
+             }else if(criterium.equals("2")){
+                 Collections.sort(list,new FacilityComparatorByLocation().reversed());
+             }else{
+                 Collections.sort(list,new FacilityComparatorByGrade().reversed());
+             }
+         }
+         return list;
+     }
+
+    public Collection<Facility> filterList(String type,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if(type.equals("1")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("GYM")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("2")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("POOL")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("3")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("SPORT_CENTER")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("4")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("DANCE_STUDIO")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("5")){
+            for (Facility f:starter){
+                if(f.getStatus().toString().toUpperCase().contains("OPEN")){
+                    temp.add(f);
+                }
+            }
+        }else{
+            for (Facility f:starter){
+                if(f.getStatus().toString().toUpperCase().contains("CLOSED")){
+                    temp.add(f);
+                }
+            }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
         return list;
     }
 
@@ -247,6 +372,11 @@ public class FacilityStorage {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public Facility GetByIdFacility(String username){
+        Facility facility = facilities.get(username);
+        return facility;
     }
 
 }

@@ -20,9 +20,10 @@ public class TestService {
 
     private CustomerStorage customers = CustomerStorage.getInstance();
 
-    //ja
     private CommentStorage comments = CommentStorage.getInstance();
-    //ja
+
+    private TrainingHistoryStorage trainings = TrainingHistoryStorage.getInstance();
+
 
     public TestService() throws FileNotFoundException {
     }
@@ -209,6 +210,11 @@ public class TestService {
             }
         }
         return boolToReturn;
+    }
+
+    public List<User> searchUsers(UsersSearchDTO input) {
+        List<User> list= this.users.getSearchedUsers(input);
+        return list;
     }
 
 }
