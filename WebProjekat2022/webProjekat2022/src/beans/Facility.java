@@ -2,6 +2,7 @@ package beans;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.function.Function;
 
 public class Facility implements Serializable,Comparable<Facility> {
     private String name;
@@ -55,11 +56,6 @@ public class Facility implements Serializable,Comparable<Facility> {
         return status;
     }
 
-    @Override
-    public int compareTo(Facility o) {
-        return this.getStatus().compareTo(o.getStatus());
-    }
-
     public String getLogo() {
         return logo;
     }
@@ -75,4 +71,10 @@ public class Facility implements Serializable,Comparable<Facility> {
     public void setWorkingHours(String workingHours) {
         this.workingHours = workingHours;
     }
+
+    @Override
+    public int compareTo(Facility o) {
+        return this.getStatus().compareTo(o.getStatus());
+    }
+
 }

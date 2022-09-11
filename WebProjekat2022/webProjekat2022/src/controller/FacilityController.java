@@ -1,5 +1,6 @@
 package controller;
 
+import DTO.*;
 import beans.Membership;
 import beans.MembershipType;
 import services.FacilityService;
@@ -21,6 +22,8 @@ import static spark.Spark.post;
 public class FacilityController {
     private static FacilityService facilityService;
 
+    private static Gson g = new Gson();
+
     static {
         try {
             facilityService = new FacilityService();
@@ -39,10 +42,11 @@ public class FacilityController {
     }
 
     public static void searchFacilities() {
-        get("rest/facilities/search/:input", (req, res) -> {
+        post("rest/facilities/search/", (req, res) -> {
             res.type("application/json");
-            String input = req.params("input");
-            return gson.toJson(facilityService.searchFacilities(input));
+            FacilitySearchDTO facilitySearchDTO = g.fromJson(req.body(), FacilitySearchDTO.class);
+            return gson.toJson(facilityService.searchFacilities(facilitySearchDTO));
         });
     }
+
 }

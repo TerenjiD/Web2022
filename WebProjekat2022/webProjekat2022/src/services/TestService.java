@@ -24,12 +24,15 @@ public class TestService {
 
     private CustomerStorage customers = CustomerStorage.getInstance();
 
-    //ja
     private CommentStorage comments = CommentStorage.getInstance();
-    //ja
+
+    private TrainingHistoryStorage trainings = TrainingHistoryStorage.getInstance();
+
+  
     private PromocodeStorage promocodes = PromocodeStorage.getInstance();
 
     private CustomerTypeStorage types = CustomerTypeStorage.getInstance();
+
 
     public TestService() throws FileNotFoundException {
     }
@@ -217,6 +220,11 @@ public class TestService {
         }
         return boolToReturn;
     }
+
+
+    public List<User> searchUsers(UsersSearchDTO input) {
+        List<User> list= this.users.getSearchedUsers(input);
+        return list;
 
     public int GetSizeComments(){
         return comments.GetSize();
