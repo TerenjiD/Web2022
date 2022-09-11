@@ -5,8 +5,12 @@ import beans.*;
 import com.google.gson.JsonSyntaxException;
 import storages.*;
 
+import javax.xml.stream.events.Comment;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestService {
@@ -23,6 +27,11 @@ public class TestService {
     private CommentStorage comments = CommentStorage.getInstance();
 
     private TrainingHistoryStorage trainings = TrainingHistoryStorage.getInstance();
+
+  
+    private PromocodeStorage promocodes = PromocodeStorage.getInstance();
+
+    private CustomerTypeStorage types = CustomerTypeStorage.getInstance();
 
 
     public TestService() throws FileNotFoundException {
@@ -199,7 +208,7 @@ public class TestService {
     }
 
     public Boolean CheckIfFirstTime(String customerUsername,String facilityName){
-        Boolean boolToReturn = false;
+        Boolean boolToReturn = true;
         List<CommentDTO> commentList = comments.GetComments();
         for (CommentDTO comment: commentList) {
             String facilityToCheck = comment.getFacilityID();
@@ -212,9 +221,112 @@ public class TestService {
         return boolToReturn;
     }
 
+
     public List<User> searchUsers(UsersSearchDTO input) {
         List<User> list= this.users.getSearchedUsers(input);
         return list;
+
+    public int GetSizeComments(){
+        return comments.GetSize();
+    }
+
+    public void AddComment(CommentDTO comment){
+        comments.AddComment(comment);
+    }
+
+    public List<CommentDTO> getComments(){
+        List<CommentDTO> listToIterate = comments.GetComments();
+        List<CommentDTO> listToReturn = new ArrayList<>();
+        for (CommentDTO comment:listToIterate) {
+            if (comment.getIsDeleted() == 0 && comment.getAvailable() == 0){
+                listToReturn.add(comment);
+            }
+        }
+        return listToReturn;
+    }
+
+    public void acceptComment(CommentDTO comment){
+        comments.EditComment(comment);
+    }
+
+    public List<CommentDTO> getAllComments(){
+        List<CommentDTO> listToReturn = comments.GetComments();
+        return listToReturn;
+    }
+    public List<CommentDTO> getAllCommentsForManager(String facility){
+        List<CommentDTO> listToIterate = comments.GetComments();
+        List<CommentDTO> listToReturn = new ArrayList<>();
+        for (CommentDTO comment:listToIterate) {
+            String facilityToCheck = comment.getFacilityID();
+            if (facilityToCheck.equals(facility) && comment.getIsDeleted() == 0){
+                listToReturn.add(comment);
+            }
+        }
+        return listToReturn;
+    }
+
+    public List<CommentDTO> getCommentsForFacility(String facility){
+        List<CommentDTO> listToIterate = comments.GetComments();
+        List<CommentDTO> listToReturn = new ArrayList<>();
+        for (CommentDTO comment:listToIterate) {
+            String facilityToCheck = comment.getFacilityID();
+            if (facilityToCheck.equals(facility) && comment.getAvailable() == 1){
+                listToReturn.add(comment);
+            }
+        }
+        return listToReturn;
+    }
+
+    public boolean checkIfPromocodesNameIsUnique(String name){
+        Boolean returnStatement = true;
+        List<Promocode> listToIterate = promocodes.getAllPromocodes();
+        for (Promocode promocode: listToIterate) {
+            String nameFlag = promocode.getName();
+            if(nameFlag.equals(name)){
+                returnStatement = false;
+                break;
+            }
+        }
+        return returnStatement;
+    }
+
+    public void addPromocode(PromocodeDTO promocodeDTO){
+        int idFlag = promocodes.getId()+1;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate flagStartTime =  LocalDate.parse(promocodeDTO.getStartTime(),formatter);
+        LocalDate flagEndTime =  LocalDate.parse(promocodeDTO.getEndTime(),formatter);
+        Promocode promocode = new Promocode(idFlag,promocodeDTO.getName(),flagStartTime,flagEndTime,
+                Integer.parseInt(promocodeDTO.getNumberOfCode()),Integer.parseInt(promocodeDTO.getPercent()),0);
+        promocodes.addPromocode(promocode);
+    }
+
+    public Promocode getPromocode(String name){
+        return promocodes.getByName(name);
+    }
+
+    public void decrementPromocode(Promocode promocode){
+        int flag = promocode.getNumberOfCode();
+        promocode.setNumberOfCode(flag-1);
+        promocodes.editPromocode(promocode);
+    }
+
+    public void changeCustomerType(Customer customer,double newPoints){
+        String type = customer.getCustomerType();
+        List<CustomerType> listToIterate = types.getTypes();
+        for (CustomerType typeFlag:listToIterate
+             ) {
+            String flag = typeFlag.getName();//flag silver
+            double flagNum = typeFlag.getRequiredPoints();
+            if(flag.equals(type)){
+                continue;
+            }else{
+                if(flagNum<newPoints){
+                    customers.editType(customer,flag);
+                    type=flag;
+                }
+            }
+        }
+
     }
 
 }

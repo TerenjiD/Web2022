@@ -4,12 +4,17 @@ Vue.component("adminHomePage",{
             adminDTO : null,
             usersSearchDTO:{name:null,surname:null,username:null,sortType:null,sortBy:null,filterBy:null},
             users : null
+
         }
     },
     template:`
     <div>
         <div>
             <p>Admin prikeroni {{adminDTO.name}}</p>
+            <div>
+            <button v-on:click="logout" style="padding: 7px 20px;
+            background-color: aqua;">Izloguj se</button><br>
+            </div>
             <button v-on:click="registerManager" style="padding: 7px 20px;
             background-color: aqua;">Napravi menadzera</button>
             <button v-on:click="registerCoach" style="padding: 7px 20px;
@@ -66,6 +71,16 @@ Vue.component("adminHomePage",{
                 <button @click="searchUsers" >Pretrazi</button>
                 </form>
             </template>
+       //divideri   
+            <button v-on:click="viewComment" style="padding: 7px 20px;
+            background-color: aqua;">Pregledaj komentare</button>
+            <button v-on:click="viewComments" style="padding: 7px 20px;
+            background-color: aqua;">Pregledaj sve komentare</button>
+        </div>
+        <div>
+            <button v-on:click="createPromoCode" style="padding: 7px 20px;
+            background-color: aqua;">Napravi promo kod</button>
+        </div>
         <div>
             <table border="1">
             <tr bgcolor="lightgrey">
@@ -109,6 +124,22 @@ Vue.component("adminHomePage",{
         },
         createFacility : function(event){
             router.push('/adminHomePage/createFacility/')
+        },
+        viewComment : function(event){
+            router.push('/adminHomePage/viewComments')
+        },
+        viewComments : function(event){
+            router.push('/adminHomePage/commentsToViewAdmin')
+        },
+        createPromoCode : function(){
+            router.push('/adminHomePage/definePromocode')
+        },
+        logout : function(event){
+            axios.post('rest/adminHomePage/logout').then(response => {
+                alert("Izlogovan si")
+                router.push('/')
+            })
+
         }
     }
     

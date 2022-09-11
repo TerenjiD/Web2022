@@ -78,7 +78,7 @@ public class CustomerStorage {
                 else{
                     roleFlag = Role.ADMIN;
                 }
-                Customer customer = new Customer(username,password,name,lastName,gen,dateOfBirth, roleFlag,Long.parseLong(points),
+                Customer customer = new Customer(username,password,name,lastName,gen,dateOfBirth, roleFlag,Double.parseDouble(points),
                         customerType,membership);
                 customers.put(username, customer);
 
@@ -137,7 +137,54 @@ public class CustomerStorage {
         }else{
             idflag = membership.getId();
         }
+        customer.setMembership(idToAdd);
+
+        String file = "./static/customers.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(usern)){
+                    row[9] = idToAdd;
+                    customers.remove(usern);
+                    customers.put(usern,customer);
+                }
+                rows.add(row);
+
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/customers.txt");
+            newFile.renameTo(dump);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void editMembershipAndPoints(Customer customer,String oldId,String idToAdd,double points){
+        //users.put(user.getUsername(),user);
+        //customers.remove(username);
+        String usern=customer.getUsername();
+        Membership membership = memStor.FindById(oldId);
+        String idflag="nista";
+        double oldPoints = customer.getPoints();
         customer.setMembership(idflag);
+        double newPoints = oldPoints+points;
+        customer.setPoints(newPoints);
         customers.put(usern,customer);
         String file = "./static/customers.txt";
         File oldFile = new File(file);
@@ -151,6 +198,7 @@ public class CustomerStorage {
             while((line=reader.readLine()) != null){
                 String[] row = line.split(";");
                 if(row[0].equals(usern)){
+                    row[7]= Double.toString(newPoints);
                     row[9] = idToAdd;
                 }
                 rows.add(row);
@@ -173,17 +221,11 @@ public class CustomerStorage {
         }
     }
 
-    public void editMembershipAndPoints(Customer customer,String oldId,String idToAdd,long points){
+    public void editType(Customer customer,String newType){
         //users.put(user.getUsername(),user);
         //customers.remove(username);
         String usern=customer.getUsername();
-        Membership membership = memStor.FindById(oldId);
-        String idflag="nista";
-        Long oldPoints = customer.getPoints();
-        customer.setMembership(idflag);
-        Long newPoints = oldPoints+points;
-        customer.setPoints(newPoints);
-        customers.put(usern,customer);
+        customer.setCustomerType(newType);
         String file = "./static/customers.txt";
         File oldFile = new File(file);
         File newFile = new File("./static/temp.txt");
@@ -196,8 +238,9 @@ public class CustomerStorage {
             while((line=reader.readLine()) != null){
                 String[] row = line.split(";");
                 if(row[0].equals(usern)){
-                    row[7]= Long.toString(newPoints);
-                    row[9] = idToAdd;
+                    row[8]= newType;
+                    customers.remove(usern);
+                    customers.put(usern,customer);
                 }
                 rows.add(row);
 

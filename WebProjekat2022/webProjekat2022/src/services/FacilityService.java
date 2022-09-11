@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class FacilityService {
     private FacilityStorage facilities= new FacilityStorage();
     private CustomerStorage customers = CustomerStorage.getInstance();
@@ -21,6 +23,10 @@ public class FacilityService {
     private ContentStorage contents = ContentStorage.getInstance();
 
     private MembershipStorage memberships = MembershipStorage.getInstance();
+
+    private CustomerTypeStorage types = CustomerTypeStorage.getInstance();
+
+    private static TestService testService;
 
     public FacilityService() throws FileNotFoundException{
 
@@ -61,19 +67,47 @@ public class FacilityService {
         int seconds = timeToWork.getSecond();
         int day = timeToWork.getDayOfMonth();
         LocalDateTime currentTime = LocalDateTime.now();
-        int price = membership.getPrice();
+        double price = membership.getPrice();
         int usage = Integer.parseInt(membership.getAppointmentNumber());
-        long points =(price/1000)*(30-usage);
+        int maxApps = Integer.parseInt(membership.getAppointmentNumberMax());
+        double points =(price/1000)*(maxApps-usage);
         if(points == 0){
             points = 1;
         }
         //if(currentTime.getHour()>=hour || currentTime.getMinute()>=minute || currentTime.getSecond()>=seconds){
         if(currentTime.getDayOfMonth()>=day){
             Customer customer = customers.GetByID(username);
+            double newPoints = customer.getPoints()+points;
+            changeCustomerType(customer,newPoints);
             customers.editMembershipAndPoints(customer,oldID,"nista",points);
             return false;
         }else{
             return true;
+        }
+    }
+
+    public void changeCustomerType(Customer customer,double newPoints){
+        String type = customer.getCustomerType();
+        double flagPointsNumber = 0;
+        List<CustomerType> listToIterate = types.getTypes();
+        for (CustomerType typeFlag:listToIterate
+        ) {
+            String flag = typeFlag.getName();//flag silver
+            double flagNum = typeFlag.getRequiredPoints();
+            if(flag.equals(type)){
+                continue;
+            }else{
+                if(flagPointsNumber == 0 && flagNum<newPoints){
+                    customers.editType(customer,flag);
+                    flagPointsNumber = flagNum;
+                }else if(newPoints<flagPointsNumber){
+                    continue;
+                }else if(flagNum<newPoints && flagPointsNumber<flagNum){
+                    customers.editType(customer,flag);
+                    flagPointsNumber = flagNum;
+                }
+
+            }
         }
     }
 
@@ -173,6 +207,7 @@ public class FacilityService {
         return listToReturn;
     }
 
+
     public List<TrainingHistoryDTO> searchTrainingsCustomer(TrainingSearchDTO input,List<TrainingHistoryDTO> list) {
         List<TrainingHistoryDTO> listReturn= this.trainings.getSearchedTrainings(input,list);
         return listReturn;
@@ -182,4 +217,21 @@ public class FacilityService {
         List<Content> listReturn= this.contents.getSearchedTrainingsCoach(input,list);
         return listReturn;
     }
+
+    public boolean checkDateForTrainingToCancel(Content training){
+        //String flagNameID = training.getNameID();
+        //contents.CheckIfExist(flagNameID);
+        LocalDate dateFlag = LocalDate.parse(training.getDuration());
+        LocalDate dateFlagNow = LocalDate.now();
+        int daysBeetween =(int) DAYS.between(dateFlagNow,dateFlag);
+        if(daysBeetween<3){
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+
+
+
 }

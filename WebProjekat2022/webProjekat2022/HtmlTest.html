@@ -1,0 +1,72 @@
+<div>
+                    <p>Kupac prikeroni {{customer.name}}</p>
+                    <button v-on:click="logout" style="padding: 7px 20px;
+                    background-color: aqua;">Izloguj se</button><br>
+                    <button v-on:click="changeCustomer" style="padding: 7px 20px;
+                    background-color: aqua;">Izmeni</button>
+                
+                <h4>Istorija treninga</h4>
+                <div>
+                <table v-for="(p,index) in trainings">
+                        <tr>
+                        <td>Ime:</td><td>{{p.name}}</td>
+                        </tr>
+                        <tr>
+                        <td>Objekat:</td><td>{{p.facilityName}}</td>
+                        </tr>
+                        <tr>
+                        <td>Datum treninga:</td><td>{{p.applicationDate}}</td>
+                        </tr>
+                        <tr>
+                        <td>Tip:</td><td>{{p.type}}</td>
+                        </tr>
+                        <tr>
+                        <td>Logo:</td><td>{{p.logo}}</td>
+                        </tr>
+                        <tr>
+                        <td>Opis:</td><td>{{p.description}}</td>
+                        </tr>
+                        <tr>
+                        <td>Trajanje:</td><td>{{p.duration}}</td>
+                        </tr>
+                        <tr>
+                        <td>Trener:</td><td>{{p.coach}}</td>
+                        </tr>
+                </table>
+			</div>
+        		<h3>Prikaz sportskih objekata</h3>
+        	<div>
+                <template>
+                    <form>
+                    	<label>Pretraga</label>
+                    	<input type = "text" v-model = "input" >
+                    	<button @click="search" >Pretrazi</button>
+                    </form>
+                </template>
+                
+        		<table border="1">
+                    <tr bgcolor="lightgrey">
+                	    <th>Naziv</th>
+                	    <th>Tip</th>
+                	    <th>Sadrzaj</th>
+                       	<th>Status</th>
+                       	<th>Logo</th>
+                       	<th>Lokacija</th>
+                       	<th>Prosecna ocena</th>
+                       	<th>Radno vreme</th>
+                	</tr>
+                    <tr v-for="(p, index) in facilities" >
+                	    <td>{{p.name}}</td>
+                	    <td>{{p.facilityType}}</td>
+                	    <td>{{p.contentType}}</td>
+                        <td>{{p.status}}</td>
+                        <td>{{p.logo}}</td>
+                        <td>{{p.location.address.street}},{{p.location.address.number}},{{p.location.address.city}},{{p.location.address.country}}</td>
+                        <td>{{p.workingHours}}</td>
+                        <td>{{p.rating}}</td>
+                        <td><button v-on:click="goIntoFacility(p)">Udji u objekat</button></td>
+                        <td><button v-on:click="viewComments(p)">Komentari</button></td>
+                	</tr>
+                </table>
+			</div>
+</div>   

@@ -291,6 +291,7 @@ public class ContentStorage {
                     row[5]=logo;
                     row[6]=description;
                     row[7]=duration;
+                    row[10]="1";
                     Content flagContent1 = new Content(row[0],row[1],row[2],typeToSend,row[4],
                             row[5],row[6],row[7],row[8],row[9],1);
                     contents.put(row[0],flagContent1);

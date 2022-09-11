@@ -61,9 +61,25 @@ public class SparkMain {
         TestController.GetCustomers();
         TestController.GetCoachesForSpecificFacility();
 
+
         TestController.PutComment();
         TestController.searchUsers();
         TestController.searchTrainingsCustomer();
         TestController.searchTrainingsCoach();
+        TestController.RouteComment();
+        TestController.AddComment();
+        TestController.getComments();
+        TestController.commentAccpetance();
+        TestController.getCommentsForFacility();
+        TestController.getAllCommentsAdmin();
+        TestController.getAllCommentsManager();
+        TestController.setFacilityForComments();
+        TestController.addPromocode();
+        TestController.inputPromocode();
+        TestController.logoutCustomer();
+        TestController.logoutAdmin();
+        TestController.logoutCoach();
+        TestController.logoutManager();
+
     }
 }

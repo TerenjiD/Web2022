@@ -11,9 +11,9 @@ Vue.component("customerHomePage",{
     },
     template:`
     <div>
-    <div>
-                <div>
                     <p>Kupac prikeroni {{customer.name}}</p>
+                    <button v-on:click="logout" style="padding: 7px 20px;
+                    background-color: aqua;">Izloguj se</button><br>
                     <button v-on:click="changeCustomer" style="padding: 7px 20px;
                     background-color: aqua;">Izmeni</button>
                 </div>
@@ -89,9 +89,10 @@ Vue.component("customerHomePage",{
                 </tr>
                 </table>
                 </div>
+			</div>
+
         		<h3>Prikaz sportskih objekata</h3>
-        		</div>
-                <div>
+        	<div>
                 <template>
                     <form>
                     <h4>Pretraga</h4>
@@ -139,6 +140,7 @@ Vue.component("customerHomePage",{
                 </form>
             </template>
             </div>
+
         		<table border="1">
                     <tr bgcolor="lightgrey">
                 	    <th>Naziv</th>
@@ -160,15 +162,16 @@ Vue.component("customerHomePage",{
                         <td>{{p.workingHours}}</td>
                         <td>{{p.rating}}</td>
                         <td><button v-on:click="goIntoFacility(p)">Udji u objekat</button></td>
+                        <td><button v-on:click="viewComments(p)">Komentari</button></td>
                 	</tr>
                 </table>
-    <button v-on:click = "logoutUser" style="padding: 7px 20px;
-    background-color: aqua;" >Log out</button>
-    </div>
+			</div>
+</div>    
     `,
     mounted (event) {
         axios
         .get('rest/facilities/')
+
         .then(response => (this.facilities = response.data));
         axios.get('/rest/customerHomePage/customer').then(response => (this.customer = response.data));
         axios.get('/rest/customerHomePage/getDate')
@@ -178,7 +181,8 @@ Vue.component("customerHomePage",{
         .then(response => (this.trainings = response.data))
         axios.get('rest/customerHomePage/checkComment').then(response =>{
             alert("Prvi put u objektu")
-        }).cathc(error =>{
+            router.push('customerHomePage/putComment')
+        }).catch(error =>{
             alert("Nije prvi put u objektu")
         })
     },
@@ -206,6 +210,16 @@ Vue.component("customerHomePage",{
                 alert("Uspesan ulazak")
                 router.push('/customerHomePage/FacilityOpen')
             }).catch(error => (alert("Neuspesan ulazak")))
+        },
+        viewComments : function(p){
+            axios.post('rest/customerHomePage/setFacilityForComments',p).then(response => (router.push('/customerHomePage/viewCommentsForFacility')))
+        },
+        logout : function(event){
+            axios.post('rest/customerHomePage/logout').then(response => {
+                alert("Izlogovan si")
+                router.push('/')
+            })
+
         }
     }
 })

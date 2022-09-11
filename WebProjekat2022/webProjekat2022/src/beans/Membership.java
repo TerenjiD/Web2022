@@ -9,7 +9,7 @@ public class Membership implements Serializable {
     private MembershipType type;
     private LocalDateTime paymentDate;
     private LocalDateTime expirationDate;
-    private int price;
+    private double price;
     private String customer;
     private MembershipStatus status;
     private String appointmentNumber;
@@ -19,7 +19,7 @@ public class Membership implements Serializable {
 
 
     public Membership(String id, String facility, MembershipType type, LocalDateTime paymentDate,
-                      LocalDateTime expirationDate, int price, String customer, MembershipStatus status,
+                      LocalDateTime expirationDate, double price, String customer, MembershipStatus status,
                       String appointmentNumber, String appointmentNumberMax) {
         this.id = id;
         this.facility = facility;
@@ -88,11 +88,11 @@ public class Membership implements Serializable {
         this.expirationDate = expirationDate;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

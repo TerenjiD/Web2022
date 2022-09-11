@@ -88,7 +88,7 @@ public class MembershipStorage {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
                 LocalDateTime flagPaymentDate =  LocalDateTime.parse(paymentDate,formatter);
                 LocalDateTime flagExpirationDate =  LocalDateTime.parse(expirationDate,formatter);
-                Membership membership = new Membership(id,facility,memFlagType,flagPaymentDate,flagExpirationDate,Integer.parseInt(price)
+                Membership membership = new Membership(id,facility,memFlagType,flagPaymentDate,flagExpirationDate,Double.parseDouble(price)
                         ,customer, memFlagStatus,appointmentNumber,appointmentNumberMax);
                 memberships.put(id, membership);
 
@@ -119,7 +119,8 @@ public class MembershipStorage {
                 String formattedExpirationDate = exDate.format(formatter);
                 String[] data1 = {membership.getId(),membership.getFacility(), membership.getType().toString(),
                         formattedCurrentDate,formattedExpirationDate, String.valueOf(membership.getPrice()),
-                        membership.getCustomer(),membership.getStatus().toString(), membership.getAppointmentNumber()};
+                        membership.getCustomer(),membership.getStatus().toString(), membership.getAppointmentNumber(),
+                        membership.getAppointmentNumber()};
                 List<String[]> userList = new ArrayList<>();
                 userList.add(data1);
                 //userList.add(data2);
