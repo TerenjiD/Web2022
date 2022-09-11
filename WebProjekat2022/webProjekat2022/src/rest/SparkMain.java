@@ -71,5 +71,9 @@ public class SparkMain {
         TestController.setFacilityForComments();
         TestController.addPromocode();
         TestController.inputPromocode();
+        TestController.logoutCustomer();
+        TestController.logoutAdmin();
+        TestController.logoutCoach();
+        TestController.logoutManager();
     }
 }

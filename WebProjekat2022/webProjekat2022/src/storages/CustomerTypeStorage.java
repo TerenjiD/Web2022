@@ -17,10 +17,17 @@ public class CustomerTypeStorage {
         return instance;
     }
 
+    private Collection<CustomerType> getValues(){return customerTypes.values();}
+
+    public List<CustomerType> getTypes(){
+        List<CustomerType> listToReturn = new ArrayList<>(getValues());
+        return listToReturn;
+    }
+
     private CustomerTypeStorage() throws FileNotFoundException {
         BufferedReader in = null;
         try {
-            File file = new File(  "./static/customerTypes.txt");
+            File file = new File(  "./static/customerTypelist.txt");
             System.out.println(file.getCanonicalPath());
             in = new BufferedReader(new FileReader(file));
             readTypes(in);
@@ -63,7 +70,7 @@ public class CustomerTypeStorage {
 
     public void addUser(CustomerType customer){
 
-        File file = new File("./static/customerTypes.txt");
+        File file = new File("./static/customerTypelist.txt");
         Scanner sc = new Scanner(System.in);
         try{
             FileWriter outputfile = new FileWriter(file,true);

@@ -34,7 +34,13 @@ Vue.component("viewTrainingCoach",{
     },
     methods : {
         deleteTraining : function(event){
-            axios.post('rest/coachHomePage/view/delete').then(response => (router.push('/coachHomePage')))
+            axios.post('rest/coachHomePage/view/delete')
+            .then(response => {
+                router.push('/coachHomePage')
+                alert("Trening obrisan")
+            })
+            .catch(error => (alert("Ne moze da se otkaze")))
+            event.preventDefault();
         },
         goBack : function(){
             router.push('/coachHomePage')

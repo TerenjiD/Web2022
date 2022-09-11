@@ -118,6 +118,7 @@ public class TestController {
     public static void addCoach(){
         post(
                 "rest/adminHomePage/registerCoach/",(req,res) -> {
+                    res.type("application/json");
                     CoachDTO coachDTO = g.fromJson(req.body(), CoachDTO.class);
                     User flag = testService.GetById(coachDTO.getUsername());
                     Gender gen;
@@ -510,18 +511,48 @@ public class TestController {
             String facility = membershipDTO.getFacility();
             Membership membership = new Membership(idFlag,facility,memType,currentDate,
                     expirationDate,price,customerUsername,MembershipStatus.ACTIVE,appNum,appNum);
+            Customer  customer = facilityService.GetCustomer(customerUsername);
+            String flagType = customer.getCustomerType();
             if(usePromocode == true){
                 Promocode promocode = testService.getPromocode(promocodeName);
                 double test = promocode.getPercent();
-                double test1 = (1-(test/100));
-                double newPrice = price * test1;
+                double test1;
+                if(flagType.equals("Normal")){
+                    test1 = (1-((test)/100));
+                }else if(flagType.equals("Silver")){
+                    test1 = (1-((test+15)/100));
+                }else{
+                    test1 = (1-((test+30)/100));
+                }
+                double newPrice;
+                if(test1<0.30){
+                    newPrice = price * 0.30;
+                }else{
+                    newPrice = price * test1;
+                }
                 membership.setPrice(newPrice);
                 testService.decrementPromocode(promocode);
                 facilityService.createMembership(membership,usernameFlag);
                 return "Success";
             }else{
-                facilityService.createMembership(membership,usernameFlag);
-                return "SUCCESS";
+                double test1 = 0;
+                if(flagType.equals("Normal")){
+                    facilityService.createMembership(membership,usernameFlag);
+                    return "SUCCESS";
+
+                }else if(flagType.equals("Silver")){
+                    test1 = 0.85;
+                    double newPrice = price * test1;
+                    membership.setPrice(newPrice);
+                    facilityService.createMembership(membership,usernameFlag);
+                    return "SUCCESS";
+                }else{
+                    test1 = 0.7;
+                    double newPrice = price * test1;
+                    membership.setPrice(newPrice);
+                    facilityService.createMembership(membership,usernameFlag);
+                    return "SUCCESS";
+                }
             }
 
         });
@@ -535,8 +566,10 @@ public class TestController {
             String membershipID = userFlag.getMembership();
             boolean check = facilityService.CheckIfExpired(membershipID,username);
             if(check==true){
+
                 return "SUCCESS";
             }else{
+                //testService.changeCustomerType(userFlag);
                 return null;
             }
 
@@ -610,7 +643,7 @@ public class TestController {
     public static void RouteComment(){
         get(
                 "rest/customerHomePage/checkComment",(req,res)->{
-                    res.body("application/json");
+                    res.type("application/json");
                     if(boolIfFirstTime==true){
                         boolIfFirstTime=false;
                         return "Success";
@@ -624,7 +657,7 @@ public class TestController {
     public static void AddComment(){
         post(
                 "rest/customerHomePage/putComment/add",(req,res)-> {
-                    res.body("application/json");
+                    res.type("application/json");
                     CommentDTO comment = g.fromJson(req.body(), CommentDTO.class);
                     comment.setId(testService.GetSizeComments()+1);
                     comment.setFacilityID(facilityForCustomer);
@@ -640,7 +673,9 @@ public class TestController {
     public static void GetTrainingsForCustomer(){
         get(
                 "/rest/customerHomePage/getTrainingHistory",(req,res)->{
-                    Customer customer = facilityService.GetByUsernameCustomer(userSession(req).getUsername());
+                    res.type("application/json");
+                    String user = userSession(req).getUsername();
+                    Customer customer = facilityService.GetByUsernameCustomer(user);
                     String username = customer.getUsername();
                     return g.toJson(facilityService.GetTrainingsForCustomer(username));
                 }
@@ -681,8 +716,15 @@ public class TestController {
         post(
                 "rest/coachHomePage/view/delete",(req,res)->{
                     res.type("application/json");
-                    facilityService.CancelTraining(TrainingToShow);
-                    return "SUCCESS";
+                    //LocalDate localDate;
+                    boolean flag = facilityService.checkDateForTrainingToCancel(TrainingToShow);
+                    if(flag == true){
+                        facilityService.CancelTraining(TrainingToShow);
+                        return "SUCCESS";
+                    }else{
+                        return null;
+                    }
+
                 }
         );
     }
@@ -802,6 +844,45 @@ public class TestController {
                     }else{
                         return null;
                     }
+                }
+        );
+    }
+
+    public static void logoutCustomer(){
+        post(
+                "rest/customerHomePage/logout",(req,res)->{
+                    res.type("application/json");
+                    userSession(req).setUsername(null);
+                    return "Success";
+                }
+        );
+    }
+    public static void logoutAdmin(){
+        post(
+                "rest/adminHomePage/logout",(req,res)->{
+                    res.type("application/json");
+                    userSession(req).setUsername(null);
+                    return "Success";
+                }
+        );
+    }
+
+    public static void logoutManager(){
+        post(
+                "rest/managerHomePage/logout",(req,res)->{
+                    res.type("application/json");
+                    userSession(req).setUsername(null);
+                    return "Success";
+                }
+        );
+    }
+
+    public static void logoutCoach(){
+        post(
+                "rest/coachHomePage/logout",(req,res)->{
+                    res.type("application/json");
+                    userSession(req).setUsername(null);
+                    return "Success";
                 }
         );
     }

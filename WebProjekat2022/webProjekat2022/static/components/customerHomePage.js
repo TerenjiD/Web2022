@@ -10,15 +10,14 @@ Vue.component("customerHomePage",{
     },
     template:`
     <div>
-    <div>
-                <div>
                     <p>Kupac prikeroni {{customer.name}}</p>
+                    <button v-on:click="logout" style="padding: 7px 20px;
+                    background-color: aqua;">Izloguj se</button><br>
                     <button v-on:click="changeCustomer" style="padding: 7px 20px;
                     background-color: aqua;">Izmeni</button>
+                
+                <h4>Istorija treninga</h4>
                 <div>
-                <div>
-                <h4>Istorija treninga<h4>
-                </div>
                 <table v-for="(p,index) in trainings">
                         <tr>
                         <td>Ime:</td><td>{{p.name}}</td>
@@ -45,11 +44,9 @@ Vue.component("customerHomePage",{
                         <td>Trener:</td><td>{{p.coach}}</td>
                         </tr>
                 </table>
-                </div>
-                </div>
+			</div>
         		<h3>Prikaz sportskih objekata</h3>
-        		</div>
-                <div>
+        	<div>
                 <template>
                     <form>
                     	<label>Pretraga</label>
@@ -57,7 +54,7 @@ Vue.component("customerHomePage",{
                     	<button @click="search" >Pretrazi</button>
                     </form>
                 </template>
-                </div>
+                
         		<table border="1">
                     <tr bgcolor="lightgrey">
                 	    <th>Naziv</th>
@@ -82,15 +79,14 @@ Vue.component("customerHomePage",{
                         <td><button v-on:click="viewComments(p)">Komentari</button></td>
                 	</tr>
                 </table>
-    <button v-on:click = "logoutUser" style="padding: 7px 20px;
-    background-color: aqua;" >Log out</button>
-    </div>
+			</div>
+</div>    
     `,
     mounted (event) {
         axios
         .get('rest/facilities/')
-        .then(response => (this.facilities = response.data));
-        axios.get('/rest/customerHomePage/customer').then(response => (this.customer = response.data));
+        .then(response => (this.facilities = response.data))
+        axios.get('/rest/customerHomePage/customer').then(response => (this.customer = response.data))
         //za terenjija
         axios.get('/rest/customerHomePage/getDate')
         .then(response => (alert("Nije istekla clanarina")))
@@ -132,6 +128,13 @@ Vue.component("customerHomePage",{
         },
         viewComments : function(p){
             axios.post('rest/customerHomePage/setFacilityForComments',p).then(response => (router.push('/customerHomePage/viewCommentsForFacility')))
+        },
+        logout : function(event){
+            axios.post('rest/customerHomePage/logout').then(response => {
+                alert("Izlogovan si")
+                router.push('/')
+            })
+
         }
     }
 })

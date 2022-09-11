@@ -12,6 +12,8 @@ Vue.component("managerHomePage",{
     template:`
     <div>
         <p>Menadzer prikeroni {{userDTO.name}}</p>
+        <button v-on:click="logout" style="padding: 7px 20px;
+                    background-color: aqua;">Izloguj se</button><br>
         <button v-on:click="changeInfo" style="padding: 7px 20px;
                         background-color: aqua;">Izmeni</button>
         <div>
@@ -162,6 +164,12 @@ Vue.component("managerHomePage",{
         },
         viewComments : function(){
             router.push('/managerHomePage/commentsToViewManager')
+        },
+        logout : function(event){
+            axios.post('rest/managerHomePage/logout').then(response => {
+                alert("Izlogovan si")
+                router.push('/')
+            })
         }
     }
     
