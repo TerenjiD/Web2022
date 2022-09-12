@@ -1,6 +1,9 @@
 package storages;
 
+import DTO.FacilityDTO;
+import DTO.FacilitySearchDTO;
 import beans.*;
+import com.opencsv.CSVWriter;
 
 import java.io.*;
 import java.io.BufferedReader;
@@ -11,6 +14,18 @@ import java.util.*;
 public class FacilityStorage {
 
     private HashMap<String, Facility> facilities = new HashMap<String, Facility>();
+    private  static FacilityStorage instance = null;
+    public static FacilityStorage getInstance() throws FileNotFoundException {
+        if (instance == null) {
+            instance = new FacilityStorage();
+        }
+        return instance;
+    }
+
+    public Facility CheckIfExists(String name){
+        Facility flagFacility = facilities.get(name);
+        return flagFacility;
+    }
 
     public FacilityStorage() {
         this(".");
@@ -60,7 +75,7 @@ public class FacilityStorage {
                     workingHours = st.nextToken().trim();
                     rating = st.nextToken().trim();
                 }
-                Facility facility = new Facility(name, getFacilityType(facilityType), getContentType(contentType),
+                Facility facility = new Facility(name, getFacilityType(facilityType), contentType,
                         getFacilityStatus(status), logo, getLocation(location),workingHours, rating);
                 facilities.put(name, facility);
             }
@@ -82,7 +97,7 @@ public class FacilityStorage {
 
     private ContentType getContentType(String type){
         if(type.equals("SAUNA"))
-            return ContentType.SAUNA;
+            return ContentType.GYM;
         else if (type.equals("GROUP_TRAINING")) {
             return ContentType.GROUP_TRAINING;
         }else
@@ -95,6 +110,8 @@ public class FacilityStorage {
         else
             return FacilityStatus.CLOSED;
     }
+
+
 
     private Location getLocation(String location){
         String latitude="", longitude="", address="";
@@ -135,18 +152,257 @@ public class FacilityStorage {
         return list;
     }
 
-    public List<Facility> getSearched(String search) {
-        List<Facility> temp = new ArrayList<Facility>();
+    public List<Facility> getSearched(FacilitySearchDTO search) {
+        Collection<Facility> temp = new ArrayList<Facility>();
+        temp = searchByName(search.getName());
+        temp = searchByType(search.getType(),temp);
+        temp = searchByLocation(search.getLocation(),temp);
+        temp = searchByRating(search.getRating(),temp);
+        if(search.getSortBy() != null && search.getSortType() != null){
+            temp=sortList(search.getSortBy(),search.getSortType(),temp);
+        }
+        if(search.getFilterBy() != null){
+            temp = filterList(search.getFilterBy(),temp);
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+    public Collection<Facility> searchByName(String name){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (name == null || name ==""){
+             temp = getValues();
+        }else{
             for (Facility f : getValues()) {
-                if (f.getName().toUpperCase().contains(search.toUpperCase()) || f.getFacilityType().toString().contains(search.toUpperCase()) ||
-                        f.getLocation().getAddress().getCountry().toUpperCase().contains(search.toUpperCase()) ||
-                        f.getLocation().getAddress().getCity().toUpperCase().contains(search.toUpperCase()) ||
-                        f.getRating().toUpperCase().contains(search.toUpperCase()))
+                if (f.getName().toUpperCase().contains(name.toUpperCase()))
+                    temp.add(f);
+                }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+    public Collection<Facility> searchByType(String type,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (type == "" || type == null){
+            temp = starter;
+        }else{
+            for (Facility f : starter) {
+                if (f.getFacilityType().toString().contains(type.toUpperCase()))
                     temp.add(f);
             }
+        }
         List<Facility> list = new ArrayList<Facility>(temp);
-        Collections.sort(list);
         return list;
+    }
+
+    public Collection<Facility> searchByLocation(String location,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (location == "" || location == null){
+            temp = starter;
+        }else{
+            for (Facility f : starter) {
+                if (f.getLocation().getAddress().getCountry().toUpperCase().contains(location.toUpperCase()) ||
+                        f.getLocation().getAddress().getCity().toUpperCase().contains(location.toUpperCase()))
+                    temp.add(f);
+            }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+    public Collection<Facility> searchByRating(String rating,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if (rating == "" || rating == null){
+            temp = starter;
+        }else{
+            for (Facility f : starter) {
+                if ( f.getRating().toUpperCase().contains(rating.toUpperCase()))
+                    temp.add(f);
+            }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+     public Collection<Facility> sortList(String criterium,String type,Collection<Facility> starter){
+         List<Facility> list = new ArrayList<Facility>(starter);
+         if(type.equals("1")){
+             if (criterium.equals("1")) {
+                 Collections.sort(list,new FacilityComparator());
+             }else if(criterium.equals("2")){
+                 Collections.sort(list,new FacilityComparatorByLocation());
+             }else{
+                 Collections.sort(list,new FacilityComparatorByGrade());
+             }
+         }else{
+             if (criterium.equals("1")) {
+                 Collections.sort(list,new FacilityComparator().reversed());
+             }else if(criterium.equals("2")){
+                 Collections.sort(list,new FacilityComparatorByLocation().reversed());
+             }else{
+                 Collections.sort(list,new FacilityComparatorByGrade().reversed());
+             }
+         }
+         return list;
+     }
+
+    public Collection<Facility> filterList(String type,Collection<Facility> starter){
+        Collection<Facility> temp = new ArrayList<Facility>();
+        if(type.equals("1")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("GYM")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("2")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("POOL")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("3")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("SPORT_CENTER")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("4")){
+            for (Facility f:starter){
+                if(f.getFacilityType().toString().toUpperCase().contains("DANCE_STUDIO")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("5")){
+            for (Facility f:starter){
+                if(f.getStatus().toString().toUpperCase().contains("OPEN")){
+                    temp.add(f);
+                }
+            }
+        }else{
+            for (Facility f:starter){
+                if(f.getStatus().toString().toUpperCase().contains("CLOSED")){
+                    temp.add(f);
+                }
+            }
+        }
+        List<Facility> list = new ArrayList<Facility>(temp);
+        return list;
+    }
+
+    public void addFacility(FacilityDTO facility){
+        File file = new File("./static/facilities.txt");
+        Scanner sc = new Scanner(System.in);
+        try{
+            FileWriter outputfile = new FileWriter(file,true);
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+            Facility tempFacility = facilities.get(facility.getName());
+            String flagLocation = facility.getLatitude()+"|"+facility.getLongitude()+"|"+facility.getStreet()+"'"+
+                    facility.getNumber()+"'"+facility.getCity()+"'"+facility.getCountry();
+            if(tempFacility==null){
+                //String flagLocation = getLocation(facility.getLocation());
+                String[] data1 = {facility.getName(),facility.getFacilityType().toString(),"nista",
+                facility.getStatus().toString(),facility.getLogo(),flagLocation,facility.getWorkingHours(),
+                facility.getRating()};
+                FacilityType facilityTypeFlag;
+                String facilityTypeFlagString = facility.getFacilityType();
+                if(facilityTypeFlagString.equals("GYM")){
+                    facilityTypeFlag = FacilityType.GYM;
+                }else if(facilityTypeFlagString.equals("DANCE_STUDIO")){
+                    facilityTypeFlag = FacilityType.DANCE_STUDIO;
+                }else if(facilityTypeFlagString.equals("POOL")){
+                    facilityTypeFlag = FacilityType.POOL;
+                }else{
+                    facilityTypeFlag = FacilityType.SPORT_CENTER;
+                }
+                FacilityStatus facilityStatusFlag;
+                String facilityStatusFlagString = facility.getStatus();
+                if(facilityStatusFlagString.equals("OPEN")){
+                    facilityStatusFlag = FacilityStatus.OPEN;
+                }else{
+                    facilityStatusFlag = FacilityStatus.CLOSED;
+                }
+                Address adressFlag = new Address(facility.getStreet(),facility.getNumber(),facility.getCity(),facility.getCountry());
+                Location locationFlag = new Location(Float.parseFloat(facility.getLatitude()),
+                        Float.parseFloat(facility.getLongitude()),adressFlag);
+                Facility facilityFlag = new Facility(facility.getName(),facilityTypeFlag,"nista",facilityStatusFlag,
+                        facility.getLogo(),locationFlag,facility.getWorkingHours(),facility.getRating());
+                String flagName = facility.getName();
+                this.facilities.put(flagName,facilityFlag);
+                List<String[]> facilityList = new ArrayList<>();
+                facilityList.add(data1);
+                //userList.add(data2);
+                writer.writeAll(facilityList);
+
+                writer.close();
+            }else{
+                writer.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void addContent(String name,String content){
+        Facility flagFacility = facilities.get(name);
+        String flagLocation = Float.toString(flagFacility.getLocation().getLatitude())+"|"+Float.toString(flagFacility.getLocation().getLongitude())
+                +"|"+flagFacility.getLocation().getAddress().getStreet()+"'"+flagFacility.getLocation().getAddress().getNumber()+
+                "'"+flagFacility.getLocation().getAddress().getCity() +"'"+flagFacility.getLocation().getAddress().getCountry();
+        String flagOldContent =flagFacility.getContentType();
+        String flagContent = "";
+        if(flagOldContent.equals("nista")){
+            flagContent = content;
+        }else{
+            flagContent = flagOldContent + "," + content;
+        }
+        String file = "./static/facilities.txt";
+        File oldFile = new File(file);
+        File newFile = new File("./static/temp.txt");
+        BufferedReader reader = null;
+        String line = "";
+        List<String[]> rows = new ArrayList<>();
+        try{
+            FileWriter outputfile = new FileWriter("./static/temp.txt",true);
+            reader = new BufferedReader(new FileReader(file));
+            while((line=reader.readLine()) != null){
+                String[] row = line.split(";");
+                if(row[0].equals(name)){
+                    row[0] = flagFacility.getName();
+                    row[1] = flagFacility.getFacilityType().toString();
+                    row[2] = flagContent;
+                    row[3] = flagFacility.getStatus().toString();
+                    row[4] = flagFacility.getLogo();
+                    row[5] = flagLocation;
+                    row[6] = flagFacility.getRating();
+                    row[7] = flagFacility.getWorkingHours();
+                }
+                rows.add(row);
+            }
+            reader.close();
+
+            CSVWriter writer = new CSVWriter(outputfile, ';',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            writer.writeAll(rows);
+            writer.close();
+            oldFile.delete();
+            File dump = new File ("./static/facilities.txt");
+            newFile.renameTo(dump);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public Facility GetByIdFacility(String username){
+        Facility facility = facilities.get(username);
+        return facility;
     }
 
 }

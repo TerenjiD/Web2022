@@ -1,7 +1,0 @@
-slavko;slavko;Slavko;Jevtic;MALE;14-12-2000;CUSTOMER
-proba;proba;Proba;Probic;MALE;12.12.1996.;CUSTOMER
-o;o;o;o;MALE;o;CUSTOMER
-prika;prika;Prika;Prikic;MALE;12.12.1976.;CUSTOMER
-a;a;Prika;Prikic;MALE;12.12.1976.;MANAGER
-s;s;Prika;Prikic;MALE;12.12.1976.;ADMIN
-d;d;Prika;Prikic;MALE;12.12.1976.;COACH

@@ -1,0 +1,2 @@
+1;Prvak;teki123;Proba komentar;6;1;0
+2;Prvak;opala;Samo za terenjija,ljubi brat u znojav vrat;10;1;0

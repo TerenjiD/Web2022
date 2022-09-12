@@ -2,18 +2,28 @@ package beans;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.function.Function;
 
 public class Facility implements Serializable,Comparable<Facility> {
     private String name;
     private FacilityType facilityType;
-    private ContentType contentType;
+    private String contentType;
     private FacilityStatus status;
     private String logo;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     private Location location;
     private String workingHours;
     private String rating;
 
-    public Facility(String name, FacilityType facilityType, ContentType contentType,
+    public Facility(String name, FacilityType facilityType, String contentType,
                     FacilityStatus facilityStatus, String logo, Location location,String workingHours,
                     String rating){
         this.name=name;
@@ -46,8 +56,25 @@ public class Facility implements Serializable,Comparable<Facility> {
         return status;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(String workingHours) {
+        this.workingHours = workingHours;
+    }
+
     @Override
     public int compareTo(Facility o) {
         return this.getStatus().compareTo(o.getStatus());
     }
+
 }

@@ -1,0 +1,22 @@
+<table border="1">
+    <tr bgcolor="lightgrey">
+        <th>Naziv</th>
+        <th>Tip</th>
+        <th>Sadrzaj</th>
+           <th>Status</th>
+           <th>Logo</th>
+           <th>Lokacija</th>
+           <th>Prosecna ocena</th>
+           <th>Radno vreme</th>
+    </tr>
+    <tr v-for="(p, index) in facilities" >
+        <td>{{p.name}}</td>
+        <td>{{p.facilityType}}</td>
+        <td>{{p.contentType}}</td>
+        <td>{{p.status}}</td>
+        <td><img src="C:\Users\icex\Desktop\zzz.jpg" width="50" height="50"></td>
+        <td>{{p.location.address.street}},{{p.location.address.number}},{{p.location.address.city}},{{p.location.address.country}}</td>
+        <td>{{p.workingHours}}</td>
+        <td>{{p.rating}}</td>
+    </tr>
+</table>

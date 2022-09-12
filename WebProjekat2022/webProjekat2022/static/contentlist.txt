@@ -1,0 +1,6 @@
+PudingPrvak;Prvak;Puding;GROUP_TRAINING;djape Predrag Borilovic;Puding;Dobra stvar;2022-09-23;17:00;20:00;0
+RepovanjeBodyline;Bodyline;Repovanje;PERSONAL_TRAINING;prika Prika Prikic;Repovanje;Mnogo dobra stvar;2022-09-22;21:00;23:00;0
+RakijadaSuperstar;Superstar;Rakijada;PERSONAL_TRAINING;bulja Sasa Buljovcic;Rakijada;12 gradi kume;2022-10-01;03:30;10:00;0
+KosanicaFullbody;Fullbody;Kosanica;GYM;djape Predrag Borilovic;Kosanica;Zemlja Kosancic Ivana;2022-09-24;17:00;23:00;0
+UFCKrkanGym;KrkanGym;UFC;GROUP_TRAINING;prika Prika Prikic;UFC;Sibanje;2022-09-23;12:00;14:00;0
+ZovuPreciKinderBueno;KinderBueno;ZovuPreci;PERSONAL_TRAINING;bulja Sasa Buljovcic;ZovuPreci;Naucis sve za dva sata;2022-09-14;21:00;23:00;0
