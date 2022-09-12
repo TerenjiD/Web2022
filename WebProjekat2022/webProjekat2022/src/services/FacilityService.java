@@ -1,6 +1,8 @@
 package services;
 
+import DTO.FacilitySearchDTO;
 import DTO.TrainingHistoryDTO;
+import DTO.TrainingSearchDTO;
 import beans.*;
 import storages.*;
 
@@ -33,7 +35,6 @@ public class FacilityService {
     public Customer GetByUsernameCustomer(String username){
         return customers.GetByID(username);
     }
-    //Za Terenjija
 
 
     public List<Facility> getFacilities() {
@@ -41,11 +42,11 @@ public class FacilityService {
         return list;
     }
 
-    public List<Facility> searchFacilities(String input) {
+    public List<Facility> searchFacilities(FacilitySearchDTO input) {
         List<Facility> list= facilities.sortCollection(this.facilities.getSearched(input));
         return list;
     }
-    //Za terenjija
+
     public int GetMembershipIDCount(){
         return memberships.CountID();
     }
@@ -57,7 +58,7 @@ public class FacilityService {
         memberships.addMembership(membership);
     }
 
-    public boolean CheckIfExpired(String id,String username){
+    public boolean CheckIfExpired(String id,String username) {
         Membership membership = memberships.FindById(id);
         String oldID = membership.getId();
         LocalDateTime timeToWork = membership.getExpirationDate();
@@ -69,22 +70,21 @@ public class FacilityService {
         double price = membership.getPrice();
         int usage = Integer.parseInt(membership.getAppointmentNumber());
         int maxApps = Integer.parseInt(membership.getAppointmentNumberMax());
-        double points =(price/1000)*(maxApps-usage);
-        if(points == 0){
+        double points = (price / 1000) * (maxApps - usage);
+        if (points == 0) {
             points = 1;
         }
-        //if(currentTime.getHour()>=hour || currentTime.getMinute()>=minute || currentTime.getSecond()>=seconds){
-        if(currentTime.getDayOfMonth()>=day){
-            Customer customer = customers.GetByID(username);
-            double newPoints = customer.getPoints()+points;
-            changeCustomerType(customer,newPoints);
-            customers.editMembershipAndPoints(customer,oldID,"nista",points);
-            return false;
-        }else{
-            return true;
-        }
+            //if(currentTime.getHour()>=hour || currentTime.getMinute()>=minute || currentTime.getSecond()>=seconds){
+            if (currentTime.getDayOfMonth() >= day) {
+                Customer customer = customers.GetByID(username);
+                double newPoints = customer.getPoints() + points;
+                changeCustomerType(customer, newPoints);
+                customers.editMembershipAndPoints(customer, oldID, "nista", points);
+                return false;
+            } else {
+                return true;
+            }
     }
-
     public void changeCustomerType(Customer customer,double newPoints){
         String type = customer.getCustomerType();
         double flagPointsNumber = 0;
@@ -206,6 +206,17 @@ public class FacilityService {
         return listToReturn;
     }
 
+
+    public List<TrainingHistoryDTO> searchTrainingsCustomer(TrainingSearchDTO input,List<TrainingHistoryDTO> list) {
+        List<TrainingHistoryDTO> listReturn= this.trainings.getSearchedTrainings(input,list);
+        return listReturn;
+    }
+
+    public List<Content> searchTrainingsCoach(TrainingSearchDTO input, List<Content> list) {
+        List<Content> listReturn= this.contents.getSearchedTrainingsCoach(input,list);
+        return listReturn;
+    }
+
     public boolean checkDateForTrainingToCancel(Content training){
         //String flagNameID = training.getNameID();
         //contents.CheckIfExist(flagNameID);
@@ -219,6 +230,7 @@ public class FacilityService {
         }
 
     }
+
 
 
 }

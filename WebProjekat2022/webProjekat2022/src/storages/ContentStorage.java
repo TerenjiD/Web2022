@@ -1,6 +1,6 @@
 package storages;
 
-import DTO.ChangeContentDTO;
+import DTO.TrainingSearchDTO;
 import beans.*;
 import com.opencsv.CSVWriter;
 
@@ -11,6 +11,8 @@ public class ContentStorage {
 
 
     private static HashMap<String, Content> contents = new HashMap<String, Content>();
+
+    private FacilityStorage facilities = FacilityStorage.getInstance();
 
     private static ContentStorage instance = null;
 
@@ -74,7 +76,7 @@ public class ContentStorage {
                 }else if(type.equals("PERSONAL_TRAINING")){
                     flagContent = ContentType.PERSONAL_TRAINING;
                 }else{
-                    flagContent = ContentType.SAUNA;
+                    flagContent = ContentType.GYM;
                 }
 
                 Content flag = new Content(nameID,facilityName,name,flagContent,coach,logo,
@@ -183,7 +185,7 @@ public class ContentStorage {
                     }else if(row[3].equals("PERSONAL_TRAINING")){
                         flagContent = ContentType.PERSONAL_TRAINING;
                     }else{
-                        flagContent = ContentType.SAUNA;
+                        flagContent = ContentType.GYM;
                     }
                     Content flagContent1 = new Content(row[0],row[1],row[2],flagContent,
                             row[4],row[5],row[6],row[7],row[8],row[9],Integer.parseInt(row[10]));
@@ -312,6 +314,117 @@ public class ContentStorage {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    public List<Content> getSearchedTrainingsCoach(TrainingSearchDTO search, List<Content> list) {
+        Collection<Content> temp = new ArrayList<Content>();
+        temp = searchByName(search.getName(),list);
+        temp = searchByDate(search.getDate(),temp);
+        if(search.getSortBy() != null && search.getSortType() != null){
+            temp=sortList(search.getSortBy(),search.getSortType(),temp);
+        }
+        if(search.getFilterBy() != null){
+            temp = filterList(search.getFilterBy(),temp);
+        }
+        List<Content> listRet = new ArrayList<Content>(temp);
+        return listRet;
+    }
+
+    public Collection<Content> searchByName(String name,List<Content> list){
+        Collection<Content> temp = new ArrayList<Content>();
+        if (name == null || name == ""){
+            return list;
+        }else{
+            for (Content u : list) {
+                if (u.getFacilityName().toUpperCase().contains(name.toUpperCase()))
+                    temp.add(u);
+            }
+        }
+        List<Content> listRet = new ArrayList<Content>(temp);
+        return listRet;
+    }
+
+    private Collection<Content> searchByDate(String date, Collection<Content> starter) {
+        Collection<Content> temp = new ArrayList<Content>();
+        if (date == "" || date == null){
+            temp = starter;
+        }else{
+            for (Content u : starter) {
+                if (u.getDuration().toUpperCase().contains(date.toUpperCase()))
+                    temp.add(u);
+            }
+        }
+        List<Content> list = new ArrayList<Content>(temp);
+        return list;
+    }
+
+    public Collection<Content> sortList(String criterium,String type,Collection<Content> starter){
+        List<Content> list = new ArrayList<Content>(starter);
+        List<Content> temp = new ArrayList<Content>();
+        if(type.equals("1")){
+            if (criterium.equals("1")) {
+                Collections.sort(list,new TrainingComparatorByNameCoach());
+            }else {
+                Collections.sort(list, new TrainingComparatorByDateCoach());
+            }
+        }else{
+            if (criterium.equals("1")) {
+                Collections.sort(list,new TrainingComparatorByNameCoach().reversed());
+            }else {
+                Collections.sort(list, new TrainingComparatorByDateCoach().reversed());
+            }
+        }
+        return list;
+    }
+
+    public Collection<Content> filterList(String type,Collection<Content> starter){
+        Collection<Content> temp = new ArrayList<Content>();
+        if(type.equals("1")){
+            for (Content f:starter){
+                if(facilities.GetByIdFacility(f.getFacilityName()).getFacilityType().toString().contains("GYM")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("2")){
+            for (Content f:starter){
+                if(facilities.GetByIdFacility(f.getFacilityName()).getFacilityType().toString().contains("POOL")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("3")){
+            for (Content f:starter){
+                if(facilities.GetByIdFacility(f.getFacilityName()).getFacilityType().toString().contains("SPORT")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("4")){
+            for (Content f:starter){
+                if(facilities.GetByIdFacility(f.getFacilityName()).getFacilityType().toString().contains("DANCE")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("5")){
+            for (Content f:starter){
+                if(f.getType().toString().contains("GROUP")){
+                    temp.add(f);
+                }
+            }
+        }else if(type.equals("6")){
+            for (Content f:starter){
+                if(f.getType().toString().contains("PERSONAL")){
+                    temp.add(f);
+                }
+            }
+        }else{
+            for (Content f:starter){
+                if(f.getType().toString().contains("SAUNA")){
+                    temp.add(f);
+                }
+            }
+        }
+        List<Content> list = new ArrayList<Content>(temp);
+        return list;
     }
 
 }

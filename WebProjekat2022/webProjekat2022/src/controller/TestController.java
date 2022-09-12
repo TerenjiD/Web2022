@@ -683,7 +683,7 @@ public class TestController {
 
     public static void RouteComment(){
         get(
-                "rest/customerHomePage/checkComment",(req,res)->{
+                "/rest/customerHomePage/checkComment",(req,res)->{
                     res.type("application/json");
                     if(boolIfFirstTime==true){
                         boolIfFirstTime=false;
@@ -941,5 +941,35 @@ public class TestController {
 
     public static void ContentToChange(String nameID){
         ContentToChange = testService.CheckContent(nameID);
+    }
+
+    public static void searchUsers() {
+        post("/adminHomePage/search/", (req, res) -> {
+            res.type("application/json");
+            UsersSearchDTO usersSearchDTO = g.fromJson(req.body(), UsersSearchDTO.class);
+            return g.toJson(testService.searchUsers(usersSearchDTO));
+        });
+    }
+
+    public static void searchTrainingsCustomer() {
+        post("rest/training/search/", (req, res) -> {
+            res.type("application/json");
+            Customer customer = facilityService.GetByUsernameCustomer(userSession(req).getUsername());
+            String username = customer.getUsername();
+            List<TrainingHistoryDTO> list=facilityService.GetTrainingsForCustomer(username);
+            TrainingSearchDTO trainingSearchDTO = g.fromJson(req.body(), TrainingSearchDTO.class);
+            return g.toJson(facilityService.searchTrainingsCustomer(trainingSearchDTO,list));
+        });
+    }
+
+    public static void searchTrainingsCoach() {
+        post("rest/training/searchCoach/", (req, res) -> {
+            res.type("application/json");
+            User user = userSession(req);
+            String username = user.getUsername();
+            List<Content> list=facilityService.getTrainings(username);
+            TrainingSearchDTO trainingSearchDTO = g.fromJson(req.body(), TrainingSearchDTO.class);
+            return g.toJson(facilityService.searchTrainingsCoach(trainingSearchDTO,list));
+        });
     }
 }

@@ -61,6 +61,10 @@ public class SparkMain {
         TestController.GetCustomers();
         TestController.GetCoachesForSpecificFacility();
 
+
+        TestController.searchUsers();
+        TestController.searchTrainingsCustomer();
+        TestController.searchTrainingsCoach();
         TestController.RouteComment();
         TestController.AddComment();
         TestController.getComments();
@@ -76,7 +80,9 @@ public class SparkMain {
         TestController.logoutCoach();
         TestController.logoutManager();
 
+
         TestController.previewFacility();
         TestController.getCommentsForPreview();
+
     }
 }
