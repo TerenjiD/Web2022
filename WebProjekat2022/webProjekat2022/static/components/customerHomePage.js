@@ -13,6 +13,8 @@ Vue.component("customerHomePage",{
                     <p>Kupac prikeroni {{customer.name}}</p>
                     <button v-on:click="logout" style="padding: 7px 20px;
                     background-color: aqua;">Izloguj se</button><br>
+                    <button v-on:click="buyFitPass" style="padding: 7px 20px;
+                    background-color: aqua;">Kupi clanarinu</button><br>
                     <button v-on:click="changeCustomer" style="padding: 7px 20px;
                     background-color: aqua;">Izmeni</button>
                 
@@ -135,6 +137,9 @@ Vue.component("customerHomePage",{
                 router.push('/')
             })
 
+        },
+        buyFitPass : function(event){
+            router.push('/customerHomePage/buyFitPass')
         }
     }
 })

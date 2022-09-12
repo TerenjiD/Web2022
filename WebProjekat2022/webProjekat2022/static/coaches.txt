@@ -1,3 +1,3 @@
-x;xx;Proba;xx;FEMALE;xx;COACH;xx
-t;r;q;q;MALE;q;COACH;q
-y;y;y;y;MALE;y;COACH;y
+djape;djape;Predrag;Borilovic;MALE;1988-12-06;COACH;nista
+bulja;bulja;Sasa;Buljovcic;MALE;1976-06-10;COACH;nista
+prika;prika;Prika;Prikic;MALE;1999-12-23;COACH;nista

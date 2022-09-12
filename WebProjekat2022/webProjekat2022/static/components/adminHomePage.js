@@ -3,7 +3,6 @@ Vue.component("adminHomePage",{
         return{
             adminDTO : null,
             users : null,
-            //viewcomments : false
         }
     },
     template:`

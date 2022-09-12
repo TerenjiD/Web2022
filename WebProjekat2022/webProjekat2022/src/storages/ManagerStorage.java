@@ -23,6 +23,11 @@ public class ManagerStorage {
         return managers.values();
     }
 
+    public List<Manager> getAll(){
+        List<Manager> listToReturn = new ArrayList<>(getValues());
+        return listToReturn;
+    }
+
     public List<Manager> GetManagersWithoutFacility(){
         List<Manager> flagList = new ArrayList<>(getValues());
         List<Manager> listToReturn = new ArrayList<>();
@@ -101,28 +106,27 @@ public class ManagerStorage {
                     CSVWriter.DEFAULT_LINE_END);
             Manager tempManager = managers.get(manager.getUsername());
             String flagForFacility = "";
-            if(manager.getFacility() != null){
-                flagForFacility = manager.getFacility();
-            }else{
-                flagForFacility = "nista";
-            }
+
+            flagForFacility = "nista";
+            //manager.setFacility("nista");
             if(tempManager==null){
 
                 String[] data1 = {manager.getUsername(),manager.getPassword(),manager.getName(),manager.getLastName()
-                        ,manager.getGender().toString(),manager.getDateOfBirth(),manager.getRole().toString(),flagForFacility};
+                        ,manager.getGender().toString(),manager.getDateOfBirth(),manager.getRole().toString(),manager.getFacility()};
                 List<String[]> managerList = new ArrayList<>();
                 managerList.add(data1);
                 //userList.add(data2);
                 writer.writeAll(managerList);
 
                 writer.close();
+                this.managers.put(manager.getUsername(),manager);
             }else{
                 writer.close();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.managers.put(manager.getUsername(),manager);
+
     }
 
     public Manager GetByIdManager(String username){

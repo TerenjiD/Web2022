@@ -1,7 +1,2 @@
-AjDAVidimotest;test;AjDAVidimoProba;GROUP_TRAINING;y y y;AjDAVidimo;AjDAVidimo;2022-09-12;10:00;17:00;0
-Cistotest;test;Cisto;PERSONAL_TRAINING;y y y;Cisto;Cisto;2022-09-12;10:00;17:00;0
-ContentZaDrugogFullTr;FullTr;ContentZaDrugog;GROUP_TRAINING;t q q;ContentZaDrugog;Da vidimo da li radi;2022-09-12;10:00;17:00;0
-TerenjiDavidtest;test;TerenjiDavid;PERSONAL_TRAINING;x Proba xx;aaa;aaaa;2022-09-12;10:00;17:00;0
-lukaLicinatest;test;lukaLicina;SAUNA;nema;lukaLicina;lukaLicina;2022-09-03;10:00;17:00;0
-terenjiJeSrbintest;test;terenjiJeSrbin;SAUNA;nema;terenjiJeSrbin;terenjiJeSrbin;2022-09-3;10:00;17:00;0
-SamoZaMogBrataTekijatest;test;SamoZaMogBrataTekija;PERSONAL_TRAINING;x Proba xx;Nista;I Love Hungary;2022-09-22;08:40;22:38;0
+
+PudingPrvak;Prvak;Puding;GROUP_TRAINING;djape Predrag Borilovic;Puding;Dobra stvar;2022-09-23;17:00;20:00;0

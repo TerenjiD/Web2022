@@ -75,5 +75,8 @@ public class SparkMain {
         TestController.logoutAdmin();
         TestController.logoutCoach();
         TestController.logoutManager();
+
+        TestController.previewFacility();
+        TestController.getCommentsForPreview();
     }
 }

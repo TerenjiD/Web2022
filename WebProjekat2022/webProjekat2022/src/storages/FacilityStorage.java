@@ -22,7 +22,8 @@ public class FacilityStorage {
     }
 
     public Facility CheckIfExists(String name){
-        return facilities.get(name);
+        Facility flagFacility = facilities.get(name);
+        return flagFacility;
     }
 
     public FacilityStorage() {
@@ -178,9 +179,34 @@ public class FacilityStorage {
                     facility.getNumber()+"'"+facility.getCity()+"'"+facility.getCountry();
             if(tempFacility==null){
                 //String flagLocation = getLocation(facility.getLocation());
-                String[] data1 = {facility.getName(),facility.getFacilityType().toString(),facility.getContentType().toString(),
+                String[] data1 = {facility.getName(),facility.getFacilityType().toString(),"nista",
                 facility.getStatus().toString(),facility.getLogo(),flagLocation,facility.getWorkingHours(),
                 facility.getRating()};
+                FacilityType facilityTypeFlag;
+                String facilityTypeFlagString = facility.getFacilityType();
+                if(facilityTypeFlagString.equals("GYM")){
+                    facilityTypeFlag = FacilityType.GYM;
+                }else if(facilityTypeFlagString.equals("DANCE_STUDIO")){
+                    facilityTypeFlag = FacilityType.DANCE_STUDIO;
+                }else if(facilityTypeFlagString.equals("POOL")){
+                    facilityTypeFlag = FacilityType.POOL;
+                }else{
+                    facilityTypeFlag = FacilityType.SPORT_CENTER;
+                }
+                FacilityStatus facilityStatusFlag;
+                String facilityStatusFlagString = facility.getStatus();
+                if(facilityStatusFlagString.equals("OPEN")){
+                    facilityStatusFlag = FacilityStatus.OPEN;
+                }else{
+                    facilityStatusFlag = FacilityStatus.CLOSED;
+                }
+                Address adressFlag = new Address(facility.getStreet(),facility.getNumber(),facility.getCity(),facility.getCountry());
+                Location locationFlag = new Location(Float.parseFloat(facility.getLatitude()),
+                        Float.parseFloat(facility.getLongitude()),adressFlag);
+                Facility facilityFlag = new Facility(facility.getName(),facilityTypeFlag,"nista",facilityStatusFlag,
+                        facility.getLogo(),locationFlag,facility.getWorkingHours(),facility.getRating());
+                String flagName = facility.getName();
+                this.facilities.put(flagName,facilityFlag);
                 List<String[]> facilityList = new ArrayList<>();
                 facilityList.add(data1);
                 //userList.add(data2);
@@ -193,7 +219,7 @@ public class FacilityStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //this.facilities.put(facility.getName(),facility);
+
     }
 
     public void addContent(String name,String content){
@@ -203,7 +229,7 @@ public class FacilityStorage {
                 "'"+flagFacility.getLocation().getAddress().getCity() +"'"+flagFacility.getLocation().getAddress().getCountry();
         String flagOldContent =flagFacility.getContentType();
         String flagContent = "";
-        if(flagOldContent.equals("")){
+        if(flagOldContent.equals("nista")){
             flagContent = content;
         }else{
             flagContent = flagOldContent + "," + content;

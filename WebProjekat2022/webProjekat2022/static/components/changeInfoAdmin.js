@@ -17,7 +17,7 @@ Vue.component("changeInfoAdmin",{
                 <option>MALE</option>
                 <option>FEMALE</option>
             </select></td></tr>
-            <tr><td>Date of birth</td><td><input type="text" id="dateOfBirth" v-model="adminDTO.dateOfBirth"/></td></tr>
+            <tr><td>Date of birth</td><td><input type="date" id="dateOfBirth" v-model="adminDTO.dateOfBirth"/></td></tr>
             <tr><td><button type="submit"  v-on:click = "changeAdmin" style="padding: 7px 20px;
                                                             background-color: aqua;" >Izmeni</button></td>
             <td><button v-on:click= "returnToAdminHomePage" style="padding: 7px 20px;

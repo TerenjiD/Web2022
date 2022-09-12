@@ -23,13 +23,6 @@ Vue.component("createFacility",{
                 <option>DANCE_STUDIO</option>
             </select></td>
             </tr>
-            <tr><td>Sadrzaj</td>
-            <td><select type="text" id="contentType" v-model="objectDTO.contentType">
-                <option>GROUP_TRAINING</option>
-                <option>PERSONAL_TRAINING</option>
-                <option>SAUNA</option>
-            </select></td>
-            </tr>
             <tr><td>Status</td>
             <td><select type="text" id="status" v-model="objectDTO.status">
                 <option>OPEN</option>
@@ -37,7 +30,7 @@ Vue.component("createFacility",{
             </select></td>
             </tr>
             <tr><td>Logo</td>
-            <td><input type="file" id="logo" v-model="objectDTO.logo"></td>
+            <td><input type="text" id="logo" v-model="objectDTO.logo"></td>
             </tr>
             <tr><td>latitude</td>
             <td><input type="text" id="latitude" v-model="objectDTO.latitude"></td>
@@ -79,8 +72,11 @@ Vue.component("createFacility",{
     </form>
     </div>
     `,
-    mounted(){
-        axios.get('/rest/adminHomePage/createFacility/getManagers').then(response => (this.managerDTO=response.data));
+    mounted(event){
+        axios.get('/rest/adminHomePage/createFacility/getManagers').then(response => {
+            this.managerDTO=response.data
+   
+        });
     },
     methods : {
         addFacility : function(event){
