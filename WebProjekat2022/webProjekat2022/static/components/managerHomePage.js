@@ -6,7 +6,9 @@ Vue.component("managerHomePage",{
             facilityDTO : null,
             contentToShow : null,
             customers : null,
-            coaches : null
+            coaches : null,
+            facilitySearchDTO:{name:null,type:null,location:null,rating:null,sortType:null,sortBy:null,filterBy:null},
+            trainingSearchDTO:{name:null,date:null,sortType:null,sortBy:null,filterBy:null}
         }
     },
     template:`
@@ -60,31 +62,30 @@ Vue.component("managerHomePage",{
         </div>
         <button v-on:click="addContent" style="padding: 7px 20px;
                         background-color: aqua;">Dodaj sadrzaj</button>
-        <table v-for="(p, index) in contentToShow">
-        <tr><td>Name:</td>
-            <td>{{p.name}}</td>
+
+        <table border="1">
+        <tr bgcolor="lightgrey">
+                    	    <th>Naziv</th>
+                    	    <th>Tip</th>
+                    	    <th>Trener</th>
+                           	<th>Logo</th>
+                           	<th>Opis</th>
+                           	<th>Trajanje</th>
+                           	<th></th>
+                            <th></th>
         </tr>
-        <tr><td>Type:</td>
-            <td>{{p.type}}</td>
+        <tr v-for="(p, index) in contentToShow" >
+                    	    <td>{{p.name}}</td>
+                    	    <td>{{p.type}}</td>
+                    	    <td>{{p.coachID}}</td>
+                            <td><img :src="p.logo" width="50" height="50"></td>
+                            <td>{{p.description}}</td>
+                            <td>{{p.duration}}</td>
+                            <td><button v-on:click="changeContent(p)" style="padding: 7px 20px;
+                                     background-color: aqua;">Izmeni sadrzaj</button></td>
+                            <td><button v-on:click="addCoachToContent(p)" style="padding: 7px 20px;
+                                     background-color: aqua;">Dodaj trenera</button></td>
         </tr>
-        <tr><td>Coach:</td>
-            <td>{{p.coachID}}</td>
-        </tr>
-        <tr><td>Logo:</td>
-            <td>{{p.logo}}</td>
-        </tr>
-        <tr><td>Description:</td>
-            <td>{{p.description}}</td>
-        </tr>
-        <tr><td>Duration:</td>
-            <td>{{p.duration}}</td>
-        </tr>
-        <tr>
-            <td><button v-on:click="changeContent(p)" style="padding: 7px 20px;
-                        background-color: aqua;">Izmeni sadrzaj</button></td>
-            <td><button v-on:click="addCoachToContent(p)" style="padding: 7px 20px;
-                        background-color: aqua;">Dodaj trenera</button></td>
-            </tr>
         </table>
         <div>
             <table></table>
@@ -94,14 +95,53 @@ Vue.component("managerHomePage",{
                         <h3>Prikaz sportskih objekata</h3>
                         </div>
                         <div>
-                        <template>
-                            <form>
-                                <label>Pretraga</label>
-                                <input type = "text" v-model = "input" >
-                                <button @click="search" >Pretrazi</button>
-                            </form>
-                        </template>
-                        </div>
+                                    <template>
+                                        <form>
+                                            <h4>Pretraga</h4>
+                                            <br>
+                                        	<label>Naziv</label>
+                                        	<input type = "text" v-model = "facilitySearchDTO.name" >
+                                        	<label>Tip</label>
+                                            <input type = "text" v-model = "facilitySearchDTO.type" >
+                                        	<label>Lokacija</label>
+                                            <input type = "text" v-model = "facilitySearchDTO.location" >
+                                            <label>Ocena</label>
+                                            <input type = "text" v-model = "facilitySearchDTO.rating" >
+                                            <br>
+                                            <h4>Sortiranje</h4>
+                                            <label>Sortiraj na osnovu</label>
+                                            <select v-model="facilitySearchDTO.sortBy" name="sortMenu" id="sortMenu">
+                                                <option value="0" selected>Bez sortiranja</option>
+                                                <option value="1">Po nazivu</option>
+                                                <option value="2">Po lokaciji</option>
+                                                <option value="3">Po prosecnoj oceni</option>
+                                            </select>
+                                            <label>Redosled</label>
+                                            <select v-model="facilitySearchDTO.sortType" name="sortMenuT" id="sortMenuT">
+                                                <option value="1" selected>Rastuce</option>
+                                                <option value="2">Opadajuce</option>
+                                            </select>
+                                            <br>
+                                            <h4>Filtriranje</h4>
+                                            <label >Filtriraj na osnovu</label>
+                                            <select v-model="facilitySearchDTO.filterBy" name="filterMenu" id="filterMenu">
+                                                <option value="0" selected>Bez filtriranja</option>
+                                                <optgroup label="Po tipu objekta">
+                                                    <option value="1">Teretana</option>
+                                                    <option value="2">Bazen</option>
+                                                    <option value="3">Sportski centar</option>
+                                                    <option value="4">Plesni studio</option>
+                                                </optgroup>
+                                                <optgroup label="Po dostupnosti">
+                                                    <option value="5">Otvoren</option>
+                                                    <option value="6">Zatvoren</option>
+                                                </optgroup>
+                                            </select>
+                                        <br>
+                                        <button @click="search" >Pretrazi</button>
+                                        </form>
+                                    </template>
+                                    </div>
                         <table border="1">
                             <tr bgcolor="lightgrey">
                                 <th>Naziv</th>
@@ -141,15 +181,11 @@ Vue.component("managerHomePage",{
         changeInfo : function() {
             router.push('/managerHomePage/changeInfoManager/');
         },
-        search : function(){
-            if(this.input == ""){
-                axios
-                .get('rest/facilities/')
-                .then(response => (this.facilities = response.data))
-            }else
-                 axios
-                 .get("rest/facilities/search/" + this.input)
-                 .then(response => (this.facilities = response.data))
+        search : function(event){
+                    axios
+                    .post("rest/facilities/search/",this.facilitySearchDTO )
+                    .then(response => (this.facilities = response.data))
+                    event.preventDefault();
         },
         addContent : function(event){
             router.push('/managerHomePage/addContent/')

@@ -10,3 +10,4 @@ MenadzerZaObjekat;s;test1;test1;FEMALE;12-12-1996;MANAGER;test1
 test3;test3;test3;test3;FEMALE;12-12-2000;MANAGER;test3
 lee;lee;Luka;Licina;FEMALE;17-12-2000;MANAGER;nista
 sdgagafggsg;sdghfdhgfdhdhd;dfghdhdhdgfhd;dgfhdhgdhgdgfh;FEMALE;dghdgfhdghdhdgfh;MANAGER;test4
+dadadad;dasdadsa;dasdad;dasdasd;FEMALE;15.5.2000;MANAGER;dasdsa

@@ -1,5 +1,5 @@
 AjDAVidimotest;test;AjDAVidimoProba;GROUP_TRAINING;y y y;AjDAVidimo;AjDAVidimo;2022-09-12;10:00;17:00;0
-Cistotest;test;Cisto;PERSONAL_TRAINING;y y y;Cisto;Cisto;2022-09-12;10:00;17:00;0
+Cistotest;test;Cisto;SAUNA;y y y;Cisto;Cisto;2022-09-12;10:00;17:00;0
 ContentZaDrugogFullTr;FullTr;ContentZaDrugog;GROUP_TRAINING;t q q;ContentZaDrugog;Da vidimo da li radi;2022-09-12;10:00;17:00;0
 TerenjiDavidtest;test;TerenjiDavid;PERSONAL_TRAINING;x Proba xx;aaa;aaaa;2022-09-12;10:00;17:00;0
 lukaLicinatest;test;lukaLicina;SAUNA;nema;lukaLicina;lukaLicina;2022-09-03;10:00;17:00;0

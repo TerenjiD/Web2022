@@ -7,11 +7,19 @@ Vue.component("viewCommentsForFacility",{
     template:
     `
     <div>
-    <table v-for="(p,index) in comments">
-        <tr><td>Objekat:</td><td>{{p.facilityID}}</td></tr>
-        <tr><td>Korisnik:</td><td>{{p.customerID}}</td></tr>
-        <tr><td>Komentar:</td><td>{{p.commentText}}</td></tr>
-        <tr><td>Zvezde:</td><td>{{p.stars}}</td></tr>
+    <table border="1">
+                <tr bgcolor="lightgrey">
+                        	    <th>Objekat</th>
+                        	    <th>Korisnik</th>
+                        	    <th>Komentar</th>
+                               	<th>Zvezde</th>
+                </tr>
+                <tr v-for="(p, index) in comments" >
+                            	<td>{{p.facilityID}}</td>
+                            	<td>{{p.customerID}}</td>
+                            	<td>{{p.commentText}}</td>
+                                <td>{{p.stars}}</td>
+                </tr>
     </table>
     <td><button v-on:click="goBack" style="padding: 7px 20px;
         background-color: aqua;">Vrati se</button></td></tr>

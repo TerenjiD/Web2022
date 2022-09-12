@@ -14,18 +14,29 @@ Vue.component("viewComments",{
     background-color: aqua;">Vrati se</button>
     </div>
     <div v-else>
-    <table v-for="(p,index) in comments">
-        <tr><td>Objekat:</td><td>{{p.facilityID}}</td></tr>
-        <tr><td>Korisnik:</td><td>{{p.customerID}}</td></tr>
-        <tr><td>Komentar:</td><td>{{p.commentText}}</td></tr>
-        <tr><td>Zvezde:</td><td>{{p.stars}}</td></tr>
-        <tr><td>Vidljivost:</td><td v-if="p.available === 0">Nije vidljiv</td>
-        <td v-else>Vidljiv</td></tr>
-        <tr><td><button v-on:click="accept(p)" style="padding: 7px 20px;
-        background-color: aqua;">Potvrdi</button></td>
-        <td><button v-on:click="reject(p)" style="padding: 7px 20px;
-        background-color: aqua;">Odbij</button></td></tr>
-    </table>
+    <table border="1">
+            <tr bgcolor="lightgrey">
+                    	    <th>Objekat</th>
+                    	    <th>Korisnik</th>
+                    	    <th>Komentar</th>
+                           	<th>Zvezde</th>
+                           	<th>Vidljivost</th>
+                           	<th></th>
+                           	<th></th>
+            </tr>
+            <tr v-for="(p, index) in comments" >
+                        	<td>{{p.facilityID}}</td>
+                        	<td>{{p.customerID}}</td>
+                        	<td>{{p.commentText}}</td>
+                            <td>{{p.stars}}</td>
+                            <td v-if="p.available === 0">Nije vidljiv</td>
+                            <td v-else>Vidljiv</td>
+                            <td><button v-on:click="accept(p)" style="padding: 7px 20px;
+                                    background-color: aqua;">Potvrdi</button></td>
+                            <td><button v-on:click="reject(p)" style="padding: 7px 20px;
+                                    background-color: aqua;">Odbij</button></td></tr>
+            </tr>
+        </table>
     <button v-on:click="goBack" style="padding: 7px 20px;
     background-color: aqua;">Vrati se</button>
     </div>

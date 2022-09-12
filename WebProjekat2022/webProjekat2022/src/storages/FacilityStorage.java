@@ -96,7 +96,7 @@ public class FacilityStorage {
 
     private ContentType getContentType(String type){
         if(type.equals("SAUNA"))
-            return ContentType.SAUNA;
+            return ContentType.GYM;
         else if (type.equals("GROUP_TRAINING")) {
             return ContentType.GROUP_TRAINING;
         }else

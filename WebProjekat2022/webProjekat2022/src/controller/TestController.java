@@ -642,7 +642,7 @@ public class TestController {
 
     public static void RouteComment(){
         get(
-                "rest/customerHomePage/checkComment",(req,res)->{
+                "/rest/customerHomePage/checkComment",(req,res)->{
                     res.type("application/json");
                     if(boolIfFirstTime==true){
                         boolIfFirstTime=false;

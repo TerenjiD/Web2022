@@ -38,12 +38,12 @@ public class FacilityService {
 
 
     public List<Facility> getFacilities() {
-        List<Facility> list= new ArrayList<>(this.facilities.getValues());
+        List<Facility> list= facilities.sortCollection(this.facilities.getValues());
         return list;
     }
 
     public List<Facility> searchFacilities(FacilitySearchDTO input) {
-        List<Facility> list= this.facilities.getSearched(input);
+        List<Facility> list= facilities.sortCollection(this.facilities.getSearched(input));
         return list;
     }
 
@@ -58,7 +58,7 @@ public class FacilityService {
         memberships.addMembership(membership);
     }
 
-    public boolean CheckIfExpired(String id,String username){
+    public boolean CheckIfExpired(String id,String username) {
         Membership membership = memberships.FindById(id);
         String oldID = membership.getId();
         LocalDateTime timeToWork = membership.getExpirationDate();
@@ -70,22 +70,21 @@ public class FacilityService {
         double price = membership.getPrice();
         int usage = Integer.parseInt(membership.getAppointmentNumber());
         int maxApps = Integer.parseInt(membership.getAppointmentNumberMax());
-        double points =(price/1000)*(maxApps-usage);
-        if(points == 0){
+        double points = (price / 1000) * (maxApps - usage);
+        if (points == 0) {
             points = 1;
         }
-        //if(currentTime.getHour()>=hour || currentTime.getMinute()>=minute || currentTime.getSecond()>=seconds){
-        if(currentTime.getDayOfMonth()>=day){
-            Customer customer = customers.GetByID(username);
-            double newPoints = customer.getPoints()+points;
-            changeCustomerType(customer,newPoints);
-            customers.editMembershipAndPoints(customer,oldID,"nista",points);
-            return false;
-        }else{
-            return true;
-        }
+            //if(currentTime.getHour()>=hour || currentTime.getMinute()>=minute || currentTime.getSecond()>=seconds){
+            if (currentTime.getDayOfMonth() >= day) {
+                Customer customer = customers.GetByID(username);
+                double newPoints = customer.getPoints() + points;
+                changeCustomerType(customer, newPoints);
+                customers.editMembershipAndPoints(customer, oldID, "nista", points);
+                return false;
+            } else {
+                return true;
+            }
     }
-
     public void changeCustomerType(Customer customer,double newPoints){
         String type = customer.getCustomerType();
         double flagPointsNumber = 0;
