@@ -3,4 +3,4 @@ jeca;jeca;Jelena;Terenji;FEMALE;1996-08-31;MANAGER;Prvak
 princ;princ;Vino;Plantaza;FEMALE;1992-07-07;MANAGER;Superstar
 novi;novi;Novi;Novi;FEMALE;2000-12-12;MANAGER;Fullbody
 novi1;novi1;Nikola;Zidan;FEMALE;2000-12-12;MANAGER;KrkanGym
-novi2;novi2;Toma;Metoda;FEMALE;1981-10-22;MANAGER;nista
+novi2;novi2;Toma;Metoda;FEMALE;1981-10-22;MANAGER;KinderBueno

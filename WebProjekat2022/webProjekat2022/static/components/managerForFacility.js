@@ -16,7 +16,7 @@ Vue.component("managerForFacility",{
                     <option>MALE</option>
                     <option>FEMALE</option>
                 </select></td></tr>
-                <tr><td>Date of birth</td><td><input type="text" id="dateOfBirth" v-model="managerDTO.dateOfBirth"/></td></tr>
+                <tr><td>Date of birth</td><td><input type="date" id="dateOfBirth" v-model="managerDTO.dateOfBirth"/></td></tr>
                 <tr><td><button  v-on:click = "addUser" style="padding: 7px 20px;
                         background-color: aqua;" >Napravi</button></td>
                 <td><button v-on:click= "returnToHome" style="padding: 7px 20px;

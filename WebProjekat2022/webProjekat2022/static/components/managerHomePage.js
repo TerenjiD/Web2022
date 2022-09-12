@@ -78,7 +78,7 @@ Vue.component("managerHomePage",{
                     	    <td>{{p.name}}</td>
                     	    <td>{{p.type}}</td>
                     	    <td>{{p.coachID}}</td>
-                            <td><img :src="p.logo" width="50" height="50"></td>
+                            <td>{{p.logo}}</td>
                             <td>{{p.description}}</td>
                             <td>{{p.duration}}</td>
                             <td><button v-on:click="changeContent(p)" style="padding: 7px 20px;
