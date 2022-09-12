@@ -10,7 +10,18 @@ Vue.component("customerHomePage",{
         }
     },
     template:`
-            <div>
+
+    <div>
+                    <p>Kupac prikeroni {{customer.name}}</p>
+                    <button v-on:click="logout" style="padding: 7px 20px;
+                    background-color: aqua;">Izloguj se</button><br>
+                    <button v-on:click="buyFitPass" style="padding: 7px 20px;
+                    background-color: aqua;">Kupi clanarinu</button><br>
+                    <button v-on:click="changeCustomer" style="padding: 7px 20px;
+                    background-color: aqua;">Izmeni</button>
+                
+                <h4>Istorija treninga</h4>
+
                 <div>
                         <p>Kupac prikeroni {{customer.name}}</p>
                         <button v-on:click="logout" style="padding: 7px 20px;
@@ -223,6 +234,9 @@ Vue.component("customerHomePage",{
                 router.push('/')
             })
 
+        },
+        buyFitPass : function(event){
+            router.push('/customerHomePage/buyFitPass')
         }
     }
 })

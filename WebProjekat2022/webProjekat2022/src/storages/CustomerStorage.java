@@ -104,7 +104,7 @@ public class CustomerStorage {
             if(tempUser==null){
                 String[] data1 = {customer.getUsername(),customer.getPassword(),customer.getName(),customer.getLastName()
                         ,customer.getGender().toString(),customer.getDateOfBirth(),customer.getRole().toString(),
-                        "0", "nista", "nista"};
+                        "0", "Normal", "nista"};
                 List<String[]> userList = new ArrayList<>();
                 userList.add(data1);
                 //userList.add(data2);

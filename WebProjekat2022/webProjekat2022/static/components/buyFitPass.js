@@ -49,7 +49,7 @@ Vue.component("buyFitPass",{
         buyMembership1 : function(event){
             this.step1 = true;
             this.membership.type = "Mesecno"
-            this.membership.facility = "test"
+            this.membership.facility = "Prvak"
             this.membership.price = "3000"
             this.membership.status = "Active"
             this.membership.appointmentNumber = "30"
@@ -61,7 +61,7 @@ Vue.component("buyFitPass",{
         buyMembership2 : function(){
             this.step1 = true;
             this.membership.type = "Godisnji"
-            this.membership.facility = "test2"
+            this.membership.facility = "Bodyline"
             this.membership.price = "30000"
             this.membership.status = "Active"
             this.membership.appointmentNumber = "300"
@@ -73,7 +73,7 @@ Vue.component("buyFitPass",{
         buyMembership3 : function(){
             this.step1 = true;
             this.membership.type = "Polugodisnji"
-            this.membership.facility = "test3"
+            this.membership.facility = "Superstar"
             this.membership.price = "15000"
             this.membership.status = "Active"
             this.membership.appointmentNumber = "150"

@@ -41,9 +41,12 @@ public class TestService {
     }
     public void addUser(User user){
         this.users.addUser(user);
-        Customer customer = new Customer(user.getUsername(),user.getPassword(),user.getName(),user.getLastName(),user.getGender(),
-                user.getDateOfBirth(),user.getRole(),0,"nista","nista");
-        this.customers.addCustomer(customer);
+        String roleFlag = user.getRole().toString();
+        if(roleFlag.equals("CUSTOMER")){
+            Customer customer = new Customer(user.getUsername(),user.getPassword(),user.getName(),user.getLastName(),user.getGender(),
+                    user.getDateOfBirth(),user.getRole(),0,"Normal","nista");
+            this.customers.addCustomer(customer);
+        }
     }
 
     public void addManager(Manager manager){
@@ -76,8 +79,9 @@ public class TestService {
 
     public User loginUser(LoginDTO loginDTO) throws JsonSyntaxException, IOException {
         User user = users.FindById(loginDTO.getUsername());
-
-        if(loginDTO.getPassword().equals(user.getPassword())){
+        String passwordFlag = loginDTO.getPassword();
+        String usernameFlag = loginDTO.getUsername();
+        if(passwordFlag.equals(user.getPassword())){
             return user;
         }
 
@@ -138,6 +142,8 @@ public class TestService {
 
     public void EditCoach(CoachDTO coachDTO,String flagUsername){
         Gender gen;
+        String username = coachDTO.getUsername();
+        Coach oldCoach = coaches.GetByIdCoach(username);
         if(coachDTO.getGender().equals("MALE")){
             gen = Gender.MALE;
         }else{
@@ -145,8 +151,18 @@ public class TestService {
         }
         User flagUser = new User(coachDTO.getUsername(), coachDTO.getPassword(), coachDTO.getName(),coachDTO.getLastName(),
                 gen,coachDTO.getDateOfBirth(),Role.COACH);
-        Coach flagCoach = new Coach(coachDTO.getUsername(),coachDTO.getPassword(),coachDTO.getName(),coachDTO.getLastName(),
-                gen,coachDTO.getDateOfBirth(),Role.COACH,coachDTO.getTrainingHistory());
+        String flag = coachDTO.getTrainingHistory();
+        String trainingHistoryFlag;
+        Coach flagCoach;
+        if(flag.equals("nista")){
+            flagCoach = new Coach(coachDTO.getUsername(),coachDTO.getPassword(),coachDTO.getName(),coachDTO.getLastName(),
+                    gen,coachDTO.getDateOfBirth(),Role.COACH,coachDTO.getTrainingHistory());
+        }else{
+            trainingHistoryFlag = oldCoach.getTrainingHistory() + "," + coachDTO.getTrainingHistory();
+            flagCoach = new Coach(coachDTO.getUsername(),coachDTO.getPassword(),coachDTO.getName(),coachDTO.getLastName(),
+                    gen,coachDTO.getDateOfBirth(),Role.COACH,trainingHistoryFlag);
+        }
+
         users.editUser(flagUser,flagUsername);
         coaches.editCoach(flagCoach,flagUsername);
     }
@@ -244,9 +260,23 @@ public class TestService {
             return listToReturn;
         }
 
-        public void acceptComment (CommentDTO comment){
-            comments.EditComment(comment);
+
+    public List<CommentDTO> getCommentsPreview(String facilityName){
+        List<CommentDTO> listToIterate = comments.GetComments();
+        List<CommentDTO> listToReturn = new ArrayList<>();
+        for (CommentDTO comment:listToIterate) {
+            String toCheck = comment.getFacilityID();
+            if (comment.getIsDeleted() == 0 && comment.getAvailable() == 1 && toCheck.equals(facilityName)){
+                listToReturn.add(comment);
+            }
         }
+        return listToReturn;
+    }
+
+    public void acceptComment(CommentDTO comment){
+        comments.EditComment(comment);
+    }
+
 
         public List<CommentDTO> getAllComments () {
             List<CommentDTO> listToReturn = comments.GetComments();
@@ -309,6 +339,28 @@ public class TestService {
             promocodes.editPromocode(promocode);
         }
 
+
+    public FacilityPreviewDTO previewFacility(String facilityFlag){
+        Facility facility = facilities.getFacility(facilityFlag);
+        List<Manager> listToIterate = managers.getAll();
+        Manager managerFlag = new Manager();
+        for (Manager manager:listToIterate
+             ) {
+            String flag = manager.getFacility();
+            if(flag.equals(facilityFlag)){
+                managerFlag = manager;
+                break;
+            }
+        }
+        FacilityPreviewDTO facilityToReturn = new FacilityPreviewDTO(facility.getName(),facility.getFacilityType().toString(),
+                facility.getContentType(),facility.getStatus().toString(),facility.getLogo(),
+                Float.toString(facility.getLocation().getLatitude()), Float.toString(facility.getLocation().getLongitude()),
+                facility.getLocation().getAddress().getStreet(),facility.getLocation().getAddress().getNumber(),
+                facility.getLocation().getAddress().getCity(),facility.getLocation().getAddress().getCountry(),
+                facility.getWorkingHours(),facility.getRating(),managerFlag.getName(),managerFlag.getLastName());
+        return facilityToReturn;
+    }
+
         public void changeCustomerType (Customer customer,double newPoints){
             String type = customer.getCustomerType();
             List<CustomerType> listToIterate = types.getTypes();
@@ -327,5 +379,6 @@ public class TestService {
             }
 
         }
+
 
 }

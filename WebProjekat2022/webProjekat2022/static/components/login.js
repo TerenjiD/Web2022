@@ -2,8 +2,13 @@ Vue.component("login",{
     data : function(){
         return{
             loginDTO:{username:null,password:null,role:null},
-            facilitySearchDTO:{name:null,type:null,location:null,rating:null,sortType:null,sortBy:null,filterBy:null},
-            facilities : null
+
+            facilities : null,
+            input : null,
+            previewFacilityBool : false,
+            previewFacility : null,
+            comments : null,
+            facilitySearchDTO:{name:null,type:null,location:null,rating:null,sortType:null,sortBy:null,filterBy:null}
         }
     },
     template:`
@@ -87,12 +92,31 @@ Vue.component("login",{
             	    <td>{{p.facilityType}}</td>
             	    <td>{{p.contentType}}</td>
                     <td>{{p.status}}</td>
-                    <td><img :src="p.logo" width="50" height="50"></td>
+                    <td>{{p.logo}}</td>
                     <td>{{p.location.address.street}},{{p.location.address.number}},{{p.location.address.city}},{{p.location.address.country}}</td>
                     <td>{{p.rating}}</td>
                     <td>{{p.workingHours}}</td>
+                    <td><button v-on:click="previewFacilityFunction(p)">Pregled</button></td>
             	</tr>
             </table>
+            <div v-if="previewFacilityBool">
+                <table>
+                    <tr><td>Ime objekta:</td><td>{{previewFacility.name}}</td></tr>
+                    <tr><td>Tip:</td><td>{{previewFacility.facilityType}}</td></tr>
+                    <tr><td>Status:</td><td>{{previewFacility.status}}</td></tr>
+                    <tr><td>Ulica:</td><td>{{previewFacility.street}}</td></tr>
+                    <tr><td>Broj:</td><td>{{previewFacility.number}}</td></tr>
+                    <tr><td>Grad:</td><td>{{previewFacility.city}}</td></tr>
+                    <tr><td>Drzava:</td><td>{{previewFacility.country}}</td></tr>
+                    <tr><td>Prosecna ocena:</td><td>{{previewFacility.workingHours}}</td></tr>
+                    <tr><td>Sadrzaj:</td><td>{{previewFacility.contentType}}</td></tr>
+                    
+                </table>
+                <table>
+                    <tr><td>Komentari:</td></tr>
+                    <tr v-for="(p,index) in comments"><td></td><td>{{p.commentText}}</td></tr>
+                </table>
+            </div>
             <div>
             <button v-on:click = "Test"  style="padding: 7px 20px;
                 background-color: aqua;">Test</button>
@@ -135,15 +159,27 @@ Vue.component("login",{
             router.push('/register/')
         },
 
+
         search : function(event){
             axios
             .post("rest/facilities/search/",this.facilitySearchDTO )
             .then(response => (this.facilities = response.data))
             event.preventDefault();
         },
-
         Test : function(){
             router.push('managerForFacility')
+        },
+        previewFacilityFunction : function(p,event){
+            
+            axios.post('rest/previewFacility',p).then(response => {
+                this.previewFacilityBool = true
+                this.previewFacility = response.data
+                axios.post('rest/getComments').then(response => {
+                    this.comments = response.data
+                })
+            })
+            
+            
         }
 
     }

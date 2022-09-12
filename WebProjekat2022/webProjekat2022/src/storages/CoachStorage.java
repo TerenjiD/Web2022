@@ -82,7 +82,7 @@ public class CoachStorage {
             Coach tempCoach = coaches.get(coach.getUsername());
             if(tempCoach==null){
                 String[] data1 = {coach.getUsername(),coach.getPassword(),coach.getName(),coach.getLastName()
-                        ,coach.getGender().toString(),coach.getDateOfBirth(),coach.getRole().toString(),coach.getTrainingHistory()};
+                        ,coach.getGender().toString(),coach.getDateOfBirth(),coach.getRole().toString(),"nista"};
                 List<String[]> coachList = new ArrayList<>();
                 coachList.add(data1);
                 //userList.add(data2);
@@ -107,6 +107,7 @@ public class CoachStorage {
         String dateOfBirth=coach.getDateOfBirth();
         String role=coach.getRole().toString();
         String trainingHistory = coach.getTrainingHistory();
+
         String file = "./static/coaches.txt";
         File oldFile = new File(file);
         File newFile = new File("./static/temp.txt");

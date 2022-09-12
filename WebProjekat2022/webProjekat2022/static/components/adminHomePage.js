@@ -4,7 +4,6 @@ Vue.component("adminHomePage",{
             adminDTO : null,
             usersSearchDTO:{name:null,surname:null,username:null,sortType:null,sortBy:null,filterBy:null},
             users : null
-
         }
     },
     template:`

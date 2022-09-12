@@ -57,6 +57,38 @@ public class TestController {
         }
     }
 
+    private static String facilityToPreview;
+
+    public static void previewFacility(){
+        post(
+                "rest/previewFacility",(req,res)->{
+                    res.type("application/json");
+                    Facility facility = g.fromJson(req.body(),Facility.class);
+                    facilityToPreview = facility.getName();
+                    return g.toJson(testService.previewFacility(facilityToPreview));
+                }
+        );
+    }
+
+    public static void getCommentsForPreview(){
+        post(
+                "rest/getComments",(req,res)->{
+                    res.type("application/json");
+                    List<CommentDTO> list = testService.getCommentsPreview(facilityToPreview);
+                    return g.toJson(list);
+                }
+        );
+    }
+
+    public static void getFacilityToPreview(){
+        get(
+                "rest/previewFacility/getAllInfo",(req,res)->{
+                    res.type("application/json");
+                    return g.toJson(testService.previewFacility(facilityToPreview));
+                }
+        );
+    }
+
     public static void addManager(){
         post(
                 "rest/adminHomePage/registerManager/", (req,res) -> {
@@ -70,7 +102,7 @@ public class TestController {
                         gen = Gender.FEMALE;
                     }
                     Manager manager = new Manager(managerDTO.getUsername(),managerDTO.getPassword(),managerDTO.getName(),
-                            managerDTO.getLastName(),gen,managerDTO.getDateOfBirth(),Role.MANAGER,managerDTO.getFacility());
+                            managerDTO.getLastName(),gen,managerDTO.getDateOfBirth(),Role.MANAGER,"nista");
                     User user = new User(managerDTO.getUsername(),managerDTO.getPassword(),managerDTO.getName(),
                             managerDTO.getLastName(),gen,managerDTO.getDateOfBirth(),Role.MANAGER);
                     testService.addUser(user);
@@ -107,6 +139,7 @@ public class TestController {
 
                     if(flag == null) {
                         testService.addManager(manager);
+
                         return "success";
                     }
                     else
@@ -179,9 +212,14 @@ public class TestController {
                     res.type("application/json");
                     try{
                         LoginDTO loginDTO = g.fromJson(req.body(),LoginDTO.class);
-                        testService.loginUser(loginDTO);
-                        userSession(req).setUsername(loginDTO.getUsername());
-                        return g.toJson(testService.GetById(loginDTO.getUsername()));
+                        User user = testService.loginUser(loginDTO);
+                        if(user == null){
+                            return null;
+                        }else {
+                            userSession(req).setUsername(loginDTO.getUsername());
+                            return g.toJson(user);
+                        }
+
                     }catch (Exception e){
                         e.printStackTrace();
                         return null;
@@ -214,14 +252,17 @@ public class TestController {
                     res.type("application/json");
                     FacilityDTO facilityDTO = g.fromJson(req.body(), FacilityDTO.class);
                     flagFacilityName = facilityDTO.getName();
+                    facilityDTO.setContentType("");
+                    String flag = facilityDTO.getContentType();
                     Manager manager = testService.GetByIdManager(facilityDTO.getManager());
                     ManagerDTO managerDTO = new ManagerDTO(manager.getUsername(), manager.getPassword(),manager.getName(),
                             manager.getLastName(), manager.getGender().toString(),manager.getDateOfBirth(),
                             manager.getRole().toString(),facilityDTO.getName());
 
-                    testService.addFacility(facilityDTO);
+
                     Facility flagCheck = testService.GetFacility(facilityDTO.getName());
                     if(flagCheck==null){
+                        testService.addFacility(facilityDTO);
                         testService.EditManager(managerDTO,managerDTO.getUsername());
                         return "Success";
                     }else{
@@ -238,9 +279,9 @@ public class TestController {
                     res.type("application/json");
                     FacilityDTO facilityDTO = g.fromJson(req.body(), FacilityDTO.class);
                     flagFacilityName = facilityDTO.getName();
-                    testService.addFacility(facilityDTO);
                     Facility flagCheck = testService.GetFacility(facilityDTO.getName());
                     if(flagCheck==null){
+                        testService.addFacility(facilityDTO);
                         return "Success";
                     }else{
                         return null;

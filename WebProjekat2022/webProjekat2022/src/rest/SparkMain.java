@@ -80,5 +80,9 @@ public class SparkMain {
         TestController.logoutCoach();
         TestController.logoutManager();
 
+
+        TestController.previewFacility();
+        TestController.getCommentsForPreview();
+
     }
 }
