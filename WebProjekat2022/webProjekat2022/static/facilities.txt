@@ -1,5 +1,6 @@
 Prvak;SPORT_CENTER;PudingPrvak;OPEN;Prvak;2524356.0|8435366.0|Sumska'12'Novi Sad'Srbija;8;10-20h
-Bodyline;POOL;nista;OPEN;Bodyline;456454|564564564|Cvetna'8'Novi Sad'Srbija;9;09-17h
-Superstar;GYM;nista;OPEN;Superstar;45878996|48489498|Gornja'1'Subotica'Srbija;7;09-24h
-Fullbody;DANCE_STUDIO;nista;OPEN;Fullbody;98786665|45456887|Kosovska'99'Beograd'Srbija;9;07-20h
-KrkanGym;GYM;nista;OPEN;KrkanGym;87896654|87879865|Donja'23'Temerin'Srbija;5;06-23h
+Bodyline;POOL;RepovanjeBodyline;OPEN;Bodyline;456454.0|5.6456454E8|Cvetna'8'Novi Sad'Srbija;09-17h;9
+Superstar;GYM;RakijadaSuperstar;OPEN;Superstar;4.5878996E7|4.8489496E7|Gornja'1'Subotica'Srbija;09-24h;7
+Fullbody;DANCE_STUDIO;KosanicaFullbody;OPEN;Fullbody;9.8786664E7|4.5456888E7|Kosovska'99'Beograd'Srbija;07-20h;9
+KrkanGym;GYM;UFCKrkanGym;OPEN;KrkanGym;8.7896656E7|8.7879864E7|Donja'23'Temerin'Srbija;06-23h;5
+KinderBueno;POOL;ZovuPreciKinderBueno;OPEN;KinderBueno;1586654.0|2322415.0|Moja'69'Prnjavor'Republika Srpska;00-24h;5

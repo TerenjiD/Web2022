@@ -16,7 +16,7 @@ Vue.component("addContent",{
         <select type="text" value="" id="type" v-model="contentToSend.type">
             <option>GROUP_TRAINING</option>
             <option>PERSONAL_TRAINING</option>
-            <option>SAUNA</option>
+            <option>GYM</option>
         </select>
         </td></tr>
         <tr><td>Logo:</td>
