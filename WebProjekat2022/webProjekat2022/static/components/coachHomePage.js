@@ -58,7 +58,7 @@ Vue.component("coachHomePage",{
                         </template>
         </div>
         <div>
-                        <h4>Treninzi<h4>
+                        <h4>Treninzi</h4>
                         </div>
                         <div>
                         <table border="1">

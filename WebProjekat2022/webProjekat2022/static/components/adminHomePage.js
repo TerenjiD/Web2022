@@ -71,7 +71,6 @@ Vue.component("adminHomePage",{
                 <button @click="searchUsers" >Pretrazi</button>
                 </form>
             </template>
-       //divideri   
             <button v-on:click="viewComment" style="padding: 7px 20px;
             background-color: aqua;">Pregledaj komentare</button>
             <button v-on:click="viewComments" style="padding: 7px 20px;

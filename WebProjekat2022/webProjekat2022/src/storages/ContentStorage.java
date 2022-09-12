@@ -1,7 +1,5 @@
 package storages;
 
-import DTO.ChangeContentDTO;
-import DTO.TrainingHistoryDTO;
 import DTO.TrainingSearchDTO;
 import beans.*;
 import com.opencsv.CSVWriter;
@@ -78,7 +76,7 @@ public class ContentStorage {
                 }else if(type.equals("PERSONAL_TRAINING")){
                     flagContent = ContentType.PERSONAL_TRAINING;
                 }else{
-                    flagContent = ContentType.SAUNA;
+                    flagContent = ContentType.GYM;
                 }
 
                 Content flag = new Content(nameID,facilityName,name,flagContent,coach,logo,
@@ -187,7 +185,7 @@ public class ContentStorage {
                     }else if(row[3].equals("PERSONAL_TRAINING")){
                         flagContent = ContentType.PERSONAL_TRAINING;
                     }else{
-                        flagContent = ContentType.SAUNA;
+                        flagContent = ContentType.GYM;
                     }
                     Content flagContent1 = new Content(row[0],row[1],row[2],flagContent,
                             row[4],row[5],row[6],row[7],row[8],row[9],Integer.parseInt(row[10]));
@@ -420,7 +418,7 @@ public class ContentStorage {
             }
         }else{
             for (Content f:starter){
-                if(f.getType().toString().contains("GYM")){
+                if(f.getType().toString().contains("SAUNA")){
                     temp.add(f);
                 }
             }

@@ -1,2 +1,4 @@
 NeZnam;neznma;NeZnam;NeZnam;MALE;14-12-2022;CUSTOMER;0;Normal;nista
 q;q;zju;zju;MALE;18-12-1812;CUSTOMER;1432.0;Gold;nista
+dadadad;dasdadsa;dasdad;dasdasd;FEMALE;15.5.2000;MANAGER;0;nista;nista
+tretre;tretere;teeerreeeee;tereeeetteeee;FEMALE;00.5.2000;COACH;0;nista;nista
